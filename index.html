@@ -276,11 +276,11 @@ body{background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;l
   <!-- ══ TAB DASHBOARD ══ -->
   <div class="tab-pane active" id="tab-dashboard">
     <div class="kpi-row">
-      <div class="kpi k-tot"><div class="kpi-l">Total Tabungan</div><div class="kpi-v acc" id="kpi-total">—</div><div class="kpi-s">Semua rekening</div></div>
-      <div class="kpi k-in"> <div class="kpi-l">Total Pemasukan</div><div class="kpi-v pos" id="kpi-income">—</div><div class="kpi-s">Semua waktu</div></div>
-      <div class="kpi k-out"><div class="kpi-l">Total Pengeluaran</div><div class="kpi-v neg" id="kpi-expense">—</div><div class="kpi-s">Semua waktu</div></div>
+      <div class="kpi k-tot"><div class="kpi-l">Total Tabungan</div><div class="kpi-v acc" id="kpi-total">—</div><div class="kpi-s">Saldo BCA + BNI + SeaBank</div></div>
+      <div class="kpi k-in"><div class="kpi-l">Gaji Bulan Ini</div><div class="kpi-v pos" id="kpi-income">—</div><div class="kpi-s" id="kpi-income-sub">dari input alokasi</div></div>
+      <div class="kpi k-out"><div class="kpi-l">Pengeluaran Bulan Ini</div><div class="kpi-v neg" id="kpi-expense">—</div><div class="kpi-s" id="kpi-expense-sub">transaksi expense bulan ini</div></div>
       <div class="kpi k-sav">
-        <div class="kpi-l">Savings Rate</div>
+        <div class="kpi-l">Savings Rate Bulan Ini</div>
         <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
           <svg viewBox="0 0 48 48" style="width:48px;height:48px;flex-shrink:0">
             <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
@@ -288,10 +288,10 @@ body{background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;l
               stroke-dasharray="125.66" stroke-dashoffset="125.66" stroke-linecap="round"
               transform="rotate(-90 24 24)" id="rate-circle" style="transition:stroke-dashoffset .8s ease"/>
           </svg>
-          <div><div class="kpi-v acc" id="kpi-rate">0%</div><div class="kpi-s">dari pemasukan</div></div>
+          <div><div class="kpi-v acc" id="kpi-rate">0%</div><div class="kpi-s">gaji vs pengeluaran</div></div>
         </div>
       </div>
-      <div class="kpi k-sav"><div class="kpi-l">Savings Bersih</div><div class="kpi-v pos" id="kpi-net">—</div><div class="kpi-s">Pemasukan − Pengeluaran</div></div>
+      <div class="kpi k-sav"><div class="kpi-l">Savings Bersih Bulan Ini</div><div class="kpi-v pos" id="kpi-net">—</div><div class="kpi-s">Gaji − Pengeluaran bulan ini</div></div>
     </div>
 
     <div class="bank-row">
@@ -410,9 +410,9 @@ body{background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;l
   <!-- ══ TAB CATATAN ══ -->
   <div class="tab-pane" id="tab-catatan">
     <div class="sum-strip">
-      <div class="ss"><div class="ss-l">Total Pemasukan</div><div class="ss-v" id="s-in" style="color:var(--grn2)">—</div></div>
-      <div class="ss"><div class="ss-l">Total Pengeluaran</div><div class="ss-v" id="s-out" style="color:var(--red2)">—</div></div>
-      <div class="ss"><div class="ss-l">Savings Bersih</div><div class="ss-v" id="s-net" style="color:var(--acc2)">—</div></div>
+      <div class="ss"><div class="ss-l">Total Pemasukan (semua)</div><div class="ss-v" id="s-in" style="color:var(--grn2)">—</div></div>
+      <div class="ss"><div class="ss-l">Total Pengeluaran (semua)</div><div class="ss-v" id="s-out" style="color:var(--red2)">—</div></div>
+      <div class="ss"><div class="ss-l">Net Cashflow</div><div class="ss-v" id="s-net" style="color:var(--acc2)">—</div></div>
     </div>
     <div class="cata-tb">
       <div class="filter-tabs">
@@ -802,19 +802,40 @@ function renderAll() {
   const {BCA:bca,BNI:bni,SeaBank:sea}=DB.balances;
   const total=bca+bni+sea;
   const txs=DB.transactions;
-  const totalIn  = txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
-  const totalOut = txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
-  const net=totalIn-totalOut;
-  const rate=totalIn>0?Math.max(0,Math.round((net/totalIn)*100)):0;
 
-  setTxt('kpi-total',  fmtS(total));
-  setTxt('kpi-income', fmtS(totalIn));
-  setTxt('kpi-expense',fmtS(totalOut));
-  setTxt('kpi-net',    fmtS(net));
-  setTxt('kpi-rate',   rate+'%');
+  // Bulan ini
+  const thisYM = ymNow();
+  const thisMonth = thisYM + '-';
+
+  // Gaji bulan ini — dari salaries, bukan dari transaksi
+  const salThisMonth = DB.salaries[thisYM];
+  const gajiIni = salThisMonth ? salThisMonth.salary : 0;
+
+  // Pengeluaran bulan ini — hanya expense yang dicatat manual bulan ini
+  // Exclude transaksi auto-gaji (cat === 'Gaji') supaya tidak double count
+  const expIni = txs
+    .filter(t => t.type==='expense' && t.date.startsWith(thisMonth))
+    .reduce((s,t) => s+t.amount, 0);
+
+  const netIni  = gajiIni - expIni;
+  const rateIni = gajiIni > 0 ? Math.max(0, Math.round((netIni/gajiIni)*100)) : 0;
+
+  setTxt('kpi-total',   fmtS(total));
+  setTxt('kpi-income',  gajiIni > 0 ? fmtS(gajiIni) : '—');
+  setTxt('kpi-expense', expIni > 0  ? fmtS(expIni)  : 'Rp 0');
+  setTxt('kpi-net',     gajiIni > 0 ? fmtS(netIni)  : '—');
+  setTxt('kpi-rate',    gajiIni > 0 ? rateIni+'%'   : '—');
+  setTxt('kpi-income-sub',  ymLbl(thisYM));
+  setTxt('kpi-expense-sub', ymLbl(thisYM));
+
+  // Color savings bersih
+  const netEl = el('kpi-net');
+  if (netEl) netEl.style.color = netIni >= 0 ? 'var(--grn2)' : 'var(--red2)';
+
+  // Savings ring
   const circ=125.66;
   const rc=el('rate-circle');
-  if(rc) rc.setAttribute('stroke-dashoffset',(circ-circ*Math.min(100,rate)/100).toFixed(2));
+  if(rc) rc.setAttribute('stroke-dashoffset',(circ-circ*Math.min(100,rateIni)/100).toFixed(2));
 
   setTxt('d-bca-b',fmt(bca)); setTxt('d-bni-b',fmt(bni)); setTxt('d-sea-b',fmt(sea));
   const bcaP=Math.min(100,Math.round(bca/BCA_TARGET*100));
