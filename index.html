@@ -895,8 +895,15 @@ async function delSalary(id,ym){
 // ── EXPENSE CHARTS ──
 let catDonutC=null, expTrendC=null;
 const CAT_COLORS={
-  Makanan:'#f77f4f', Transport:'#4f8ef7', Belanja:'#9b7fff',
-  Kesehatan:'#4fcf9a', Hiburan:'#f7c94f', Tagihan:'#f75f5f', Lainnya:'#a0a0a8'
+  Tagihan:'#f75f5f',
+  'Bayar Arisan':'#4fcf9a',
+  Keluarga:'#f77f4f',
+  'Bayar Hutang':'#e879f9',
+  'Beli Riel':'#38bdf8',
+  Gaji:'#9b7fff',
+  Bonus:'#f7c94f',
+  'Uang Arisan':'#4f8ef7',
+  Lainnya:'#6b7280'
 };
 
 function populateCatMonthFilter(){
@@ -913,28 +920,24 @@ function renderCatChart(){
   const sel=el('cat-month-filter');
   const ym=sel?sel.value:ymNow();
   const txs=DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(ym+'-'));
-
-  // Group by category
   const grouped={};
   txs.forEach(t=>{const c=t.cat||'Lainnya';grouped[c]=(grouped[c]||0)+t.amount;});
   const entries=Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
   const labels=entries.map(e=>e[0]);
   const data=entries.map(e=>e[1]);
-  const colors=labels.map(l=>CAT_COLORS[l]||'#a0a0a8');
-
-  const canvas=el('cat-donut');
-  if(!canvas)return;
-  if(catDonutC){catDonutC.data.labels=labels;catDonutC.data.datasets[0].data=data;catDonutC.data.datasets[0].backgroundColor=colors;catDonutC.update();return;}
+  const colors=labels.map(l=>CAT_COLORS[l]||'#6b7280');
+  const canvas=el('cat-donut');if(!canvas)return;
+  if(catDonutC){catDonutC.destroy();catDonutC=null;}
   catDonutC=new Chart(canvas,{
     type:'doughnut',
-    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
     options:{
-      responsive:true,maintainAspectRatio:false,cutout:'60%',
+      responsive:true,maintainAspectRatio:false,cutout:'62%',
       plugins:{
         legend:{
-          display:true,position:'right',
-          labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10,
-            generateLabels:chart=>{const ds=chart.data.datasets[0];return chart.data.labels.map((l,i)=>({text:l+' · '+fmtS(ds.data[i]),fillStyle:ds.backgroundColor[i],hidden:false,index:i}));}}
+          display:true,position:'bottom',
+          labels:{color:'#a0a0a8',font:{size:11,family:'Geist Mono'},boxWidth:10,padding:12,
+            generateLabels:chart=>{const ds=chart.data.datasets[0];return chart.data.labels.map((l,i)=>({text:l+' · '+fmtS(ds.data[i]),fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],hidden:false,index:i}));}}
         },
         tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}
       }
@@ -1216,11 +1219,38 @@ function renderRielCatChart(){
   const grouped={};
   txs.forEach(t=>{const c=t.cat||'Lainnya';grouped[c]=(grouped[c]||0)+t.amount;});
   const entries=Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
-  const labels=entries.map(e=>e[0]),data=entries.map(e=>e[1]);
-  const colors=labels.map(l=>RIEL_CAT_COLORS[l]||'#a0a0a8');
+  const labels=entries.map(e=>e[0]);
+  const data=entries.map(e=>e[1]);
+  const colors=labels.map(l=>RIEL_CAT_COLORS[l]||'#6b7280');
   const canvas=el('riel-donut');if(!canvas)return;
-  if(rielDonutC){rielDonutC.data.labels=labels;rielDonutC.data.datasets[0].data=data;rielDonutC.data.datasets[0].backgroundColor=colors;rielDonutC.update();return;}
-  rielDonutC=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10,generateLabels:chart=>{const ds=chart.data.datasets[0];return chart.data.labels.map((l,i)=>({text:l+' · '+fmtKHR(ds.data[i]),fillStyle:ds.backgroundColor[i],hidden:false,index:i}));}}},tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}}}});
+  if(rielDonutC){rielDonutC.destroy();rielDonutC=null;}
+  rielDonutC=new Chart(canvas,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{
+        legend:{
+          display:true,position:'bottom',
+          labels:{
+            color:'#a0a0a8',
+            font:{size:11,family:'Geist Mono'},
+            boxWidth:10,padding:12,
+            generateLabels:chart=>{
+              const ds=chart.data.datasets[0];
+              return chart.data.labels.map((l,i)=>({
+                text:l+' · '+fmtKHR(ds.data[i]),
+                fillStyle:ds.backgroundColor[i],
+                strokeStyle:ds.backgroundColor[i],
+                hidden:false,index:i
+              }));
+            }
+          }
+        },
+        tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}
+      }
+    }
+  });
 }
 
 function renderRielTrend(){
