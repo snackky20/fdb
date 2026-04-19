@@ -934,7 +934,7 @@ function renderCatChart(){
         legend:{
           display:true,position:'right',
           labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10,
-            formatter:(v,ctx)=>v+' · '+fmtS(ctx.dataset.data[ctx.dataIndex])}
+            generateLabels:chart=>{const ds=chart.data.datasets[0];return chart.data.labels.map((l,i)=>({text:l+' · '+fmtS(ds.data[i]),fillStyle:ds.backgroundColor[i],hidden:false,index:i}));}}
         },
         tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}
       }
@@ -1186,9 +1186,16 @@ const parseKHR=s=>parseInt((s||'').replace(/[^\d]/g,''))||0;
 function fmtRiel(inp){const v=inp.value.replace(/[^\d]/g,'');inp.value=v?Number(v).toLocaleString('km-KH'):'';}
 
 const RIEL_CAT_COLORS={
-  Makanan:'#f77f4f',Transport:'#4f8ef7',Belanja:'#9b7fff',
-  Tagihan:'#f75f5f','Bayar Arisan':'#4fcf9a',Keluarga:'#f7c94f',
-  'Beli Riel':'#fb7185',Lainnya:'#a0a0a8'
+  'Uang Masuk':'#9b7fff',
+  'Makanan':'#f77f4f',
+  'Transport':'#4f8ef7',
+  'Belanja':'#f7c94f',
+  'Tagihan':'#f75f5f',
+  'Bayar Arisan':'#4fcf9a',
+  'Keluarga':'#fb7185',
+  'Bayar Hutang':'#e879f9',
+  'Beli Riel':'#38bdf8',
+  'Lainnya':'#6b7280'
 };
 
 let rielDonutC=null, rielTrendC=null;
@@ -1213,7 +1220,7 @@ function renderRielCatChart(){
   const colors=labels.map(l=>RIEL_CAT_COLORS[l]||'#a0a0a8');
   const canvas=el('riel-donut');if(!canvas)return;
   if(rielDonutC){rielDonutC.data.labels=labels;rielDonutC.data.datasets[0].data=data;rielDonutC.data.datasets[0].backgroundColor=colors;rielDonutC.update();return;}
-  rielDonutC=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10}},tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}}}});
+  rielDonutC=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10,generateLabels:chart=>{const ds=chart.data.datasets[0];return chart.data.labels.map((l,i)=>({text:l+' · '+fmtKHR(ds.data[i]),fillStyle:ds.backgroundColor[i],hidden:false,index:i}));}}},tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}}}});
 }
 
 function renderRielTrend(){
