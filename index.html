@@ -316,6 +316,7 @@ body {
 .htbl td { padding: 12px 16px; border-bottom: 1px solid var(--bd); font-family: var(--fmono); font-size: 12px; vertical-align: middle; }
 .htbl tr:last-child td { border-bottom: none; }
 .htbl tr:hover td { background: var(--s2); }
+.htbl tr.active-row td { background: var(--acc-d); border-left: 2px solid var(--acc); }
 .del-btn { background: transparent; border: none; color: var(--tx3); font-size: 12px; cursor: pointer; padding: 2px 6px; border-radius: var(--r3); transition: color .15s; }
 .del-btn:hover { color: var(--red); }
 
@@ -851,6 +852,31 @@ function switchTab(id,btn){
 }
 
 // ── ALOKASI ──
+function showResult(ym){
+  const s=DB.salaries[ym];
+  if(!s)return;
+  const sav=s.bca+s.bni+s.sea;
+  const bp=sav>0?Math.round(s.bca/sav*100):0;
+  const np=sav>0?Math.round(s.bni/sav*100):0;
+  const sp=sav>0?Math.round(s.sea/sav*100):0;
+  const rateStr=s.salary>0?Math.round(sav/s.salary*100)+'% savings rate':'';
+  setTxt('res-total',fmt(sav));
+  setTxt('res-sub',ymLbl(ym)+(rateStr?' · '+rateStr:''));
+  setTxt('r-bca',fmt(s.bca));setTxt('r-bca-p',bp+'%');
+  setTxt('r-bni',fmt(s.bni));setTxt('r-bni-p',np+'%');
+  setTxt('r-sea',fmt(s.sea));setTxt('r-sea-p',sp+'%');
+  ['bca','bni','sea'].forEach(b=>{
+    const p=b==='bca'?bp:b==='bni'?np:sp,a=b==='bca'?s.bca:b==='bni'?s.bni:s.sea;
+    setSty('bb-'+b,'width',p+'%');setTxt('bb-'+b+'-v',p+'% · '+fmtS(a));
+  });
+  el('alloc-result').style.display='block';
+  el('alloc-placeholder').style.display='none';
+  // highlight active row
+  document.querySelectorAll('#sal-body tr').forEach(r=>r.classList.remove('active-row'));
+  const row=document.querySelector(`#sal-body tr[data-ym="${ym}"]`);
+  if(row)row.classList.add('active-row');
+}
+
 async function hitungAlokasi(){
   const sav=parseN(el('sav-in').value),gaji=parseN(el('gaji-in').value),ym=el('sav-mo').value;
   if(!sav){alert('Masukkan jumlah tabungan');return;}
@@ -859,24 +885,10 @@ async function hitungAlokasi(){
   const bniRoom=Math.max(0,BNI_MAX-DB.balances.BNI);
   let bni=0,bca=0;
   if(rem>0){if(bniRoom>0){bni=Math.min(Math.round(rem*.40),bniRoom);bca=rem-bni;}else bca=rem;}
-  const bp=sav>0?Math.round(bca/sav*100):0,np=sav>0?Math.round(bni/sav*100):0,sp=sav>0?Math.round(sea/sav*100):0;
-  const rateStr=gaji>0?Math.round(sav/gaji*100)+'% savings rate':'';
-  setTxt('res-total',fmt(sav));
-  setTxt('res-sub',ymLbl(ym)+(rateStr?' · '+rateStr:''));
-  setTxt('r-bca',fmt(bca));setTxt('r-bca-p',bp+'%');
-  setTxt('r-bni',fmt(bni));setTxt('r-bni-p',np+'%');
-  setTxt('r-sea',fmt(sea));setTxt('r-sea-p',sp+'%');
-  ['bca','bni','sea'].forEach(b=>{
-    const p=b==='bca'?bp:b==='bni'?np:sp,a=b==='bca'?bca:b==='bni'?bni:sea;
-    setSty('bb-'+b,'width',p+'%');setTxt('bb-'+b+'-v',p+'% · '+fmtS(a));
-  });
-  el('alloc-result').style.display='block';
-  el('alloc-placeholder').style.display='none';
 
   // Cek apakah bulan ini sudah pernah dialokasikan
   if(DB.salaries[ym]){
     if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
-    // Hapus transaksi auto lama untuk bulan ini dulu
     const oldTxs=DB.transactions.filter(t=>t.date===ym+'-01'&&t.cat==='Gaji'&&t.type==='income');
     await Promise.all(oldTxs.map(t=>api({action:'deleteTransaction',id:t.id}))).catch(()=>{});
   }
@@ -896,17 +908,19 @@ function renderSalaryHistory(){
   const tbl=el('sal-tbl'),emp=el('sal-emp');
   if(!yms.length){tbl.style.display='none';emp.style.display='block';return;}
   tbl.style.display='table';emp.style.display='none';
-  el('sal-body').innerHTML=yms.map(ym=>{
+  el('sal-body').innerHTML=yms.map((ym,i)=>{
     const s=DB.salaries[ym];
-    return`<tr>
+    return`<tr data-ym="${ym}" onclick="showResult('${ym}')" style="cursor:pointer">
       <td style="color:var(--tx2)">${ymLbl(ym)}</td>
       <td style="color:var(--tx2)">${s.salary?fmtS(s.salary):'—'}</td>
       <td style="color:var(--bca)">${fmtS(s.bca)}</td>
       <td style="color:var(--bni)">${fmtS(s.bni)}</td>
       <td style="color:var(--sea)">${fmtS(s.sea)}</td>
-      <td><button class="del-btn" onclick="delSalary('${s.id}','${ym}')">×</button></td>
+      <td><button class="del-btn" onclick="event.stopPropagation();delSalary('${s.id}','${ym}')">×</button></td>
     </tr>`;
   }).join('');
+  // Auto-show latest
+  showResult(yms[0]);
 }
 async function delSalary(id,ym){
   if(!confirm('Hapus riwayat '+ymLbl(ym)+'?'))return;
