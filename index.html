@@ -682,8 +682,8 @@ const fmt  =n=>'Rp '+Math.round(n).toLocaleString('id-ID');
 const fmtS =n=>n>=1e9?'Rp '+(n/1e9).toFixed(1)+'M':n>=1e6?'Rp '+(n/1e6).toFixed(1)+'jt':n>=1e3?'Rp '+(n/1e3).toFixed(0)+'rb':'Rp '+Math.round(n);
 const parseN  =s=>parseInt((s||'').replace(/\D/g,''))||0;
 const uid     =()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-const today   =()=>new Date().toISOString().split('T')[0];
-const ymNow   =()=>new Date().toISOString().slice(0,7);
+const today   =()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const ymNow   =()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');};
 const ymLbl   =ym=>{if(!ym)return'—';const[y,m]=ym.split('-');return MNS[+m-1]+' '+y;};
 const ymToN   =ym=>{const[y,m]=ym.split('-').map(Number);return y*12+m;};
 const ymAdd   =(ym,n)=>{const[y,m]=ym.split('-').map(Number);const d=new Date(y,m-1+n,1);return MNS[d.getMonth()]+' '+d.getFullYear();};
@@ -723,7 +723,7 @@ function switchTab(id,btn){
 }
 
 // ── ALOKASI ──
-function hitungAlokasi(){
+async function hitungAlokasi(){
   const sav=parseN(el('sav-in').value),gaji=parseN(el('gaji-in').value),ym=el('sav-mo').value;
   if(!sav){alert('Masukkan jumlah tabungan');return;}
   if(!ym){alert('Pilih bulan');return;}
@@ -743,6 +743,14 @@ function hitungAlokasi(){
     setSty('bb-'+b,'width',p+'%');setTxt('bb-'+b+'-v',p+'% · '+fmtS(a));
   });
   el('alloc-result').classList.add('show');
+
+  // Cek apakah bulan ini sudah pernah dialokasikan
+  if(DB.salaries[ym]){
+    if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
+    // Hapus transaksi auto lama untuk bulan ini dulu
+    const oldTxs=DB.transactions.filter(t=>t.date===ym+'-01'&&t.cat==='Gaji'&&t.type==='income');
+    await Promise.all(oldTxs.map(t=>api({action:'deleteTransaction',id:t.id}))).catch(()=>{});
+  }
 
   const d=ym+'-01';
   const jobs=[
