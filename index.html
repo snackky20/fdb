@@ -743,7 +743,15 @@ function hitungAlokasi(){
     setSty('bb-'+b,'width',p+'%');setTxt('bb-'+b+'-v',p+'% · '+fmtS(a));
   });
   el('alloc-result').classList.add('show');
-  api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea}).then(()=>syncNow()).catch(()=>{});
+
+  const d=ym+'-01';
+  const jobs=[
+    api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea}),
+    ...(bca>0?[api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'Gaji',type:'income',bank:'BCA',amount:bca})]:[]),
+    ...(bni>0?[api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'Gaji',type:'income',bank:'BNI',amount:bni})]:[]),
+    ...(sea>0?[api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'Gaji',type:'income',bank:'SeaBank',amount:sea})]:[]),
+  ];
+  Promise.all(jobs).then(()=>syncNow()).catch(e=>setSync('err','error: '+e.message));
 }
 
 function renderSalaryHistory(){
