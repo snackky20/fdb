@@ -13,9 +13,9 @@
   --s2:    #17171a;
   --s3:    #1e1e22;
   --s4:    #27272c;
-  --bd:    rgba(255,255,255,.06);
-  --bd2:   rgba(255,255,255,.10);
-  --bd3:   rgba(255,255,255,.16);
+  --bd:    rgba(155,127,255,.08);
+  --bd2:   rgba(155,127,255,.14);
+  --bd3:   rgba(155,127,255,.22);
   --tx:    #ececee;
   --tx2:   #a0a0a8;
   --tx3:   #5a5a64;
@@ -31,7 +31,9 @@
   --grn:   #4fcf9a;
   --red:   #f75f5f;
   --acc:   #9b7fff;
-  --acc-d: rgba(155,127,255,.1);
+  --acc2:  #c4b5fd;
+  --acc-d: rgba(155,127,255,.12);
+  --acc-b: rgba(155,127,255,.22);
   --r:     10px;
   --r2:    7px;
   --r3:    4px;
@@ -78,7 +80,7 @@ body {
   padding: 0 24px;
   background: rgba(12,12,13,.9);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd2);
   position: sticky; top: 0; z-index: 100;
   flex-shrink: 0;
 }
@@ -90,7 +92,7 @@ body {
   letter-spacing: -.02em;
   display: flex; align-items: center; gap: 6px;
 }
-.logo-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--acc); }
+.logo-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 8px var(--acc); }
 .nav-center { display: flex; gap: 1px; }
 .nav-tab {
   font-size: 12px; font-weight: 400; font-family: var(--fsans);
@@ -100,17 +102,17 @@ body {
   letter-spacing: .01em;
 }
 .nav-tab:hover { color: var(--tx2); }
-.nav-tab.active { color: var(--tx); background: var(--s3); }
+.nav-tab.active { color: var(--acc2); background: var(--acc-d); border: 1px solid var(--bd2); }
 .nav-right { display: flex; gap: 6px; align-items: center; }
 .mono-chip {
   font-family: var(--fmono); font-size: 10px; color: var(--tx3);
-  background: var(--s2); border: 1px solid var(--bd);
+  background: var(--s2); border: 1px solid var(--bd2);
   border-radius: var(--r3); padding: 3px 9px;
 }
 .nav-btn {
   font-size: 11px; font-family: var(--fsans); font-weight: 500;
   color: var(--tx3); background: transparent;
-  border: 1px solid var(--bd); border-radius: var(--r3);
+  border: 1px solid var(--bd2); border-radius: var(--r3);
   padding: 4px 10px; cursor: pointer; transition: all .15s;
 }
 .nav-btn:hover { color: var(--tx); border-color: var(--bd2); }
@@ -122,7 +124,7 @@ body {
   display: none;
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
   background: rgba(12,12,13,.96); backdrop-filter: blur(16px);
-  border-top: 1px solid var(--bd);
+  border-top: 1px solid var(--bd2);
   padding-bottom: env(safe-area-inset-bottom);
 }
 .botnav-row { display: flex; }
@@ -145,11 +147,11 @@ body {
   margin-bottom: 24px; font-size: 11px; border: 1px solid;
   font-family: var(--fmono); letter-spacing: .01em;
 }
-.sync.ok      { background: rgba(79,207,154,.06); border-color: rgba(79,207,154,.15); color: var(--sea); }
+.sync.ok      { background: var(--acc-d); border-color: var(--bd2); color: var(--acc2); }
 .sync.err     { background: rgba(247,95,95,.06);  border-color: rgba(247,95,95,.15);  color: var(--red); }
-.sync.loading { background: rgba(155,127,255,.06);border-color: rgba(155,127,255,.15);color: var(--acc); }
+.sync.loading { background: var(--acc-d); border-color: var(--bd2); color: var(--acc); }
 .sdot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.ok .sdot      { background: var(--sea); }
+.ok .sdot      { background: var(--acc2); }
 .err .sdot     { background: var(--red); }
 .loading .sdot { background: var(--acc); animation: pulse .9s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
@@ -174,21 +176,21 @@ body {
 }
 
 /* ── KPI ROW ── */
-.kpi-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; margin-bottom: 24px; background: var(--bd); border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; }
+.kpi-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; margin-bottom: 24px; background: var(--bd2); border: 1px solid var(--bd2); border-radius: var(--r); overflow: hidden; }
 .kpi { background: var(--s1); padding: 18px 20px; position: relative; }
 .kpi-label { font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--tx3); margin-bottom: 10px; }
 .kpi-value { font-family: var(--fmono); font-size: 22px; font-weight: 500; line-height: 1; letter-spacing: -.02em; }
-.kpi-value.c-acc { color: var(--acc); }
-.kpi-value.c-grn { color: var(--grn); }
+.kpi-value.c-acc { color: var(--acc2); }
+.kpi-value.c-grn { color: var(--acc2); }
 .kpi-value.c-red { color: var(--red); }
-.kpi-value.c-tx  { color: var(--tx); }
+.kpi-value.c-tx  { color: var(--acc2); }
 .kpi-sub { font-size: 10px; color: var(--tx3); margin-top: 6px; letter-spacing: .01em; }
 
 /* Rate KPI special */
 .kpi.rate-kpi { display: flex; align-items: center; gap: 14px; }
 .rate-ring { flex-shrink: 0; }
 .rate-right { flex: 1; min-width: 0; }
-.rate-num { font-family: var(--fmono); font-size: 26px; font-weight: 500; color: var(--acc); letter-spacing: -.03em; line-height: 1; }
+.rate-num { font-family: var(--fmono); font-size: 26px; font-weight: 500; color: var(--acc2); letter-spacing: -.03em; line-height: 1; }
 .rate-track { height: 2px; background: var(--s4); border-radius: 99px; margin-top: 8px; overflow: hidden; }
 .rate-fill { height: 100%; background: var(--acc); border-radius: 99px; transition: width .8s ease; }
 
@@ -227,7 +229,7 @@ body {
 
 /* ── TWO COL ── */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-.card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); padding: 20px; }
+.card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); padding: 20px; }
 .card-title { font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--tx3); margin-bottom: 16px; }
 .cw { position: relative; height: 190px; }
 .cw-sm { position: relative; height: 160px; }
@@ -242,7 +244,7 @@ body {
 .bar-f { height: 100%; border-radius: 99px; transition: width .6s ease; }
 
 /* ── PROJECTION ── */
-.proj-card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); padding: 20px; margin-bottom: 24px; }
+.proj-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); padding: 20px; margin-bottom: 24px; }
 .proj-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
 .status-pill { font-size: 10px; font-weight: 500; letter-spacing: .02em; padding: 4px 10px; border-radius: var(--r3); border: 1px solid; }
 .pill-ok   { color: var(--grn); background: var(--sea-d); border-color: rgba(79,207,154,.2); }
@@ -261,7 +263,7 @@ body {
 
 /* ── ALOKASI TAB ── */
 .alloc-layout { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
-.form-card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); padding: 24px; }
+.form-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); padding: 24px; }
 .form-title { font-family: var(--fsans); font-size: 18px; font-weight: 700; color: var(--tx2); margin-bottom: 22px; }
 .fg { margin-bottom: 16px; }
 .fg label { display: block; font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--tx3); margin-bottom: 7px; }
@@ -285,7 +287,7 @@ body {
 .btn-primary:hover { opacity: .9; }
 .btn-primary:active { transform: scale(.99); }
 
-.result-card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); padding: 24px; display: none; }
+.result-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); padding: 24px; display: none; }
 .result-card.show { display: block; animation: rise .25s ease; }
 .result-amount { font-family: var(--fmono); font-size: 32px; font-weight: 500; letter-spacing: -.04em; color: var(--tx); line-height: 1; margin-bottom: 4px; }
 .result-sub { font-size: 11px; color: var(--tx3); margin-bottom: 22px; }
@@ -304,7 +306,7 @@ body {
 .bk-pct { font-size: 10px; color: var(--tx3); margin-top: 2px; font-family: var(--fmono); }
 
 /* Hist */
-.hist-card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; margin-top: 12px; }
+.hist-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); overflow: hidden; margin-top: 12px; }
 .htbl { width: 100%; border-collapse: collapse; }
 .htbl th { font-size: 9px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--tx3); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--bd); }
 .htbl td { padding: 12px 16px; border-bottom: 1px solid var(--bd); font-family: var(--fmono); font-size: 12px; vertical-align: middle; }
@@ -315,16 +317,16 @@ body {
 
 /* ── CATATAN TAB ── */
 .cata-kpi { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
-.ckpi { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); padding: 16px 18px; }
+.ckpi { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); padding: 16px 18px; }
 .ckpi-label { font-size: 9px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--tx3); margin-bottom: 8px; }
 .ckpi-value { font-family: var(--fmono); font-size: 20px; font-weight: 500; letter-spacing: -.02em; }
 .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
 .ftabs { display: flex; gap: 3px; flex-wrap: wrap; flex: 1; }
-.ftab { font-size: 11px; color: var(--tx3); background: var(--s2); border: 1px solid var(--bd); border-radius: var(--r3); padding: 5px 12px; cursor: pointer; white-space: nowrap; transition: all .13s; }
-.ftab.on { color: var(--tx); background: var(--s3); border-color: var(--bd2); }
+.ftab { font-size: 11px; color: var(--tx3); background: var(--s2); border: 1px solid var(--bd2); border-radius: var(--r3); padding: 5px 12px; cursor: pointer; white-space: nowrap; transition: all .13s; }
+.ftab.on { color: var(--acc2); background: var(--acc-d); border-color: var(--bd2); }
 .add-btn { background: var(--acc); border: none; border-radius: var(--r2); color: #fff; font-size: 12px; font-weight: 600; font-family: var(--fsans); padding: 7px 16px; cursor: pointer; flex-shrink: 0; transition: opacity .15s; letter-spacing: .01em; }
 .add-btn:hover { opacity: .88; }
-.tx-card { background: var(--s1); border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; }
+.tx-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); overflow: hidden; }
 .tx-scroll { max-height: 500px; overflow-y: auto; }
 .tx-tbl { width: 100%; border-collapse: collapse; }
 .tx-tbl th { font-size: 9px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--tx3); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--bd); background: var(--s1); position: sticky; top: 0; }
@@ -335,7 +337,7 @@ body {
 .tx-cat  { font-size: 10px; color: var(--tx3); margin-top: 2px; }
 .tx-date { font-family: var(--fmono); font-size: 11px; color: var(--tx3); }
 .tx-amt  { font-family: var(--fmono); font-size: 13px; font-weight: 500; text-align: right; white-space: nowrap; }
-.tx-amt.inc { color: var(--grn); }
+.tx-amt.inc { color: var(--acc2); }
 .tx-amt.exp { color: var(--red); }
 .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--r3); font-size: 10px; font-weight: 500; border: 1px solid; }
 .tag-bca { background: var(--bca-d); color: var(--bca); border-color: rgba(79,142,247,.2); }
@@ -343,7 +345,7 @@ body {
 .tag-sea { background: var(--sea-d); color: var(--sea); border-color: rgba(79,207,154,.2); }
 .tag-cash{ background: var(--s3); color: var(--tx3); border-color: var(--bd); }
 .act { display: flex; gap: 4px; justify-content: flex-end; }
-.act-btn { background: transparent; border: 1px solid var(--bd); border-radius: var(--r3); color: var(--tx3); font-size: 10px; padding: 3px 9px; cursor: pointer; transition: all .13s; }
+.act-btn { background: transparent; border: 1px solid var(--bd2); border-radius: var(--r3); color: var(--tx3); font-size: 10px; padding: 3px 9px; cursor: pointer; transition: all .13s; }
 .act-btn:hover { color: var(--tx); border-color: var(--bd2); }
 .act-btn.d:hover { color: var(--red); border-color: rgba(247,95,95,.3); }
 .empty { padding: 48px; text-align: center; font-size: 12px; color: var(--tx3); font-family: var(--fmono); }
@@ -364,7 +366,7 @@ body {
 .mfg select option { background: var(--s2); }
 .m2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
-.btn-cancel { background: transparent; border: 1px solid var(--bd); border-radius: var(--r2); color: var(--tx3); font-size: 12px; padding: 8px 16px; cursor: pointer; transition: all .13s; font-family: var(--fsans); }
+.btn-cancel { background: transparent; border: 1px solid var(--bd2); border-radius: var(--r2); color: var(--tx3); font-size: 12px; padding: 8px 16px; cursor: pointer; transition: all .13s; font-family: var(--fsans); }
 .btn-cancel:hover { color: var(--tx); border-color: var(--bd2); }
 .btn-save { background: var(--acc); border: none; border-radius: var(--r2); color: #fff; font-size: 12px; font-weight: 600; padding: 8px 20px; cursor: pointer; font-family: var(--fsans); }
 
@@ -586,20 +588,20 @@ body {
     <!-- ══ CATATAN ══ -->
     <div class="tab-pane" id="tab-catatan">
       <div class="cata-kpi">
-        <div class="ckpi"><div class="ckpi-label">Pemasukan</div><div class="ckpi-value" id="c-in" style="color:var(--grn)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Pemasukan</div><div class="ckpi-value" id="c-in" style="color:var(--acc2)">—</div></div>
         <div class="ckpi"><div class="ckpi-label">Pengeluaran</div><div class="ckpi-value" id="c-out" style="color:var(--red)">—</div></div>
-        <div class="ckpi"><div class="ckpi-label">Net</div><div class="ckpi-value" id="c-net" style="color:var(--acc)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Net</div><div class="ckpi-value" id="c-net" style="color:var(--acc2)">—</div></div>
       </div>
       <div class="toolbar">
         <div class="ftabs">
           <button class="ftab on" onclick="setFilt('all',this)">Semua</button>
-          <button class="ftab" onclick="setFilt('income',this)">Pemasukan</button>
           <button class="ftab" onclick="setFilt('expense',this)">Pengeluaran</button>
+          <button class="ftab" onclick="setFilt('income',this)">Pemasukan</button>
           <button class="ftab" onclick="setFilt('BCA',this)">BCA</button>
           <button class="ftab" onclick="setFilt('BNI',this)">BNI</button>
           <button class="ftab" onclick="setFilt('SeaBank',this)">SeaBank</button>
         </div>
-        <button class="add-btn" onclick="openModal()">+ Tambah</button>
+        <button class="add-btn" onclick="openModal()">+ Pengeluaran</button>
       </div>
       <div class="tx-card">
         <div class="tx-scroll">
@@ -638,11 +640,7 @@ body {
 <!-- MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="closeOut(event)">
   <div class="modal">
-    <div class="modal-title" id="modal-h">Transaksi</div>
-    <div class="type-row">
-      <div class="type-btn s-in" id="opt-in" onclick="setType('income')">+ Pemasukan</div>
-      <div class="type-btn" id="opt-out" onclick="setType('expense')">− Pengeluaran</div>
-    </div>
+    <div class="modal-title" id="modal-h">Tambah Pengeluaran</div>
     <div class="mfg"><label>Keterangan</label><input type="text" id="m-desc"></div>
     <div class="m2">
       <div class="mfg"><label>Jumlah (Rp)</label><input type="text" id="m-amt" oninput="fmtF(this)" inputmode="numeric"></div>
@@ -657,7 +655,6 @@ body {
           <option value="Makanan">Makanan</option><option value="Transport">Transport</option>
           <option value="Belanja">Belanja</option><option value="Kesehatan">Kesehatan</option>
           <option value="Hiburan">Hiburan</option><option value="Tagihan">Tagihan</option>
-          <option value="Gaji">Gaji</option><option value="Freelance">Freelance</option>
           <option value="Lainnya">Lainnya</option>
         </select>
       </div>
@@ -797,7 +794,7 @@ function renderTx(){
   const tOut=allTx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
   const net=tIn-tOut;
   setTxt('c-in',fmtS(tIn));setTxt('c-out',fmtS(tOut));setTxt('c-net',fmtS(net));
-  setSty('c-net','color',net>=0?'var(--acc)':'var(--red)');
+  setSty('c-net','color',net>=0?'var(--acc2)':'var(--red)');
   const tbody=el('tx-body'),emp=el('tx-empty');
   if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
   emp.style.display='none';
@@ -824,16 +821,27 @@ function setType(t){
 }
 function openModal(id){
   editId=id||null;
-  el('modal-h').textContent=id?'Edit Transaksi':'Transaksi Baru';
-  if(id){const tx=DB.transactions.find(t=>t.id===id);if(!tx)return;setType(tx.type);el('m-desc').value=tx.desc;el('m-amt').value=tx.amount.toLocaleString('id-ID');el('m-bank').value=tx.bank;el('m-cat').value=tx.cat||'Lainnya';el('m-date').value=tx.date;}
-  else{setType('expense');el('m-desc').value='';el('m-amt').value='';el('m-date').value=today();}
+  el('modal-h').textContent=id?'Edit Pengeluaran':'Tambah Pengeluaran';
+  if(id){
+    const tx=DB.transactions.find(t=>t.id===id);if(!tx)return;
+    el('m-desc').value=tx.desc;
+    el('m-amt').value=tx.amount.toLocaleString('id-ID');
+    el('m-bank').value=tx.bank;
+    el('m-cat').value=tx.cat||'Lainnya';
+    el('m-date').value=tx.date;
+  } else {
+    el('m-desc').value='';el('m-amt').value='';
+    el('m-date').value=today();
+    el('m-bank').value='SeaBank';
+    el('m-cat').value='Makanan';
+  }
   el('modal-bg').classList.add('open');
 }
 function closeModal(){el('modal-bg').classList.remove('open');}
 function closeOut(e){if(e.target.id==='modal-bg')closeModal();}
 
 async function saveTx(){
-  const type=mType,bank=el('m-bank').value,desc=el('m-desc').value.trim();
+  const bank=el('m-bank').value,desc=el('m-desc').value.trim();
   const amount=parseN(el('m-amt').value),date=el('m-date').value,cat=el('m-cat').value;
   if(!desc||!amount||!date){alert('Isi semua field');return;}
   closeModal();showLoad();
@@ -870,7 +878,7 @@ function renderAll(){
   setTxt('kpi-expense',expIni>0?fmtS(expIni):'—');
   const sav=gajiIni-expIni;
   setTxt('kpi-savings',gajiIni>0?fmtS(sav):'—');
-  setSty('kpi-savings','color',sav>=0?'var(--tx)':'var(--red)');
+  setSty('kpi-savings','color',sav>=0?'var(--acc2)':'var(--red)');
   setTxt('rate-num',gajiIni>0?rate+'%':'—');
   setSty('rate-fill','width',rate+'%');
   const circ=119.38,rc=el('rate-circle');
