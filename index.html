@@ -567,6 +567,7 @@ body {
         </div>
 
         <div class="result-card" id="alloc-result" style="display:none">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:6px">Total Dialokasikan</div>
           <div class="result-amount" id="res-total">—</div>
           <div class="result-sub" id="res-sub">—</div>
           <div class="bk-cards">
@@ -867,22 +868,28 @@ function showResult(ym){
   const s=DB.salaries[ym];
   if(!s)return;
   const sav=s.bca+s.bni+s.sea;
+  // Persentase dari total ditabung
   const bp=sav>0?Math.round(s.bca/sav*100):0;
   const np=sav>0?Math.round(s.bni/sav*100):0;
   const sp=sav>0?Math.round(s.sea/sav*100):0;
+  // Persentase dari gaji jika ada
+  const bcaPGaji=s.salary>0?Math.round(s.bca/s.salary*100):bp;
+  const bniPGaji=s.salary>0?Math.round(s.bni/s.salary*100):np;
+  const seaPGaji=s.salary>0?Math.round(s.sea/s.salary*100):sp;
   const rateStr=s.salary>0?Math.round(sav/s.salary*100)+'% savings rate':'';
   setTxt('res-total',fmt(sav));
   setTxt('res-sub',ymLbl(ym)+(rateStr?' · '+rateStr:''));
-  setTxt('r-bca',fmt(s.bca));setTxt('r-bca-p',bp+'%');
-  setTxt('r-bni',fmt(s.bni));setTxt('r-bni-p',np+'%');
-  setTxt('r-sea',fmt(s.sea));setTxt('r-sea-p',sp+'%');
+  setTxt('r-bca',fmt(s.bca));setTxt('r-bca-p',bcaPGaji+'% dari gaji');
+  setTxt('r-bni',fmt(s.bni));setTxt('r-bni-p',bniPGaji+'% dari gaji');
+  setTxt('r-sea',fmt(s.sea));setTxt('r-sea-p',seaPGaji+'% dari gaji');
   ['bca','bni','sea'].forEach(b=>{
-    const p=b==='bca'?bp:b==='bni'?np:sp,a=b==='bca'?s.bca:b==='bni'?s.bni:s.sea;
-    setSty('bb-'+b,'width',p+'%');setTxt('bb-'+b+'-v',p+'% · '+fmtS(a));
+    const p=b==='bca'?bp:b==='bni'?np:sp;
+    const a=b==='bca'?s.bca:b==='bni'?s.bni:s.sea;
+    setSty('bb-'+b,'width',p+'%');
+    setTxt('bb-'+b+'-v',p+'% · '+fmt(a));
   });
   el('alloc-result').style.display='block';
   el('alloc-placeholder').style.display='none';
-  // highlight active row
   document.querySelectorAll('#sal-body tr').forEach(r=>r.classList.remove('active-row'));
   const row=document.querySelector(`#sal-body tr[data-ym="${ym}"]`);
   if(row)row.classList.add('active-row');
@@ -924,9 +931,9 @@ function renderSalaryHistory(){
     return`<tr data-ym="${ym}" onclick="showResult('${ym}')" style="cursor:pointer">
       <td style="color:var(--tx2)">${ymLbl(ym)}</td>
       <td style="color:var(--tx2)">${s.salary?fmtS(s.salary):'—'}</td>
-      <td style="color:var(--bca)">${fmtS(s.bca)}</td>
-      <td style="color:var(--bni)">${fmtS(s.bni)}</td>
-      <td style="color:var(--sea)">${fmtS(s.sea)}</td>
+      <td style="color:var(--bca)">${fmt(s.bca)}</td>
+      <td style="color:var(--bni)">${fmt(s.bni)}</td>
+      <td style="color:var(--sea)">${fmt(s.sea)}</td>
       <td><button class="del-btn" onclick="event.stopPropagation();delSalary('${s.id}','${ym}')">×</button></td>
     </tr>`;
   }).join('');
@@ -1148,9 +1155,9 @@ function renderAll(){
     const nkP=alTot>0?Math.round(s.bni/alTot*100):0;
     const skP=alTot>0?Math.round(s.sea/alTot*100):0;
     el('alloc-bars').innerHTML=[
-      ['BCA',bkP,fmtS(s.bca),'var(--bca)'],
-      ['BNI',nkP,fmtS(s.bni),'var(--bni)'],
-      ['SeaBank',skP,fmtS(s.sea),'var(--sea)']
+      ['BCA',bkP,fmt(s.bca),'var(--bca)'],
+      ['BNI',nkP,fmt(s.bni),'var(--bni)'],
+      ['SeaBank',skP,fmt(s.sea),'var(--sea)']
     ].map(([n,p,a,c])=>`
       <div class="abar">
         <div class="abar-top">
