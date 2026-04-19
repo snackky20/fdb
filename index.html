@@ -818,7 +818,11 @@ async function syncNow(){
     DB.salaries={};
     (d.salaries||[]).forEach(s=>{DB.salaries[s.ym]={...s,salary:Number(s.salary)||0,bca:Number(s.bca)||0,bni:Number(s.bni)||0,sea:Number(s.sea)||0};});
     DB.balances={BCA:0,BNI:0,SeaBank:0,...d.balances};
-    DB.riel=(d.riel||[]).map(t=>({...t,amount:Number(t.amount)||0}));
+    DB.riel=(d.riel||[]).map(t=>({
+      ...t,
+      amount:Number(t.amount)||0,
+      type:(String(t.type||'expense').trim().toLowerCase()||'expense')
+    }));
     setSync('ok','synced · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
     renderAll();
   }catch(e){setSync('err','error: '+e.message);}
@@ -1292,7 +1296,10 @@ async function saveRiel(){
 
 async function delRiel(id){
   if(!confirm('Hapus?'))return;showLoad();
-  try{await api({action:'deleteRiel',id});await syncNow();}catch(e){setSync('err','error: '+e.message);}
+  try{
+    await api({action:'deleteRiel',id:String(id)});
+    await syncNow();
+  }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
 
@@ -1322,14 +1329,15 @@ function renderRiel(){
   emp.style.display='none';
   tbody.innerHTML=txs.map(tx=>{
     const isIn=tx.type==='income';
+    const txid=String(tx.id);
     return`<tr>
       <td class="tx-date">${tx.date}</td>
       <td><div class="tx-desc">${tx.desc}</div></td>
       <td style="font-size:11px;color:var(--tx3)">${tx.cat||'—'}</td>
       <td style="font-family:var(--fmono);font-size:13px;color:${isIn?'var(--acc2)':'var(--red)'};text-align:right;white-space:nowrap">${isIn?'+':'-'}${fmtKHR(tx.amount)}</td>
       <td><div class="act">
-        <button class="act-btn" onclick="openRielModal('${tx.id}')">edit</button>
-        <button class="act-btn d" onclick="delRiel('${tx.id}')">del</button>
+        <button class="act-btn" onclick="openRielModal('${txid}')">edit</button>
+        <button class="act-btn d" onclick="delRiel('${txid}')">del</button>
       </div></td>
     </tr>`;
   }).join('');
