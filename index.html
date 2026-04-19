@@ -384,6 +384,7 @@ body {
   .bank-row { grid-template-columns: 1fr; gap: 8px; }
   .two-col { grid-template-columns: 1fr; }
   .alloc-layout { grid-template-columns: 1fr; }
+  #alloc-result, #alloc-placeholder { min-height: 0; }
   .proj-grid { grid-template-columns: 1fr 1fr; }
   .cata-kpi { grid-template-columns: 1fr 1fr 1fr; }
   .tx-scroll { overflow-x: auto; }
@@ -545,35 +546,26 @@ body {
 
     <!-- ══ ALOKASI ══ -->
     <div class="tab-pane" id="tab-alokasi">
-      <div class="alloc-layout">
-        <div>
-          <div class="form-card">
-            <div class="form-title">Alokasi Tabungan</div>
-            <div class="fg">
-              <label>Uang yang ditabung (Rp)</label>
-              <input type="text" id="sav-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
-            </div>
-            <div class="fg">
-              <label>Gaji bulan ini (Rp)</label>
-              <input type="text" id="gaji-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
-            </div>
-            <div class="fg">
-              <label>Bulan</label>
-              <input type="month" id="sav-mo">
-            </div>
-            <button class="btn-primary" onclick="hitungAlokasi()">Hitung</button>
+      <!-- Form + Result row -->
+      <div style="display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:16px;margin-bottom:16px">
+        <div class="form-card">
+          <div class="form-title">Alokasi Tabungan</div>
+          <div class="fg">
+            <label>Uang yang ditabung (Rp)</label>
+            <input type="text" id="sav-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
           </div>
-
-          <div class="hist-card" style="margin-top:12px">
-            <div class="empty" id="sal-emp" style="padding:24px">—</div>
-            <table class="htbl" id="sal-tbl" style="display:none">
-              <thead><tr><th>Bulan</th><th>Ditabung</th><th>BCA</th><th>BNI</th><th>SeaBank</th><th></th></tr></thead>
-              <tbody id="sal-body"></tbody>
-            </table>
+          <div class="fg">
+            <label>Gaji bulan ini (Rp)</label>
+            <input type="text" id="gaji-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
           </div>
+          <div class="fg">
+            <label>Bulan</label>
+            <input type="month" id="sav-mo">
+          </div>
+          <button class="btn-primary" onclick="hitungAlokasi()">Hitung</button>
         </div>
 
-        <div class="result-card" id="alloc-result">
+        <div class="result-card" id="alloc-result" style="display:none">
           <div class="result-amount" id="res-total">—</div>
           <div class="result-sub" id="res-sub">—</div>
           <div class="bk-cards">
@@ -581,12 +573,27 @@ body {
             <div class="bk bni"><div class="bk-left"><div class="bk-name">BNI</div><div class="bk-role">Dana Darurat</div></div><div class="bk-right"><div class="bk-amt" id="r-bni">—</div><div class="bk-pct" id="r-bni-p">—</div></div></div>
             <div class="bk sea"><div class="bk-left"><div class="bk-name">SeaBank</div><div class="bk-role">Harian</div></div><div class="bk-right"><div class="bk-amt" id="r-sea">—</div><div class="bk-pct" id="r-sea-p">—</div></div></div>
           </div>
-          <div>
+          <div style="margin-top:16px">
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bca)"></div>BCA</div><div class="abar-val" id="bb-bca-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bca" style="background:var(--bca);width:0%"></div></div></div>
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bni)"></div>BNI</div><div class="abar-val" id="bb-bni-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bni" style="background:var(--bni);width:0%"></div></div></div>
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--sea)"></div>SeaBank</div><div class="abar-val" id="bb-sea-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-sea" style="background:var(--sea);width:0%"></div></div></div>
           </div>
         </div>
+
+        <!-- Placeholder sebelum hitung -->
+        <div class="result-card" id="alloc-placeholder" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;min-height:200px">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--acc-d);display:flex;align-items:center;justify-content:center;font-size:20px">₹</div>
+          <div style="font-size:12px;color:var(--tx3)">Input nominal dan klik Hitung</div>
+        </div>
+      </div>
+
+      <!-- History full width -->
+      <div class="hist-card">
+        <div class="empty" id="sal-emp" style="padding:24px">—</div>
+        <table class="htbl" id="sal-tbl" style="display:none">
+          <thead><tr><th>Bulan</th><th>Ditabung</th><th>BCA</th><th>BNI</th><th>SeaBank</th><th></th></tr></thead>
+          <tbody id="sal-body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -863,7 +870,8 @@ async function hitungAlokasi(){
     const p=b==='bca'?bp:b==='bni'?np:sp,a=b==='bca'?bca:b==='bni'?bni:sea;
     setSty('bb-'+b,'width',p+'%');setTxt('bb-'+b+'-v',p+'% · '+fmtS(a));
   });
-  el('alloc-result').classList.add('show');
+  el('alloc-result').style.display='block';
+  el('alloc-placeholder').style.display='none';
 
   // Cek apakah bulan ini sudah pernah dialokasikan
   if(DB.salaries[ym]){
@@ -983,7 +991,7 @@ function renderExpTrend(){
 function setFilt(f,btn){txFilter=f;document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTx();}
 
 function renderTx(){
-  let txs=[...DB.transactions].sort((a,b)=>b.date.localeCompare(a.date));
+  let txs=[...DB.transactions].sort((a,b)=>b.date.localeCompare(a.date)||String(b.id).localeCompare(String(a.id)));
   if(txFilter==='income')txs=txs.filter(t=>t.type==='income');
   else if(txFilter==='expense')txs=txs.filter(t=>t.type==='expense');
   else if(['BCA','BNI','SeaBank'].includes(txFilter))txs=txs.filter(t=>t.bank===txFilter);
@@ -1308,7 +1316,7 @@ async function delRiel(id){
 }
 
 function renderRiel(){
-  let txs=[...DB.riel].sort((a,b)=>b.date.localeCompare(a.date));
+  let txs=[...DB.riel].sort((a,b)=>b.date.localeCompare(a.date)||String(b.id).localeCompare(String(a.id)));
 
   // Filter
   if(rielFilt==='income')txs=txs.filter(t=>t.type==='income');
