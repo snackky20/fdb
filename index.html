@@ -414,6 +414,7 @@ body {
       <button class="nav-tab active" onclick="switchTab('dashboard',this)">Dashboard</button>
       <button class="nav-tab" onclick="switchTab('alokasi',this)">Alokasi</button>
       <button class="nav-tab" onclick="switchTab('catatan',this)">Catatan</button>
+      <button class="nav-tab" onclick="switchTab('riel',this)">Riel (KHR)</button>
     </nav>
     <div class="nav-right">
       <div class="mono-chip" id="top-month">—</div>
@@ -593,6 +594,26 @@ body {
         <div class="ckpi"><div class="ckpi-label">Pengeluaran</div><div class="ckpi-value" id="c-out" style="color:var(--red)">—</div></div>
         <div class="ckpi"><div class="ckpi-label">Net</div><div class="ckpi-value" id="c-net" style="color:var(--acc2)">—</div></div>
       </div>
+
+      <!-- Expense breakdown chart -->
+      <div class="two-col" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+            <span>Pengeluaran per Kategori</span>
+            <select id="cat-month-filter" onchange="renderCatChart()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx2);font-size:11px;padding:3px 8px;outline:none;font-family:var(--fmono)"></select>
+          </div>
+          <div style="position:relative;height:180px">
+            <canvas id="cat-donut" role="img" aria-label="Pengeluaran per kategori">Breakdown kategori</canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Tren Pengeluaran 6 Bulan</div>
+          <div style="position:relative;height:180px">
+            <canvas id="exp-trend" role="img" aria-label="Tren pengeluaran">Tren pengeluaran</canvas>
+          </div>
+        </div>
+      </div>
+
       <div class="toolbar">
         <div class="ftabs">
           <button class="ftab on" onclick="setFilt('all',this)">Semua</button>
@@ -617,6 +638,37 @@ body {
         </div>
       </div>
     </div>
+
+    <!-- ══ RIEL (KHR) ══ -->
+    <div class="tab-pane" id="tab-riel">
+      <div class="cata-kpi">
+        <div class="ckpi"><div class="ckpi-label">Total Pengeluaran</div><div class="ckpi-value" id="r-total" style="color:var(--red)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Bulan Ini</div><div class="ckpi-value" id="r-month" style="color:var(--acc2)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Rata-rata / Hari</div><div class="ckpi-value" id="r-avg" style="color:var(--tx2)">—</div></div>
+      </div>
+      <div class="toolbar">
+        <div class="ftabs">
+          <button class="ftab on" onclick="setRielFilt('all',this)">Semua</button>
+          <button class="ftab" onclick="setRielFilt('Makanan',this)">Makanan</button>
+          <button class="ftab" onclick="setRielFilt('Transport',this)">Transport</button>
+          <button class="ftab" onclick="setRielFilt('Belanja',this)">Belanja</button>
+          <button class="ftab" onclick="setRielFilt('Lainnya',this)">Lainnya</button>
+        </div>
+        <button class="add-btn" onclick="openRielModal()">+ Pengeluaran</button>
+      </div>
+      <div class="tx-card">
+        <div class="tx-scroll">
+          <table class="tx-tbl">
+            <thead><tr>
+              <th>Tanggal</th><th>Keterangan</th><th>Kategori</th>
+              <th style="text-align:right">Jumlah (KHR ៛)</th><th></th>
+            </tr></thead>
+            <tbody id="riel-body"></tbody>
+          </table>
+          <div class="empty" id="riel-empty">—</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- BOTTOM NAV -->
@@ -634,8 +686,36 @@ body {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         Catatan
       </button>
+      <button class="bot-tab" onclick="switchTab('riel',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 8h4a2 2 0 010 4H9v4"/><path d="M9 14h5"/></svg>
+        Riel
+      </button>
     </div>
   </nav>
+</div>
+
+<!-- RIEL MODAL -->
+<div class="modal-bg" id="riel-modal-bg" onclick="closeRielOut(event)">
+  <div class="modal">
+    <div class="modal-title">Pengeluaran Riel</div>
+    <div class="mfg"><label>Keterangan</label><input type="text" id="rm-desc"></div>
+    <div class="m2">
+      <div class="mfg"><label>Jumlah (KHR ៛)</label><input type="text" id="rm-amt" oninput="fmtRiel(this)" inputmode="numeric"></div>
+      <div class="mfg"><label>Tanggal</label><input type="date" id="rm-date"></div>
+    </div>
+    <div class="mfg"><label>Kategori</label>
+      <select id="rm-cat">
+        <option value="Makanan">Makanan</option>
+        <option value="Transport">Transport</option>
+        <option value="Belanja">Belanja</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeRielModal()">Batal</button>
+      <button class="btn-save" onclick="saveRiel()">Simpan</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -673,7 +753,7 @@ const BNI_MAX=25000000,SEA_FIXED=1500000,BCA_TARGET=150000000,DEADLINE='2027-10'
 const MNS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 const TAG={BCA:'tag-bca',BNI:'tag-bni',SeaBank:'tag-sea',Cash:'tag-cash'};
 
-let DB={transactions:[],salaries:{},balances:{BCA:0,BNI:0,SeaBank:0}};
+let DB={transactions:[],salaries:{},balances:{BCA:0,BNI:0,SeaBank:0},riel:[]};
 let txFilter='all',editId=null,mType='expense';
 
 const fmt  =n=>'Rp '+Math.round(n).toLocaleString('id-ID');
@@ -705,6 +785,7 @@ async function syncNow(){
     DB.salaries={};
     (d.salaries||[]).forEach(s=>{DB.salaries[s.ym]={...s,salary:Number(s.salary)||0,bca:Number(s.bca)||0,bni:Number(s.bni)||0,sea:Number(s.sea)||0};});
     DB.balances={BCA:0,BNI:0,SeaBank:0,...d.balances};
+    DB.riel=(d.riel||[]).map(t=>({...t,amount:Number(t.amount)||0}));
     setSync('ok','synced · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
     renderAll();
   }catch(e){setSync('err','error: '+e.message);}
@@ -717,7 +798,8 @@ function switchTab(id,btn){
   btn.classList.add('active');
   const sib=btn.classList.contains('nav-tab')?document.querySelector('.bot-tab[onclick*="'+id+'"]'):document.querySelector('.nav-tab[onclick*="'+id+'"]');
   if(sib)sib.classList.add('active');
-  if(id==='catatan')renderTx();
+  if(id==='catatan'){renderTx();populateCatMonthFilter();renderCatChart();renderExpTrend();}
+  if(id==='riel')renderRiel();
 }
 
 // ── ALOKASI ──
@@ -783,6 +865,85 @@ async function delSalary(id,ym){
 }
 
 // ── TRANSAKSI ──
+// ── EXPENSE CHARTS ──
+let catDonutC=null, expTrendC=null;
+const CAT_COLORS={
+  Makanan:'#f77f4f', Transport:'#4f8ef7', Belanja:'#9b7fff',
+  Kesehatan:'#4fcf9a', Hiburan:'#f7c94f', Tagihan:'#f75f5f', Lainnya:'#a0a0a8'
+};
+
+function populateCatMonthFilter(){
+  const sel=el('cat-month-filter');
+  if(!sel)return;
+  const months=new Set(DB.transactions.filter(t=>t.type==='expense').map(t=>t.date.slice(0,7)));
+  const sorted=[...months].sort().reverse();
+  const curVal=sel.value||ymNow();
+  sel.innerHTML=sorted.map(m=>`<option value="${m}"${m===curVal?' selected':''}>${ymLbl(m)}</option>`).join('');
+  if(!sel.value&&sorted.length)sel.value=sorted[0];
+}
+
+function renderCatChart(){
+  const sel=el('cat-month-filter');
+  const ym=sel?sel.value:ymNow();
+  const txs=DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(ym+'-'));
+
+  // Group by category
+  const grouped={};
+  txs.forEach(t=>{const c=t.cat||'Lainnya';grouped[c]=(grouped[c]||0)+t.amount;});
+  const entries=Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
+  const labels=entries.map(e=>e[0]);
+  const data=entries.map(e=>e[1]);
+  const colors=labels.map(l=>CAT_COLORS[l]||'#a0a0a8');
+
+  const canvas=el('cat-donut');
+  if(!canvas)return;
+  if(catDonutC){catDonutC.data.labels=labels;catDonutC.data.datasets[0].data=data;catDonutC.data.datasets[0].backgroundColor=colors;catDonutC.update();return;}
+  catDonutC=new Chart(canvas,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'60%',
+      plugins:{
+        legend:{
+          display:true,position:'right',
+          labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10,
+            formatter:(v,ctx)=>v+' · '+fmtS(ctx.dataset.data[ctx.dataIndex])}
+        },
+        tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}
+      }
+    }
+  });
+}
+
+function renderExpTrend(){
+  const now=new Date();const mos=[],lbls=[];
+  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));lbls.push(MNS[d.getMonth()]);}
+  const cats=['Makanan','Transport','Belanja','Kesehatan','Hiburan','Tagihan','Lainnya'];
+  const datasets=cats.map(cat=>({
+    label:cat,
+    data:mos.map(m=>DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(m+'-')&&(t.cat||'Lainnya')===cat).reduce((s,t)=>s+t.amount,0)),
+    backgroundColor:CAT_COLORS[cat]||'#a0a0a8',
+    borderRadius:3,borderSkipped:false,
+  }));
+  // filter out all-zero datasets
+  const active=datasets.filter(d=>d.data.some(v=>v>0));
+  const canvas=el('exp-trend');
+  if(!canvas)return;
+  if(expTrendC){expTrendC.data.labels=lbls;expTrendC.data.datasets=active;expTrendC.update();return;}
+  expTrendC=new Chart(canvas,{
+    type:'bar',
+    data:{labels:lbls,datasets:active},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtS(c.parsed.y)}}},
+      scales:{
+        x:{stacked:true,grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},
+        y:{stacked:true,grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtS(v)},border:{display:false}}
+      }
+    }
+  });
+}
+
 function setFilt(f,btn){txFilter=f;document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTx();}
 
 function renderTx(){
@@ -796,6 +957,9 @@ function renderTx(){
   const net=tIn-tOut;
   setTxt('c-in',fmtS(tIn));setTxt('c-out',fmtS(tOut));setTxt('c-net',fmtS(net));
   setSty('c-net','color',net>=0?'var(--acc2)':'var(--red)');
+  populateCatMonthFilter();
+  renderCatChart();
+  renderExpTrend();
   const tbody=el('tx-body'),emp=el('tx-empty');
   if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
   emp.style.display='none';
@@ -898,24 +1062,24 @@ function renderAll(){
     const s=DB.salaries[latYM];
     setTxt('d-bca-mo','+'+fmtS(s.bca)+'/alokasi');
     setTxt('d-bni-mo','+'+fmtS(s.bni)+'/alokasi');
+    // Alloc bars — pakai alokasi terakhir (konsisten sama label bank card)
+    const alTot=s.bca+s.bni+s.sea;
+    const bkP=alTot>0?Math.round(s.bca/alTot*100):0;
+    const nkP=alTot>0?Math.round(s.bni/alTot*100):0;
+    const skP=alTot>0?Math.round(s.sea/alTot*100):0;
+    el('alloc-bars').innerHTML=[
+      ['BCA',bkP,fmtS(s.bca),'var(--bca)'],
+      ['BNI',nkP,fmtS(s.bni),'var(--bni)'],
+      ['SeaBank',skP,fmtS(s.sea),'var(--sea)']
+    ].map(([n,p,a,c])=>`
+      <div class="abar">
+        <div class="abar-top">
+          <div class="abar-name"><div class="adot" style="background:${c}"></div>${n}</div>
+          <div class="abar-val" style="color:${c}">${p}% · ${a}</div>
+        </div>
+        <div class="bar-t"><div class="bar-f" style="background:${c};width:${p}%"></div></div>
+      </div>`).join('');
   }
-  // Alloc bars — pakai saldo aktual dari DB.balances
-  const tot=bca+bni+sea;
-  const bkP=tot>0?Math.round(bca/tot*100):0;
-  const nkP=tot>0?Math.round(bni/tot*100):0;
-  const skP=tot>0?Math.round(sea/tot*100):0;
-  el('alloc-bars').innerHTML=tot>0?[
-    ['BCA',bkP,fmtS(bca),'var(--bca)'],
-    ['BNI',nkP,fmtS(bni),'var(--bni)'],
-    ['SeaBank',skP,fmtS(sea),'var(--sea)']
-  ].map(([n,p,a,c])=>`
-    <div class="abar">
-      <div class="abar-top">
-        <div class="abar-name"><div class="adot" style="background:${c}"></div>${n}</div>
-        <div class="abar-val" style="color:${c}">${p}% · ${a}</div>
-      </div>
-      <div class="bar-t"><div class="bar-f" style="background:${c};width:${p}%"></div></div>
-    </div>`).join(''):'';
 
   // Donut
   const dd=[bca,bni,sea].some(v=>v>0)?[bca,bni,sea]:[1,1,1];
@@ -973,12 +1137,90 @@ async function confirmReset(){
   if(!confirm('Reset semua data?'))return;
   if(!confirm('Yakin? Tidak bisa dibatalkan.'))return;
   showLoad();
-  try{await api({action:'resetAll'});if(donutC){donutC.destroy();donutC=null;}if(trendC){trendC.destroy();trendC=null;}await syncNow();}catch(e){setSync('err','error: '+e.message);}
+  try{await api({action:'resetAll'});if(donutC){donutC.destroy();donutC=null;}if(trendC){trendC.destroy();trendC=null;}if(catDonutC){catDonutC.destroy();catDonutC=null;}if(expTrendC){expTrendC.destroy();expTrendC=null;}await syncNow();}catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
 
 function showLoad(){el('loading').style.display='flex';}
 function hideLoad(){el('loading').style.display='none';}
+
+// ── RIEL (KHR) ──
+let rielFilt='all', rielEditId=null;
+const fmtKHR=n=>Math.round(n).toLocaleString('km-KH')+'៛';
+const parseKHR=s=>parseInt((s||'').replace(/[^\d]/g,''))||0;
+function fmtRiel(inp){const v=inp.value.replace(/[^\d]/g,'');inp.value=v?Number(v).toLocaleString('km-KH'):'';}
+
+function setRielFilt(f,btn){
+  rielFilt=f;
+  document.querySelectorAll('#tab-riel .ftab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');renderRiel();
+}
+function openRielModal(id){
+  rielEditId=id||null;
+  if(id){
+    const tx=DB.riel.find(t=>t.id===id);if(!tx)return;
+    el('rm-desc').value=tx.desc;
+    el('rm-amt').value=tx.amount.toLocaleString('km-KH');
+    el('rm-cat').value=tx.cat||'Lainnya';
+    el('rm-date').value=tx.date;
+  }else{
+    el('rm-desc').value='';el('rm-amt').value='';
+    el('rm-date').value=today();el('rm-cat').value='Makanan';
+  }
+  el('riel-modal-bg').classList.add('open');
+}
+function closeRielModal(){el('riel-modal-bg').classList.remove('open');}
+function closeRielOut(e){if(e.target.id==='riel-modal-bg')closeRielModal();}
+
+async function saveRiel(){
+  const desc=el('rm-desc').value.trim(),amount=parseKHR(el('rm-amt').value);
+  const date=el('rm-date').value,cat=el('rm-cat').value;
+  if(!desc||!amount||!date){alert('Isi semua field');return;}
+  closeRielModal();showLoad();
+  try{
+    if(rielEditId) await api({action:'editRiel',id:rielEditId,desc,amount,date,cat});
+    else await api({action:'addRiel',id:uid(),desc,amount,date,cat});
+    await syncNow();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+async function delRiel(id){
+  if(!confirm('Hapus?'))return;showLoad();
+  try{await api({action:'deleteRiel',id});await syncNow();}catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+function renderRiel(){
+  let txs=[...DB.riel].sort((a,b)=>b.date.localeCompare(a.date));
+  if(rielFilt!=='all')txs=txs.filter(t=>t.cat===rielFilt);
+
+  // KPIs
+  const allRiel=DB.riel;
+  const totalAll=allRiel.reduce((s,t)=>s+t.amount,0);
+  const ym=ymNow();
+  const thisMonth=allRiel.filter(t=>t.date.startsWith(ym+'-'));
+  const totalMonth=thisMonth.reduce((s,t)=>s+t.amount,0);
+  // avg per day this month
+  const daysInMonth=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
+  const avg=Math.round(totalMonth/daysInMonth);
+  setTxt('r-total',fmtKHR(totalAll));
+  setTxt('r-month',fmtKHR(totalMonth));
+  setTxt('r-avg',fmtKHR(avg));
+
+  const tbody=el('riel-body'),emp=el('riel-empty');
+  if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  tbody.innerHTML=txs.map(tx=>`
+    <tr>
+      <td class="tx-date">${tx.date}</td>
+      <td><div class="tx-desc">${tx.desc}</div></td>
+      <td style="font-size:11px;color:var(--tx3)">${tx.cat||'—'}</td>
+      <td style="font-family:var(--fmono);font-size:13px;color:var(--red);text-align:right;white-space:nowrap">${fmtKHR(tx.amount)}</td>
+      <td><div class="act">
+        <button class="act-btn" onclick="openRielModal('${tx.id}')">edit</button>
+        <button class="act-btn d" onclick="delRiel('${tx.id}')">del</button>
+      </div></td>
+    </tr>`).join('');
+}
 
 el('sav-mo').value=ymNow();
 el('m-date').value=today();
