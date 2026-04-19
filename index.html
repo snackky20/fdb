@@ -623,7 +623,7 @@ body {
           <button class="ftab" onclick="setFilt('BNI',this)">BNI</button>
           <button class="ftab" onclick="setFilt('SeaBank',this)">SeaBank</button>
         </div>
-        <button class="add-btn" onclick="openModal()">+ Pengeluaran</button>
+        <button class="add-btn" onclick="openModal()">+ Transaksi</button>
       </div>
       <div class="tx-card">
         <div class="tx-scroll">
@@ -642,19 +642,40 @@ body {
     <!-- ══ RIEL (KHR) ══ -->
     <div class="tab-pane" id="tab-riel">
       <div class="cata-kpi">
-        <div class="ckpi"><div class="ckpi-label">Total Pengeluaran</div><div class="ckpi-value" id="r-total" style="color:var(--red)">—</div></div>
-        <div class="ckpi"><div class="ckpi-label">Bulan Ini</div><div class="ckpi-value" id="r-month" style="color:var(--acc2)">—</div></div>
-        <div class="ckpi"><div class="ckpi-label">Rata-rata / Hari</div><div class="ckpi-value" id="r-avg" style="color:var(--tx2)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Uang Masuk</div><div class="ckpi-value" id="r-in" style="color:var(--acc2)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Pengeluaran</div><div class="ckpi-value" id="r-out" style="color:var(--red)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Sisa</div><div class="ckpi-value" id="r-sisa" style="color:var(--tx2)">—</div></div>
       </div>
+
+      <!-- Riel Charts -->
+      <div class="two-col" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+            <span>Pengeluaran per Kategori</span>
+            <select id="riel-month-filter" onchange="renderRielCatChart()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx2);font-size:11px;padding:3px 8px;outline:none;font-family:var(--fmono)"></select>
+          </div>
+          <div style="position:relative;height:180px">
+            <canvas id="riel-donut" role="img" aria-label="Pengeluaran Riel per kategori">Breakdown</canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Tren 6 Bulan (KHR ៛)</div>
+          <div style="position:relative;height:180px">
+            <canvas id="riel-trend" role="img" aria-label="Tren Riel">Tren</canvas>
+          </div>
+        </div>
+      </div>
+
       <div class="toolbar">
         <div class="ftabs">
           <button class="ftab on" onclick="setRielFilt('all',this)">Semua</button>
+          <button class="ftab" onclick="setRielFilt('income',this)">Masuk</button>
+          <button class="ftab" onclick="setRielFilt('expense',this)">Keluar</button>
           <button class="ftab" onclick="setRielFilt('Makanan',this)">Makanan</button>
           <button class="ftab" onclick="setRielFilt('Transport',this)">Transport</button>
           <button class="ftab" onclick="setRielFilt('Belanja',this)">Belanja</button>
-          <button class="ftab" onclick="setRielFilt('Lainnya',this)">Lainnya</button>
         </div>
-        <button class="add-btn" onclick="openRielModal()">+ Pengeluaran</button>
+        <button class="add-btn" onclick="openRielModal()">+ Tambah</button>
       </div>
       <div class="tx-card">
         <div class="tx-scroll">
@@ -697,7 +718,11 @@ body {
 <!-- RIEL MODAL -->
 <div class="modal-bg" id="riel-modal-bg" onclick="closeRielOut(event)">
   <div class="modal">
-    <div class="modal-title">Pengeluaran Riel</div>
+    <div class="modal-title" id="rm-h">Transaksi Riel</div>
+    <div class="type-row">
+      <div class="type-btn" id="rm-opt-in" onclick="setRielType('income')">+ Uang Masuk</div>
+      <div class="type-btn s-out" id="rm-opt-out" onclick="setRielType('expense')">− Pengeluaran</div>
+    </div>
     <div class="mfg"><label>Keterangan</label><input type="text" id="rm-desc"></div>
     <div class="m2">
       <div class="mfg"><label>Jumlah (KHR ៛)</label><input type="text" id="rm-amt" oninput="fmtRiel(this)" inputmode="numeric"></div>
@@ -705,6 +730,7 @@ body {
     </div>
     <div class="mfg"><label>Kategori</label>
       <select id="rm-cat">
+        <option value="Uang Masuk">Uang Masuk</option>
         <option value="Makanan">Makanan</option>
         <option value="Transport">Transport</option>
         <option value="Belanja">Belanja</option>
@@ -721,7 +747,11 @@ body {
 <!-- MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="closeOut(event)">
   <div class="modal">
-    <div class="modal-title" id="modal-h">Tambah Pengeluaran</div>
+    <div class="modal-title" id="modal-h">Tambah Transaksi</div>
+    <div class="type-row">
+      <div class="type-btn" id="opt-in" onclick="setType('income')">+ Pemasukan</div>
+      <div class="type-btn s-out" id="opt-out" onclick="setType('expense')">− Pengeluaran</div>
+    </div>
     <div class="mfg"><label>Keterangan</label><input type="text" id="m-desc"></div>
     <div class="m2">
       <div class="mfg"><label>Jumlah (Rp)</label><input type="text" id="m-amt" oninput="fmtF(this)" inputmode="numeric"></div>
@@ -733,10 +763,7 @@ body {
       </div>
       <div class="mfg"><label>Kategori</label>
         <select id="m-cat">
-          <option value="Makanan">Makanan</option><option value="Transport">Transport</option>
-          <option value="Belanja">Belanja</option><option value="Kesehatan">Kesehatan</option>
-          <option value="Hiburan">Hiburan</option><option value="Tagihan">Tagihan</option>
-          <option value="Lainnya">Lainnya</option>
+          <!-- populated dynamically by setType() -->
         </select>
       </div>
     </div>
@@ -799,7 +826,7 @@ function switchTab(id,btn){
   const sib=btn.classList.contains('nav-tab')?document.querySelector('.bot-tab[onclick*="'+id+'"]'):document.querySelector('.nav-tab[onclick*="'+id+'"]');
   if(sib)sib.classList.add('active');
   if(id==='catatan'){renderTx();populateCatMonthFilter();renderCatChart();renderExpTrend();}
-  if(id==='riel')renderRiel();
+  if(id==='riel'){renderRiel();populateRielMonthFilter();renderRielCatChart();renderRielTrend();}
 }
 
 // ── ALOKASI ──
@@ -977,28 +1004,36 @@ function renderTx(){
     </tr>`).join('');
 }
 
+const CATS_IN  = ['Gaji','Bonus','Uang Arisan','Bayar Hutang','Lainnya'];
+const CATS_OUT = ['Tagihan','Bayar Arisan','Keluarga','Bayar Hutang','Beli Riel','Lainnya'];
+
 function setType(t){
   mType=t;
   el('opt-in').className='type-btn'+(t==='income'?' s-in':'');
   el('opt-out').className='type-btn'+(t==='expense'?' s-out':'');
-  el('m-cat').value=t==='income'?'Gaji':'Makanan';
+  const cats=t==='income'?CATS_IN:CATS_OUT;
+  el('m-cat').innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
   el('m-bank').value=t==='income'?'BCA':'SeaBank';
 }
 function openModal(id){
   editId=id||null;
-  el('modal-h').textContent=id?'Edit Pengeluaran':'Tambah Pengeluaran';
+  el('modal-h').textContent=id?'Edit Transaksi':'Tambah Transaksi';
   if(id){
     const tx=DB.transactions.find(t=>t.id===id);if(!tx)return;
+    setType(tx.type);
     el('m-desc').value=tx.desc;
     el('m-amt').value=tx.amount.toLocaleString('id-ID');
     el('m-bank').value=tx.bank;
+    // add the saved cat if not in list
+    const cats=tx.type==='income'?CATS_IN:CATS_OUT;
+    if(!cats.includes(tx.cat)){el('m-cat').innerHTML+=`<option value="${tx.cat}">${tx.cat}</option>`;}
     el('m-cat').value=tx.cat||'Lainnya';
     el('m-date').value=tx.date;
-  } else {
+  }else{
+    setType('expense');
     el('m-desc').value='';el('m-amt').value='';
     el('m-date').value=today();
     el('m-bank').value='SeaBank';
-    el('m-cat').value='Makanan';
   }
   el('modal-bg').classList.add('open');
 }
@@ -1137,7 +1172,7 @@ async function confirmReset(){
   if(!confirm('Reset semua data?'))return;
   if(!confirm('Yakin? Tidak bisa dibatalkan.'))return;
   showLoad();
-  try{await api({action:'resetAll'});if(donutC){donutC.destroy();donutC=null;}if(trendC){trendC.destroy();trendC=null;}if(catDonutC){catDonutC.destroy();catDonutC=null;}if(expTrendC){expTrendC.destroy();expTrendC=null;}await syncNow();}catch(e){setSync('err','error: '+e.message);}
+  try{await api({action:'resetAll'});if(donutC){donutC.destroy();donutC=null;}if(trendC){trendC.destroy();trendC=null;}if(catDonutC){catDonutC.destroy();catDonutC=null;}if(expTrendC){expTrendC.destroy();expTrendC=null;}if(rielDonutC){rielDonutC.destroy();rielDonutC=null;}if(rielTrendC){rielTrendC.destroy();rielTrendC=null;}await syncNow();}catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
 
@@ -1145,25 +1180,80 @@ function showLoad(){el('loading').style.display='flex';}
 function hideLoad(){el('loading').style.display='none';}
 
 // ── RIEL (KHR) ──
-let rielFilt='all', rielEditId=null;
+let rielFilt='all', rielEditId=null, rielType='expense';
 const fmtKHR=n=>Math.round(n).toLocaleString('km-KH')+'៛';
 const parseKHR=s=>parseInt((s||'').replace(/[^\d]/g,''))||0;
 function fmtRiel(inp){const v=inp.value.replace(/[^\d]/g,'');inp.value=v?Number(v).toLocaleString('km-KH'):'';}
+
+const RIEL_CAT_COLORS={
+  Makanan:'#f77f4f',Transport:'#4f8ef7',Belanja:'#9b7fff',
+  Tagihan:'#f75f5f','Bayar Arisan':'#4fcf9a',Keluarga:'#f7c94f',
+  'Beli Riel':'#fb7185',Lainnya:'#a0a0a8'
+};
+
+let rielDonutC=null, rielTrendC=null;
+
+function populateRielMonthFilter(){
+  const sel=el('riel-month-filter');if(!sel)return;
+  const months=new Set(DB.riel.filter(t=>t.type==='expense'||!t.type).map(t=>t.date.slice(0,7)));
+  const sorted=[...months].sort().reverse();
+  const cur=sel.value||ymNow();
+  sel.innerHTML=sorted.map(m=>`<option value="${m}"${m===cur?' selected':''}>${ymLbl(m)}</option>`).join('');
+  if(!sel.value&&sorted.length)sel.value=sorted[0];
+}
+
+function renderRielCatChart(){
+  const sel=el('riel-month-filter');
+  const ym=sel?sel.value:ymNow();
+  const txs=DB.riel.filter(t=>(t.type==='expense'||!t.type)&&t.date.startsWith(ym+'-'));
+  const grouped={};
+  txs.forEach(t=>{const c=t.cat||'Lainnya';grouped[c]=(grouped[c]||0)+t.amount;});
+  const entries=Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
+  const labels=entries.map(e=>e[0]),data=entries.map(e=>e[1]);
+  const colors=labels.map(l=>RIEL_CAT_COLORS[l]||'#a0a0a8');
+  const canvas=el('riel-donut');if(!canvas)return;
+  if(rielDonutC){rielDonutC.data.labels=labels;rielDonutC.data.datasets[0].data=data;rielDonutC.data.datasets[0].backgroundColor=colors;rielDonutC.update();return;}
+  rielDonutC=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{color:'#a0a0a8',font:{size:10,family:'Geist Mono'},boxWidth:8,padding:10}},tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}}}});
+}
+
+function renderRielTrend(){
+  const now=new Date();const mos=[],lbls=[];
+  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));lbls.push(MNS[d.getMonth()]);}
+  const inData=mos.map(m=>DB.riel.filter(t=>t.type==='income'&&t.date.startsWith(m+'-')).reduce((s,t)=>s+t.amount,0));
+  const outData=mos.map(m=>DB.riel.filter(t=>(t.type==='expense'||!t.type)&&t.date.startsWith(m+'-')).reduce((s,t)=>s+t.amount,0));
+  const canvas=el('riel-trend');if(!canvas)return;
+  if(rielTrendC){rielTrendC.data.labels=lbls;rielTrendC.data.datasets[0].data=inData;rielTrendC.data.datasets[1].data=outData;rielTrendC.update();return;}
+  rielTrendC=new Chart(canvas,{type:'bar',data:{labels:lbls,datasets:[
+    {label:'Masuk',data:inData,backgroundColor:'rgba(155,127,255,.6)',borderRadius:3,borderSkipped:false},
+    {label:'Keluar',data:outData,backgroundColor:'rgba(247,95,95,.6)',borderRadius:3,borderSkipped:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtKHR(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtKHR(v)},border:{display:false}}}}});
+}
+
+function setRielType(t){
+  rielType=t;
+  el('rm-opt-in').className='type-btn'+(t==='income'?' s-in':'');
+  el('rm-opt-out').className='type-btn'+(t==='expense'?' s-out':'');
+  el('rm-cat').value=t==='income'?'Uang Masuk':'Makanan';
+}
 
 function setRielFilt(f,btn){
   rielFilt=f;
   document.querySelectorAll('#tab-riel .ftab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');renderRiel();
 }
+
 function openRielModal(id){
   rielEditId=id||null;
+  el('rm-h').textContent=id?'Edit Transaksi Riel':'Transaksi Riel';
   if(id){
     const tx=DB.riel.find(t=>t.id===id);if(!tx)return;
+    setRielType(tx.type||'expense');
     el('rm-desc').value=tx.desc;
     el('rm-amt').value=tx.amount.toLocaleString('km-KH');
     el('rm-cat').value=tx.cat||'Lainnya';
     el('rm-date').value=tx.date;
   }else{
+    setRielType('expense');
     el('rm-desc').value='';el('rm-amt').value='';
     el('rm-date').value=today();el('rm-cat').value='Makanan';
   }
@@ -1174,52 +1264,60 @@ function closeRielOut(e){if(e.target.id==='riel-modal-bg')closeRielModal();}
 
 async function saveRiel(){
   const desc=el('rm-desc').value.trim(),amount=parseKHR(el('rm-amt').value);
-  const date=el('rm-date').value,cat=el('rm-cat').value;
+  const date=el('rm-date').value,cat=el('rm-cat').value,type=rielType;
   if(!desc||!amount||!date){alert('Isi semua field');return;}
   closeRielModal();showLoad();
   try{
-    if(rielEditId) await api({action:'editRiel',id:rielEditId,desc,amount,date,cat});
-    else await api({action:'addRiel',id:uid(),desc,amount,date,cat});
+    if(rielEditId)await api({action:'editRiel',id:rielEditId,desc,amount,date,cat,type});
+    else await api({action:'addRiel',id:uid(),desc,amount,date,cat,type});
     await syncNow();
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
+
 async function delRiel(id){
   if(!confirm('Hapus?'))return;showLoad();
   try{await api({action:'deleteRiel',id});await syncNow();}catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
+
 function renderRiel(){
   let txs=[...DB.riel].sort((a,b)=>b.date.localeCompare(a.date));
-  if(rielFilt!=='all')txs=txs.filter(t=>t.cat===rielFilt);
 
-  // KPIs
+  // Filter
+  if(rielFilt==='income')txs=txs.filter(t=>t.type==='income');
+  else if(rielFilt==='expense')txs=txs.filter(t=>t.type==='expense'||!t.type);
+  else if(rielFilt!=='all')txs=txs.filter(t=>t.cat===rielFilt);
+
+  // KPIs — semua waktu
   const allRiel=DB.riel;
-  const totalAll=allRiel.reduce((s,t)=>s+t.amount,0);
-  const ym=ymNow();
-  const thisMonth=allRiel.filter(t=>t.date.startsWith(ym+'-'));
-  const totalMonth=thisMonth.reduce((s,t)=>s+t.amount,0);
-  // avg per day this month
-  const daysInMonth=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate();
-  const avg=Math.round(totalMonth/daysInMonth);
-  setTxt('r-total',fmtKHR(totalAll));
-  setTxt('r-month',fmtKHR(totalMonth));
-  setTxt('r-avg',fmtKHR(avg));
+  const totalIn  =allRiel.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const totalOut =allRiel.filter(t=>t.type==='expense'||!t.type).reduce((s,t)=>s+t.amount,0);
+  const sisa=totalIn-totalOut;
+  setTxt('r-in',  fmtKHR(totalIn));
+  setTxt('r-out', fmtKHR(totalOut));
+  setTxt('r-sisa',fmtKHR(sisa));
+  setSty('r-sisa','color',sisa>=0?'var(--acc2)':'var(--red)');
+  populateRielMonthFilter();
+  renderRielCatChart();
+  renderRielTrend();
 
   const tbody=el('riel-body'),emp=el('riel-empty');
   if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
   emp.style.display='none';
-  tbody.innerHTML=txs.map(tx=>`
-    <tr>
+  tbody.innerHTML=txs.map(tx=>{
+    const isIn=tx.type==='income';
+    return`<tr>
       <td class="tx-date">${tx.date}</td>
       <td><div class="tx-desc">${tx.desc}</div></td>
       <td style="font-size:11px;color:var(--tx3)">${tx.cat||'—'}</td>
-      <td style="font-family:var(--fmono);font-size:13px;color:var(--red);text-align:right;white-space:nowrap">${fmtKHR(tx.amount)}</td>
+      <td style="font-family:var(--fmono);font-size:13px;color:${isIn?'var(--acc2)':'var(--red)'};text-align:right;white-space:nowrap">${isIn?'+':'-'}${fmtKHR(tx.amount)}</td>
       <td><div class="act">
         <button class="act-btn" onclick="openRielModal('${tx.id}')">edit</button>
         <button class="act-btn d" onclick="delRiel('${tx.id}')">del</button>
       </div></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 el('sav-mo').value=ymNow();
