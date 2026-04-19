@@ -53,6 +53,9 @@ body {
   -webkit-font-smoothing: antialiased;
   letter-spacing: -.01em;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139,92,246,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(79,142,247,.05) 0%, transparent 55%);
 }
 
 /* ── LOADING ── */
@@ -1165,7 +1168,7 @@ function renderAll(){
     setSty('tl-bni','width',bPt+'%');setSty('tl-bca','left',bPt+'%');setSty('tl-bca','width',Math.max(8,bWt)+'%');
   }else pill.style.display='none';
 
-  renderTx();renderSalaryHistory();
+  renderTx();renderSalaryHistory();renderRiel();
 }
 
 function exportCSV(){
