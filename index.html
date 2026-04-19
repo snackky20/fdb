@@ -602,9 +602,10 @@ body {
             <span>Pengeluaran per Kategori</span>
             <select id="cat-month-filter" onchange="renderCatChart()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx2);font-size:11px;padding:3px 8px;outline:none;font-family:var(--fmono)"></select>
           </div>
-          <div style="position:relative;height:180px">
+          <div style="position:relative;height:160px">
             <canvas id="cat-donut" role="img" aria-label="Pengeluaran per kategori">Breakdown kategori</canvas>
           </div>
+          <div id="cat-legend" style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px"></div>
         </div>
         <div class="card">
           <div class="card-title">Tren Pengeluaran 6 Bulan</div>
@@ -654,9 +655,10 @@ body {
             <span>Pengeluaran per Kategori</span>
             <select id="riel-month-filter" onchange="renderRielCatChart()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx2);font-size:11px;padding:3px 8px;outline:none;font-family:var(--fmono)"></select>
           </div>
-          <div style="position:relative;height:180px">
+          <div style="position:relative;height:160px">
             <canvas id="riel-donut" role="img" aria-label="Pengeluaran Riel per kategori">Breakdown</canvas>
           </div>
+          <div id="riel-legend" style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px"></div>
         </div>
         <div class="card">
           <div class="card-title">Tren 6 Bulan (KHR ៛)</div>
@@ -931,18 +933,11 @@ function renderCatChart(){
   catDonutC=new Chart(canvas,{
     type:'doughnut',
     data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
-    options:{
-      responsive:true,maintainAspectRatio:false,cutout:'62%',
-      plugins:{
-        legend:{
-          display:true,position:'bottom',
-          labels:{color:'#a0a0a8',font:{size:11,family:'Geist Mono'},boxWidth:10,padding:12,
-            generateLabels:chart=>{const ds=chart.data.datasets[0];return chart.data.labels.map((l,i)=>({text:l+' · '+fmtS(ds.data[i]),fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],hidden:false,index:i}));}}
-        },
-        tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}
-      }
-    }
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}
   });
+  // HTML legend
+  const leg=el('cat-legend');
+  if(leg) leg.innerHTML=labels.map((l,i)=>`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#a0a0a8;font-family:var(--fmono)"><span style="width:9px;height:9px;border-radius:2px;background:${colors[i]};flex-shrink:0;display:inline-block"></span>${l} · ${fmtS(data[i])}</span>`).join('');
 }
 
 function renderExpTrend(){
@@ -1227,30 +1222,11 @@ function renderRielCatChart(){
   rielDonutC=new Chart(canvas,{
     type:'doughnut',
     data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
-    options:{
-      responsive:true,maintainAspectRatio:false,cutout:'62%',
-      plugins:{
-        legend:{
-          display:true,position:'bottom',
-          labels:{
-            color:'#a0a0a8',
-            font:{size:11,family:'Geist Mono'},
-            boxWidth:10,padding:12,
-            generateLabels:chart=>{
-              const ds=chart.data.datasets[0];
-              return chart.data.labels.map((l,i)=>({
-                text:l+' · '+fmtKHR(ds.data[i]),
-                fillStyle:ds.backgroundColor[i],
-                strokeStyle:ds.backgroundColor[i],
-                hidden:false,index:i
-              }));
-            }
-          }
-        },
-        tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}
-      }
-    }
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtKHR(c.parsed)}}}}
   });
+  // HTML legend
+  const leg=el('riel-legend');
+  if(leg) leg.innerHTML=labels.map((l,i)=>`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#a0a0a8;font-family:var(--fmono)"><span style="width:9px;height:9px;border-radius:2px;background:${colors[i]};flex-shrink:0;display:inline-block"></span>${l} · ${fmtKHR(data[i])}</span>`).join('');
 }
 
 function renderRielTrend(){
