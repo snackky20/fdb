@@ -8,32 +8,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root {
-  --bg:    #0c0c0d;
-  --s1:    #111113;
-  --s2:    #17171a;
-  --s3:    #1e1e22;
-  --s4:    #27272c;
-  --bd:    rgba(255,255,255,.06);
-  --bd2:   rgba(255,255,255,.10);
-  --bd3:   rgba(255,255,255,.16);
-  --tx:    #ececee;
-  --tx2:   #a0a0a8;
-  --tx3:   #5a5a64;
-  --bca:   #4f8ef7;
-  --bca-d: rgba(79,142,247,.08);
-  --bca-b: rgba(79,142,247,.18);
-  --bni:   #f77f4f;
-  --bni-d: rgba(247,127,79,.08);
-  --bni-b: rgba(247,127,79,.18);
-  --sea:   #4fcf9a;
-  --sea-d: rgba(79,207,154,.08);
-  --sea-b: rgba(79,207,154,.18);
-  --grn:   #4fcf9a;
-  --red:   #f75f5f;
-  --acc:   #9b7fff;
-  --acc2:  #c4b5fd;
-  --acc-d: rgba(155,127,255,.12);
-  --acc-b: rgba(155,127,255,.22);
+  --bg:    #141820;
+  --s1:    #1c2130;
+  --s2:    #232a3a;
+  --s3:    #2b3347;
+  --s4:    #343d54;
+  --bd:    rgba(148,179,255,.09);
+  --bd2:   rgba(148,179,255,.15);
+  --bd3:   rgba(148,179,255,.26);
+  --tx:    #e4e9f4;
+  --tx2:   #96a6c2;
+  --tx3:   #5a6a84;
+  --bca:   #3b9eff;
+  --bca-d: rgba(59,158,255,.1);
+  --bca-b: rgba(59,158,255,.2);
+  --bni:   #f97316;
+  --bni-d: rgba(249,115,22,.1);
+  --bni-b: rgba(249,115,22,.2);
+  --sea:   #10d9a0;
+  --sea-d: rgba(16,217,160,.1);
+  --sea-b: rgba(16,217,160,.2);
+  --grn:   #10d9a0;
+  --red:   #f75f7e;
+  --acc:   #3b9eff;
+  --acc2:  #7ec8ff;
+  --acc-d: rgba(59,158,255,.12);
+  --acc-b: rgba(59,158,255,.22);
   --r:     10px;
   --r2:    7px;
   --r3:    4px;
@@ -54,8 +54,9 @@ body {
   letter-spacing: -.01em;
   overflow-x: hidden;
   background-image:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139,92,246,.07) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(79,142,247,.05) 0%, transparent 55%);
+    radial-gradient(ellipse 70% 45% at 15% -5%, rgba(59,158,255,.12) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 40% at 85% 105%, rgba(16,217,160,.08) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 60% 50%, rgba(59,158,255,.04) 0%, transparent 50%);
 }
 
 /* ── LOADING ── */
@@ -66,7 +67,7 @@ body {
 }
 .spin {
   width: 28px; height: 28px;
-  border: 2px solid rgba(155,127,255,.15);
+  border: 2px solid rgba(59,158,255,.15);
   border-top-color: var(--acc);
   border-radius: 50%;
   animation: spin .6s linear infinite;
@@ -82,7 +83,7 @@ body {
   height: 48px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 24px;
-  background: rgba(12,12,13,.9);
+  background: rgba(20,24,32,.88);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--bd2);
   position: sticky; top: 0; z-index: 100;
@@ -106,7 +107,7 @@ body {
   letter-spacing: .01em;
 }
 .nav-tab:hover { color: var(--tx2); }
-.nav-tab.active { color: var(--acc2); background: var(--acc-d); border: 1px solid rgba(155,127,255,.25); }
+.nav-tab.active { color: var(--acc2); background: var(--acc-d); border: 1px solid rgba(59,158,255,.25); }
 .nav-right { display: flex; gap: 6px; align-items: center; }
 .mono-chip {
   font-family: var(--fmono); font-size: 10px; color: var(--tx3);
@@ -127,7 +128,7 @@ body {
 .botnav {
   display: none;
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(12,12,13,.96); backdrop-filter: blur(16px);
+  background: rgba(20,24,32,.95); backdrop-filter: blur(16px);
   border-top: 1px solid var(--bd2);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -151,9 +152,9 @@ body {
   margin-bottom: 24px; font-size: 11px; border: 1px solid;
   font-family: var(--fmono); letter-spacing: .01em;
 }
-.sync.ok      { background: var(--acc-d); border-color: rgba(155,127,255,.25); color: var(--acc2); }
+.sync.ok      { background: var(--acc-d); border-color: rgba(59,158,255,.25); color: var(--acc2); }
 .sync.err     { background: rgba(247,95,95,.06); border-color: rgba(247,95,95,.2); color: var(--red); }
-.sync.loading { background: var(--acc-d); border-color: rgba(155,127,255,.25); color: var(--acc); }
+.sync.loading { background: var(--acc-d); border-color: rgba(59,158,255,.25); color: var(--acc); }
 .sdot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .ok .sdot      { background: var(--acc2); }
 .err .sdot     { background: var(--red); }
@@ -210,11 +211,11 @@ body {
   transform: translate(40px,-40px);
   opacity: .06;
 }
-.bcard.bc { background: var(--s1); border-color: rgba(79,142,247,.2); }
+.bcard.bc { background: linear-gradient(135deg,#1a2640,#1f2f52); border-color: rgba(59,158,255,.28); }
 .bcard.bc::before { background: var(--bca); }
-.bcard.bn { background: var(--s1); border-color: rgba(247,127,79,.2); }
+.bcard.bn { background: linear-gradient(135deg,#251808,#321f08); border-color: rgba(249,115,22,.28); }
 .bcard.bn::before { background: var(--bni); }
-.bcard.bs { background: var(--s1); border-color: rgba(79,207,154,.2); }
+.bcard.bs { background: linear-gradient(135deg,#0e2420,#112e28); border-color: rgba(16,217,160,.28); }
 .bcard.bs::before { background: var(--sea); }
 .bcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
 .bcard-name { font-family: var(--fsans); font-size: 18px; font-weight: 700; }
@@ -251,8 +252,8 @@ body {
 .proj-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); padding: 20px; margin-bottom: 24px; }
 .proj-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
 .status-pill { font-size: 10px; font-weight: 500; letter-spacing: .02em; padding: 4px 10px; border-radius: var(--r3); border: 1px solid; }
-.pill-ok   { color: var(--grn); background: var(--sea-d); border-color: rgba(79,207,154,.2); }
-.pill-warn { color: var(--acc); background: var(--acc-d); border-color: rgba(155,127,255,.2); }
+.pill-ok   { color: var(--grn); background: var(--sea-d); border-color: rgba(16,217,160,.2); }
+.pill-warn { color: var(--acc); background: var(--acc-d); border-color: rgba(59,158,255,.2); }
 .pill-err  { color: var(--red); background: rgba(247,95,95,.08); border-color: rgba(247,95,95,.2); }
 .proj-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin-bottom: 16px; }
 .pbox { background: var(--s2); border-radius: var(--r2); padding: 14px 16px; }
@@ -278,7 +279,7 @@ body {
   outline: none; transition: border-color .15s;
   -webkit-appearance: none;
 }
-.fg input:focus, .fg select:focus { border-color: rgba(155,127,255,.4); }
+.fg input:focus, .fg select:focus { border-color: rgba(59,158,255,.4); }
 .fg input::placeholder { color: var(--tx3); }
 .fg select option { background: var(--s2); }
 .btn-primary {
@@ -297,9 +298,9 @@ body {
 .result-sub { font-size: 11px; color: var(--tx3); margin-bottom: 22px; }
 .bk-cards { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
 .bk { border-radius: var(--r2); padding: 14px 16px; border: 1px solid; display: flex; justify-content: space-between; align-items: center; }
-.bk.bca { background: var(--bca-d); border-color: rgba(79,142,247,.2); }
-.bk.bni { background: var(--bni-d); border-color: rgba(247,127,79,.2); }
-.bk.sea { background: var(--sea-d); border-color: rgba(79,207,154,.2); }
+.bk.bca { background: var(--bca-d); border-color: rgba(59,158,255,.2); }
+.bk.bni { background: var(--bni-d); border-color: rgba(249,115,22,.2); }
+.bk.sea { background: var(--sea-d); border-color: rgba(16,217,160,.2); }
 .bk-left .bk-name { font-size: 13px; font-weight: 600; }
 .bca .bk-name { color: var(--bca); }
 .bni .bk-name { color: var(--bni); }
@@ -328,7 +329,7 @@ body {
 .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
 .ftabs { display: flex; gap: 3px; flex-wrap: wrap; flex: 1; }
 .ftab { font-size: 11px; color: var(--tx3); background: var(--s2); border: 1px solid var(--bd2); border-radius: var(--r3); padding: 5px 12px; cursor: pointer; white-space: nowrap; transition: all .13s; }
-.ftab.on { color: var(--acc2); background: var(--acc-d); border-color: rgba(155,127,255,.25); }
+.ftab.on { color: var(--acc2); background: var(--acc-d); border-color: rgba(59,158,255,.25); }
 .add-btn { background: var(--acc); border: none; border-radius: var(--r2); color: #fff; font-size: 12px; font-weight: 600; font-family: var(--fsans); padding: 7px 16px; cursor: pointer; flex-shrink: 0; transition: opacity .15s; letter-spacing: .01em; }
 .add-btn:hover { opacity: .88; }
 .tx-card { background: var(--s1); border: 1px solid var(--bd2); border-radius: var(--r); overflow: hidden; }
@@ -345,9 +346,9 @@ body {
 .tx-amt.inc { color: var(--acc2); }
 .tx-amt.exp { color: var(--red); }
 .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--r3); font-size: 10px; font-weight: 500; border: 1px solid; }
-.tag-bca { background: var(--bca-d); color: var(--bca); border-color: rgba(79,142,247,.2); }
-.tag-bni { background: var(--bni-d); color: var(--bni); border-color: rgba(247,127,79,.2); }
-.tag-sea { background: var(--sea-d); color: var(--sea); border-color: rgba(79,207,154,.2); }
+.tag-bca { background: var(--bca-d); color: var(--bca); border-color: rgba(59,158,255,.2); }
+.tag-bni { background: var(--bni-d); color: var(--bni); border-color: rgba(249,115,22,.2); }
+.tag-sea { background: var(--sea-d); color: var(--sea); border-color: rgba(16,217,160,.2); }
 .tag-cash{ background: var(--s3); color: var(--tx3); border-color: var(--bd); }
 .act { display: flex; gap: 4px; justify-content: flex-end; }
 .act-btn { background: transparent; border: 1px solid var(--bd2); border-radius: var(--r3); color: var(--tx3); font-size: 10px; padding: 3px 9px; cursor: pointer; transition: all .13s; }
@@ -362,12 +363,12 @@ body {
 .modal-title { font-family: var(--fsans); font-size: 17px; font-weight: 700; color: var(--tx2); margin-bottom: 18px; }
 .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; }
 .type-btn { padding: 9px; border-radius: var(--r2); border: 1px solid var(--bd2); background: var(--s2); color: var(--tx3); font-size: 12px; font-weight: 500; cursor: pointer; text-align: center; transition: all .13s; font-family: var(--fsans); }
-.type-btn.s-in  { background: var(--sea-d); border-color: rgba(79,207,154,.25); color: var(--grn); }
+.type-btn.s-in  { background: var(--sea-d); border-color: rgba(16,217,160,.25); color: var(--grn); }
 .type-btn.s-out { background: rgba(247,95,95,.08); border-color: rgba(247,95,95,.2); color: var(--red); }
 .mfg { margin-bottom: 12px; }
 .mfg label { display: block; font-size: 9px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--tx3); margin-bottom: 6px; }
 .mfg input, .mfg select { width: 100%; background: var(--s2); border: 1px solid var(--bd2); border-radius: var(--r2); padding: 9px 12px; color: var(--tx); font-family: var(--fmono); font-size: 13px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
-.mfg input:focus, .mfg select:focus { border-color: rgba(155,127,255,.35); }
+.mfg input:focus, .mfg select:focus { border-color: rgba(59,158,255,.35); }
 .mfg select option { background: var(--s2); }
 .m2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
@@ -479,7 +480,7 @@ body {
       <div class="bank-row">
         <div class="bcard bc">
           <div class="bcard-header">
-            <div><div class="bcard-name">BCA</div><div class="bcard-tag">Tabungan</div></div>
+            <div><div class="bcard-name">BCA</div><div class="bcard-tag">Tabungan · Jerman</div></div>
             <div class="bcard-alloc" id="d-bca-mo">—</div>
           </div>
           <div class="bcard-bal" id="d-bca-bal">Rp 0</div>
@@ -488,7 +489,7 @@ body {
         </div>
         <div class="bcard bn">
           <div class="bcard-header">
-            <div><div class="bcard-name">BNI</div><div class="bcard-tag">Dana Darurat</div></div>
+            <div><div class="bcard-name">BNI</div><div class="bcard-tag">Dana Darurat · Max 25jt</div></div>
             <div class="bcard-alloc" id="d-bni-mo">—</div>
           </div>
           <div class="bcard-bal" id="d-bni-bal">Rp 0</div>
@@ -497,7 +498,7 @@ body {
         </div>
         <div class="bcard bs">
           <div class="bcard-header">
-            <div><div class="bcard-name">SeaBank</div><div class="bcard-tag">Harian</div></div>
+            <div><div class="bcard-name">SeaBank</div><div class="bcard-tag">Harian · Fixed</div></div>
             <div class="bcard-alloc">1,5jt / bln</div>
           </div>
           <div class="bcard-bal" id="d-sea-bal">Rp 0</div>
@@ -571,7 +572,7 @@ body {
           <div class="result-amount" id="res-total">—</div>
           <div class="result-sub" id="res-sub">—</div>
           <div class="bk-cards">
-            <div class="bk bca"><div class="bk-left"><div class="bk-name">BCA</div><div class="bk-role">Tabungan</div></div><div class="bk-right"><div class="bk-amt" id="r-bca">—</div><div class="bk-pct" id="r-bca-p">—</div></div></div>
+            <div class="bk bca"><div class="bk-left"><div class="bk-name">BCA</div><div class="bk-role">Tabungan Jerman</div></div><div class="bk-right"><div class="bk-amt" id="r-bca">—</div><div class="bk-pct" id="r-bca-p">—</div></div></div>
             <div class="bk bni"><div class="bk-left"><div class="bk-name">BNI</div><div class="bk-role">Dana Darurat</div></div><div class="bk-right"><div class="bk-amt" id="r-bni">—</div><div class="bk-pct" id="r-bni-p">—</div></div></div>
             <div class="bk sea"><div class="bk-left"><div class="bk-name">SeaBank</div><div class="bk-role">Harian</div></div><div class="bk-right"><div class="bk-amt" id="r-sea">—</div><div class="bk-pct" id="r-sea-p">—</div></div></div>
           </div>
@@ -950,13 +951,13 @@ async function delSalary(id,ym){
 let catDonutC=null, expTrendC=null;
 const CAT_COLORS={
   Tagihan:'#f75f5f',
-  'Bayar Arisan':'#4fcf9a',
-  Keluarga:'#f77f4f',
+  'Bayar Arisan':'#10d9a0',
+  Keluarga:'#f97316',
   'Bayar Hutang':'#e879f9',
   'Beli Riel':'#38bdf8',
-  Gaji:'#9b7fff',
+  Gaji:'#3b9eff',
   Bonus:'#f7c94f',
-  'Uang Arisan':'#4f8ef7',
+  'Uang Arisan':'#3b9eff',
   Lainnya:'#6b7280'
 };
 
@@ -1171,7 +1172,7 @@ function renderAll(){
   // Donut
   const dd=[bca,bni,sea].some(v=>v>0)?[bca,bni,sea]:[1,1,1];
   if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
-  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SeaBank'],datasets:[{data:dd,backgroundColor:['#4f8ef7','#f77f4f','#4fcf9a'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
+  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SeaBank'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
   // Trend
   const now=new Date();const mos=[],lbls=[];
@@ -1184,8 +1185,8 @@ function renderAll(){
   });
   if(trendC){trendC.data.labels=lbls;trendC.data.datasets[0].data=bD;trendC.data.datasets[1].data=nD;trendC.update();}
   else trendC=new Chart(el('trend-c'),{type:'line',data:{labels:lbls,datasets:[
-    {label:'BCA',data:bD,borderColor:'#4f8ef7',backgroundColor:'rgba(79,142,247,.08)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#4f8ef7'},
-    {label:'BNI',data:nD,borderColor:'#f77f4f',backgroundColor:'rgba(247,127,79,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#f77f4f'}
+    {label:'BCA',data:bD,borderColor:'#3b9eff',backgroundColor:'rgba(59,158,255,.08)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#3b9eff'},
+    {label:'BNI',data:nD,borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#f97316'}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtS(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtS(v)},border:{display:false}}}}});
 
   // Projection
@@ -1238,12 +1239,12 @@ const parseKHR=s=>parseInt((s||'').replace(/[^\d]/g,''))||0;
 function fmtRiel(inp){const v=inp.value.replace(/[^\d]/g,'');inp.value=v?Number(v).toLocaleString('id-ID'):'';}
 
 const RIEL_CAT_COLORS={
-  'Uang Masuk':'#9b7fff',
-  'Makanan':'#f77f4f',
-  'Transport':'#4f8ef7',
+  'Uang Masuk':'#3b9eff',
+  'Makanan':'#f97316',
+  'Transport':'#3b9eff',
   'Belanja':'#f7c94f',
   'Tagihan':'#f75f5f',
-  'Bayar Arisan':'#4fcf9a',
+  'Bayar Arisan':'#10d9a0',
   'Keluarga':'#fb7185',
   'Bayar Hutang':'#e879f9',
   'Beli Riel':'#38bdf8',
@@ -1290,7 +1291,7 @@ function renderRielTrend(){
   const canvas=el('riel-trend');if(!canvas)return;
   if(rielTrendC){rielTrendC.data.labels=lbls;rielTrendC.data.datasets[0].data=inData;rielTrendC.data.datasets[1].data=outData;rielTrendC.update();return;}
   rielTrendC=new Chart(canvas,{type:'bar',data:{labels:lbls,datasets:[
-    {label:'Masuk',data:inData,backgroundColor:'rgba(155,127,255,.6)',borderRadius:3,borderSkipped:false},
+    {label:'Masuk',data:inData,backgroundColor:'rgba(59,158,255,.6)',borderRadius:3,borderSkipped:false},
     {label:'Keluar',data:outData,backgroundColor:'rgba(247,95,95,.6)',borderRadius:3,borderSkipped:false}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtKHR(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtKHR(v)},border:{display:false}}}}});
 }
