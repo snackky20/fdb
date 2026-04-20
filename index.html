@@ -905,21 +905,13 @@ async function hitungAlokasi(){
   let bni=0,bca=0;
   if(rem>0){if(bniRoom>0){bni=Math.min(Math.round(rem*.40),bniRoom);bca=rem-bni;}else bca=rem;}
 
-  // Cek apakah  sudah pernah dialokasikan
   if(DB.salaries[ym]){
     if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
-    const oldTxs=DB.transactions.filter(t=>t.date===ym+'-01'&&t.cat==='Gaji'&&t.type==='income');
-    await Promise.all(oldTxs.map(t=>api({action:'deleteTransaction',id:t.id}))).catch(()=>{});
   }
 
-  const d=ym+'-01';
-  const jobs=[
-    api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea}),
-    ...(bca>0?[api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'Gaji',type:'income',bank:'BCA',amount:bca})]:[]),
-    ...(bni>0?[api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'Gaji',type:'income',bank:'BNI',amount:bni})]:[]),
-    ...(sea>0?[api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'Gaji',type:'income',bank:'SeaBank',amount:sea})]:[]),
-  ];
-  Promise.all(jobs).then(()=>syncNow()).catch(e=>setSync('err','error: '+e.message));
+  api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea})
+    .then(()=>syncNow())
+    .catch(e=>setSync('err','error: '+e.message));
 }
 
 function renderSalaryHistory(){
