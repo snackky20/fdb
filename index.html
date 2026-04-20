@@ -443,7 +443,7 @@ body {
         <div class="kpi">
           <div class="kpi-label">Total Tabungan</div>
           <div class="kpi-value c-acc" id="kpi-total">—</div>
-          <div class="kpi-sub">BCA + BNI</div>
+          <div class="kpi-sub"></div>
         </div>
         <div class="kpi">
           <div class="kpi-label" id="kpi-gaji-lbl">Gaji Bulan Ini</div>
@@ -453,12 +453,12 @@ body {
         <div class="kpi">
           <div class="kpi-label">Pengeluaran</div>
           <div class="kpi-value c-red" id="kpi-expense">—</div>
-          <div class="kpi-sub">bulan ini</div>
+          <div class="kpi-sub"></div>
         </div>
         <div class="kpi">
           <div class="kpi-label">Savings Bersih</div>
           <div class="kpi-value c-tx" id="kpi-savings">—</div>
-          <div class="kpi-sub">gaji − pengeluaran</div>
+          <div class="kpi-sub"></div>
         </div>
         <div class="kpi rate-kpi">
           <svg class="rate-ring" viewBox="0 0 48 48" width="48" height="48">
@@ -480,30 +480,30 @@ body {
       <div class="bank-row">
         <div class="bcard bc">
           <div class="bcard-header">
-            <div><div class="bcard-name">BCA</div><div class="bcard-tag">Tabungan · Jerman</div></div>
+            <div><div class="bcard-name">BCA</div><div class="bcard-tag">Tabungan</div></div>
             <div class="bcard-alloc" id="d-bca-mo">—</div>
           </div>
           <div class="bcard-bal" id="d-bca-bal">Rp 0</div>
           <div class="bprog"><div class="bprog-f" id="d-bca-prog" style="width:0%"></div></div>
-          <div class="bprog-meta"><span id="d-bca-pct">0%</span><span>150jt</span></div>
+          <div class="bprog-meta"><span id="d-bca-pct">0%</span></div>
         </div>
         <div class="bcard bn">
           <div class="bcard-header">
-            <div><div class="bcard-name">BNI</div><div class="bcard-tag">Dana Darurat · Max 25jt</div></div>
+            <div><div class="bcard-name">BNI</div><div class="bcard-tag">Dana Darurat</div></div>
             <div class="bcard-alloc" id="d-bni-mo">—</div>
           </div>
           <div class="bcard-bal" id="d-bni-bal">Rp 0</div>
           <div class="bprog"><div class="bprog-f" id="d-bni-prog" style="width:0%"></div></div>
-          <div class="bprog-meta"><span id="d-bni-pct">0%</span><span>25jt</span></div>
+          <div class="bprog-meta"><span id="d-bni-pct">0%</span></div>
         </div>
         <div class="bcard bs">
           <div class="bcard-header">
-            <div><div class="bcard-name">SeaBank</div><div class="bcard-tag">Harian · Fixed</div></div>
-            <div class="bcard-alloc">1,5jt / bln</div>
+            <div><div class="bcard-name">SeaBank</div><div class="bcard-tag">Dana Cadangan</div></div>
+            <div class="bcard-alloc"></div>
           </div>
           <div class="bcard-bal" id="d-sea-bal">Rp 0</div>
           <div class="bprog"><div class="bprog-f" style="width:100%"></div></div>
-          <div class="bprog-meta"><span>budget</span><span>—</span></div>
+          <div class="bprog-meta"></div>
         </div>
       </div>
 
@@ -527,21 +527,21 @@ body {
       <!-- Projection -->
       <div class="proj-card">
         <div class="proj-header">
-          <div class="card-title" style="margin:0">Proyeksi · Oktober 2027</div>
+          <div class="card-title" style="margin:0">Proyeksi</div>
           <div class="status-pill" id="proj-pill" style="display:none"></div>
         </div>
         <div class="proj-grid">
-          <div class="pbox"><div class="pbox-label">BNI Penuh</div><div class="pbox-val" id="p-bni-v" style="color:var(--bni)">—</div><div class="pbox-sub" id="p-bni-s">—</div></div>
-          <div class="pbox"><div class="pbox-label">BCA Target</div><div class="pbox-val" id="p-bca-v" style="color:var(--bca)">—</div><div class="pbox-sub" id="p-bca-s">—</div></div>
-          <div class="pbox"><div class="pbox-label">BNI / alokasi</div><div class="pbox-val" id="p-bni-mo" style="color:var(--tx2)">—</div><div class="pbox-sub">40%</div></div>
-          <div class="pbox"><div class="pbox-label">BCA / alokasi</div><div class="pbox-val" id="p-bca-mo" style="color:var(--tx2)">—</div><div class="pbox-sub">setelah BNI penuh</div></div>
+          <div class="pbox"><div class="pbox-label">Dana Darurat</div><div class="pbox-val" id="p-bni-v" style="color:var(--bni)">—</div><div class="pbox-sub" id="p-bni-s">—</div></div>
+          <div class="pbox"><div class="pbox-label">Tabungan</div><div class="pbox-val" id="p-bca-v" style="color:var(--bca)">—</div><div class="pbox-sub" id="p-bca-s">—</div></div>
+          <div class="pbox"><div class="pbox-label">Dana Darurat / bln</div><div class="pbox-val" id="p-bni-mo" style="color:var(--tx2)">—</div></div>
+          <div class="pbox"><div class="pbox-label">Tabungan / bln</div><div class="pbox-val" id="p-bca-mo" style="color:var(--tx2)">—</div></div>
         </div>
         <div class="tl-wrap">
           <div class="tl-bni" id="tl-bni" style="width:0%">BNI</div>
           <div class="tl-bca" id="tl-bca" style="left:0%;width:0%">BCA</div>
         </div>
         <div class="tl-labels">
-          <span>now</span><span>+4m</span><span>+8m</span><span>+12m</span><span>Oct'27</span>
+          
         </div>
       </div>
     </div>
@@ -557,7 +557,7 @@ body {
             <input type="text" id="sav-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
           </div>
           <div class="fg">
-            <label>Gaji bulan ini (Rp)</label>
+            <label>Gaji  (Rp)</label>
             <input type="text" id="gaji-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
           </div>
           <div class="fg">
@@ -572,9 +572,9 @@ body {
           <div class="result-amount" id="res-total">—</div>
           <div class="result-sub" id="res-sub">—</div>
           <div class="bk-cards">
-            <div class="bk bca"><div class="bk-left"><div class="bk-name">BCA</div><div class="bk-role">Tabungan Jerman</div></div><div class="bk-right"><div class="bk-amt" id="r-bca">—</div><div class="bk-pct" id="r-bca-p">—</div></div></div>
+            <div class="bk bca"><div class="bk-left"><div class="bk-name">BCA</div><div class="bk-role">Tabungan</div></div><div class="bk-right"><div class="bk-amt" id="r-bca">—</div><div class="bk-pct" id="r-bca-p">—</div></div></div>
             <div class="bk bni"><div class="bk-left"><div class="bk-name">BNI</div><div class="bk-role">Dana Darurat</div></div><div class="bk-right"><div class="bk-amt" id="r-bni">—</div><div class="bk-pct" id="r-bni-p">—</div></div></div>
-            <div class="bk sea"><div class="bk-left"><div class="bk-name">SeaBank</div><div class="bk-role">Harian</div></div><div class="bk-right"><div class="bk-amt" id="r-sea">—</div><div class="bk-pct" id="r-sea-p">—</div></div></div>
+            <div class="bk sea"><div class="bk-left"><div class="bk-name">SeaBank</div><div class="bk-role">Dana Cadangan</div></div><div class="bk-right"><div class="bk-amt" id="r-sea">—</div><div class="bk-pct" id="r-sea-p">—</div></div></div>
           </div>
           <div style="margin-top:16px">
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bca)"></div>BCA</div><div class="abar-val" id="bb-bca-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bca" style="background:var(--bca);width:0%"></div></div></div>
@@ -905,7 +905,7 @@ async function hitungAlokasi(){
   let bni=0,bca=0;
   if(rem>0){if(bniRoom>0){bni=Math.min(Math.round(rem*.40),bniRoom);bca=rem-bni;}else bca=rem;}
 
-  // Cek apakah bulan ini sudah pernah dialokasikan
+  // Cek apakah  sudah pernah dialokasikan
   if(DB.salaries[ym]){
     if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
     const oldTxs=DB.transactions.filter(t=>t.date===ym+'-01'&&t.cat==='Gaji'&&t.type==='income');
@@ -1148,8 +1148,8 @@ function renderAll(){
   setTxt('top-month',ymLbl(latYM||ym));
   if(latYM){
     const s=DB.salaries[latYM];
-    setTxt('d-bca-mo','+'+fmtS(s.bca)+'/alokasi');
-    setTxt('d-bni-mo','+'+fmtS(s.bni)+'/alokasi');
+    setTxt('d-bca-mo',fmtS(s.bca));
+    setTxt('d-bni-mo',fmtS(s.bni));
     // Alloc bars — pakai alokasi terakhir (konsisten sama label bank card)
     const alTot=s.bca+s.bni+s.sea;
     const bkP=alTot>0?Math.round(s.bca/alTot*100):0;
@@ -1200,13 +1200,13 @@ function renderAll(){
     let bcaML=0;
     if(bcaGap>0){const a=bca+bniML*s.bca;bcaML=a>=BCA_TARGET?Math.ceil(bcaGap/s.bca):bniML+Math.ceil((BCA_TARGET-a)/bcaFull);}
     const deadN=ymToN(DEADLINE)-ymToN(latYM),onTk=bcaGap<=0||bcaML<=deadN,buf=deadN-bcaML;
-    setTxt('p-bni-v',bniGap<=0?'Penuh':'~'+bniML+'×');setTxt('p-bni-s',bniGap<=0?'aman':ymAdd(latYM,bniML));
-    setTxt('p-bca-v',bcaGap<=0?'Tercapai':'~'+bcaML+'×');setTxt('p-bca-s',bcaGap<=0?'siap':onTk?ymAdd(latYM,bcaML)+' (+'+buf+'bln)':'telat '+Math.abs(buf)+'bln');
+    setTxt('p-bni-v',bniGap<=0?'Penuh':'~'+bniML+'×');setTxt('p-bni-s',bniGap<=0?'Tercapai':ymAdd(latYM,bniML));
+    setTxt('p-bca-v',bcaGap<=0?'Tercapai':'~'+bcaML+'×');setTxt('p-bca-s',bcaGap<=0?'Tercapai':ymAdd(latYM,bcaML));
     setTxt('p-bni-mo',fmtS(bniMo));setTxt('p-bca-mo',fmtS(bcaFull));
     pill.style.display='inline-flex';
-    if(bcaGap<=0){pill.textContent='target tercapai';pill.className='status-pill pill-ok';}
-    else if(onTk){pill.textContent='on track · '+buf+' bln buffer';pill.className='status-pill pill-warn';}
-    else{pill.textContent='off track';pill.className='status-pill pill-err';}
+    if(bcaGap<=0){pill.textContent='On Track';pill.className='status-pill pill-ok';}
+    else if(onTk){pill.textContent='On Track';pill.className='status-pill pill-warn';}
+    else{pill.textContent='Off Track';pill.className='status-pill pill-err';}
     const base=Math.max(deadN,bcaML,1);
     const bPt=Math.min(88,Math.round(bniML/base*100)),bWt=Math.min(100-bPt,Math.round((bcaML-bniML)/base*100));
     setSty('tl-bni','width',bPt+'%');setSty('tl-bca','left',bPt+'%');setSty('tl-bca','width',Math.max(8,bWt)+'%');
