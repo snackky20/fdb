@@ -909,9 +909,19 @@ async function hitungAlokasi(){
     if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
   }
 
-  api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea})
-    .then(()=>syncNow())
-    .catch(e=>setSync('err','error: '+e.message));
+  showLoad();
+  try{
+    // Simpan riwayat alokasi
+    await api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea});
+    // Update saldo bank
+    await Promise.all([
+      bca>0?api({action:'updateBalance',bank:'BCA',balance:DB.balances.BCA+bca}):Promise.resolve(),
+      bni>0?api({action:'updateBalance',bank:'BNI',balance:DB.balances.BNI+bni}):Promise.resolve(),
+      sea>0?api({action:'updateBalance',bank:'SeaBank',balance:DB.balances.SeaBank+sea}):Promise.resolve(),
+    ]);
+    await syncNow();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
 }
 
 function renderSalaryHistory(){
@@ -1083,7 +1093,7 @@ function closeModal(){el('modal-bg').classList.remove('open');}
 function closeOut(e){if(e.target.id==='modal-bg')closeModal();}
 
 async function saveTx(){
-  const bank=el('m-bank').value,desc=el('m-desc').value.trim();
+  const type=mType,bank=el('m-bank').value,desc=el('m-desc').value.trim();
   const amount=parseN(el('m-amt').value),date=el('m-date').value,cat=el('m-cat').value;
   if(!desc||!amount||!date){alert('Isi semua field');return;}
   closeModal();showLoad();
