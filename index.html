@@ -1012,7 +1012,11 @@ async function syncNow(){
     });
     // Load StockTx from getAll (no extra API call needed)
     if(d.stockTxs) invStockTx = d.stockTxs;
-    // Load stock prices separately (only when on investasi tab)
+    // Fetch harga BBCA saat sync biar card dashboard langsung update
+    try {
+      const pd = await api({action:'getStockPrices'});
+      if(pd.ok && pd.prices) Object.entries(pd.prices).forEach(([k,v])=>{ invPrices[k.toUpperCase()]=Number(v)||0; });
+    } catch(e){}
     setSync('ok','synced · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
     renderAll();
   }catch(e){setSync('err','error: '+e.message);}
@@ -1897,7 +1901,9 @@ function renderDCAHistory(){
 
 function initInvestasi(){
   el('dca-date').value=today();
-  fetchStockPrices();
+  updatePortfolio();   // render dulu pakai data yang sudah ada
+  renderDCAHistory();
+  fetchStockPrices();  // fetch harga baru, update lagi setelah dapat
 }
 el('sav-mo').value=ymNow();
 el('m-date').value=today();
