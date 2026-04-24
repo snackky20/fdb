@@ -124,7 +124,28 @@ body {
 .nav-btn.danger { color: var(--red); opacity: .7; }
 .nav-btn.danger:hover { opacity: 1; border-color: rgba(247,95,95,.3); }
 
-/* ── BOTTOM NAV (mobile) ── */
+/* ── INVESTASI ── */
+.inv-kpi { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; margin-bottom:24px; background:var(--bd2); border:1px solid var(--bd2); border-radius:var(--r); overflow:hidden; }
+.stock-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:24px; }
+.stock-card { background:var(--s1); border:1px solid var(--bd2); border-radius:var(--r); padding:18px; position:relative; overflow:hidden; }
+.stock-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--sc,var(--acc)); }
+.stock-ticker { font-family:var(--fmono); font-size:13px; font-weight:500; color:var(--tx); margin-bottom:2px; }
+.stock-name { font-size:11px; color:var(--tx3); margin-bottom:14px; }
+.stock-price { font-family:var(--fmono); font-size:22px; font-weight:500; color:var(--tx); letter-spacing:-.03em; }
+.stock-change { font-family:var(--fmono); font-size:11px; margin-top:3px; }
+.stock-change.up { color:var(--grn); }
+.stock-change.dn { color:var(--red); }
+.stock-divider { border:none; border-top:1px solid var(--bd2); margin:14px 0; }
+.stock-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.stock-row-label { font-size:11px; color:var(--tx3); }
+.stock-row-val { font-family:var(--fmono); font-size:12px; color:var(--tx2); }
+.stock-pl { font-family:var(--fmono); font-size:13px; font-weight:500; }
+.stock-pl.up { color:var(--grn); }
+.stock-pl.dn { color:var(--red); }
+.inv-charts { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; margin-bottom:24px; }
+.price-badge { display:inline-flex; align-items:center; gap:5px; font-size:10px; color:var(--tx3); margin-top:4px; }
+.price-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--grn); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 .botnav {
   display: none;
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
@@ -421,6 +442,7 @@ body {
       <button class="nav-tab" onclick="switchTab('alokasi',this)">Alokasi</button>
       <button class="nav-tab" onclick="switchTab('catatan',this)">Catatan</button>
       <button class="nav-tab" onclick="switchTab('riel',this)">Riel (KHR)</button>
+      <button class="nav-tab" onclick="switchTab('investasi',this)">Investasi</button>
     </nav>
     <div class="nav-right">
       <div class="mono-chip" id="top-month">—</div>
@@ -709,6 +731,116 @@ body {
         </div>
       </div>
     </div>
+
+    <!-- ══ INVESTASI ══ -->
+    <div class="tab-pane" id="tab-investasi">
+
+      <!-- KPI row -->
+      <div class="inv-kpi">
+        <div class="kpi">
+          <div class="kpi-label">Nilai Portofolio</div>
+          <div class="kpi-value c-acc" id="inv-total">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Modal</div>
+          <div class="kpi-value" id="inv-modal">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Profit / Loss</div>
+          <div class="kpi-value" id="inv-pl">—</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Return</div>
+          <div class="kpi-value" id="inv-ret">—</div>
+        </div>
+      </div>
+
+      <!-- Stock Cards -->
+      <div class="stock-grid">
+
+        <!-- BBRI -->
+        <div class="stock-card" style="--sc:#e74c3c">
+          <div class="stock-ticker">BBRI</div>
+          <div class="stock-name">Bank Rakyat Indonesia</div>
+          <div class="stock-price" id="bbri-price">—</div>
+          <div class="stock-change" id="bbri-change">—</div>
+          <div class="price-badge"><span class="dot"></span><span id="bbri-time">memuat...</span></div>
+          <hr class="stock-divider">
+          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bbri-lot">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bbri-avg">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbri-val">—</span></div>
+          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbri-pl">—</span></div>
+        </div>
+
+        <!-- BMRI -->
+        <div class="stock-card" style="--sc:#3b9eff">
+          <div class="stock-ticker">BMRI</div>
+          <div class="stock-name">Bank Mandiri</div>
+          <div class="stock-price" id="bmri-price">—</div>
+          <div class="stock-change" id="bmri-change">—</div>
+          <div class="price-badge"><span class="dot"></span><span id="bmri-time">memuat...</span></div>
+          <hr class="stock-divider">
+          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bmri-lot">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bmri-avg">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bmri-val">—</span></div>
+          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bmri-pl">—</span></div>
+        </div>
+
+        <!-- BBNI -->
+        <div class="stock-card" style="--sc:#f97316">
+          <div class="stock-ticker">BBNI</div>
+          <div class="stock-name">Bank Negara Indonesia</div>
+          <div class="stock-price" id="bbni-price">—</div>
+          <div class="stock-change" id="bbni-change">—</div>
+          <div class="price-badge"><span class="dot"></span><span id="bbni-time">memuat...</span></div>
+          <hr class="stock-divider">
+          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bbni-lot">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bbni-avg">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbni-val">—</span></div>
+          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbni-pl">—</span></div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="inv-charts">
+        <div class="card">
+          <div class="card-title">Alokasi Portofolio</div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div style="position:relative;height:180px;min-width:180px;flex:0 0 180px">
+              <canvas id="inv-donut"></canvas>
+            </div>
+            <div id="inv-legend" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Input Portofolio</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
+              <div style="font-size:11px;color:var(--tx3);font-family:var(--fmono)">Saham</div>
+              <div style="font-size:11px;color:var(--tx3)">Lot</div>
+              <div style="font-size:11px;color:var(--tx3)">Avg Beli (Rp)</div>
+            </div>
+            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
+              <div style="font-size:12px;font-family:var(--fmono);color:#e74c3c">BBRI</div>
+              <input type="number" id="inp-bbri-lot" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+              <input type="number" id="inp-bbri-avg" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+            </div>
+            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
+              <div style="font-size:12px;font-family:var(--fmono);color:#3b9eff">BMRI</div>
+              <input type="number" id="inp-bmri-lot" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+              <input type="number" id="inp-bmri-avg" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+            </div>
+            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
+              <div style="font-size:12px;font-family:var(--fmono);color:#f97316">BBNI</div>
+              <input type="number" id="inp-bbni-lot" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+              <input type="number" id="inp-bbni-avg" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+            </div>
+            <button class="btn-primary" onclick="savePortfolio()" style="margin-top:4px">Simpan</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- BOTTOM NAV -->
@@ -729,6 +861,10 @@ body {
       <button class="bot-tab" onclick="switchTab('riel',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 8h4a2 2 0 010 4H9v4"/><path d="M9 14h5"/></svg>
         Riel
+      </button>
+      <button class="bot-tab" onclick="switchTab('investasi',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Investasi
       </button>
     </div>
   </nav>
@@ -862,6 +998,7 @@ function switchTab(id,btn){
   if(sib)sib.classList.add('active');
   if(id==='catatan'){renderTx();populateCatMonthFilter();renderCatChart();renderExpTrend();}
   if(id==='riel'){renderRiel();populateRielMonthFilter();renderRielCatChart();renderRielTrend();}
+  if(id==='investasi')initInvestasi();
 }
 
 // ── ALOKASI ──
@@ -1399,6 +1536,142 @@ function renderRiel(){
       </div></td>
     </tr>`;
   }).join('');
+}
+
+// ── INVESTASI ──
+const STOCKS = {
+  bbri: { ticker:'BBRI.JK', name:'Bank Rakyat Indonesia', color:'#e74c3c' },
+  bmri: { ticker:'BMRI.JK', name:'Bank Mandiri',          color:'#3b9eff' },
+  bbni: { ticker:'BBNI.JK', name:'Bank Negara Indonesia', color:'#f97316' },
+};
+let invPrices = { bbri:0, bmri:0, bbni:0 };
+let invDonutC = null;
+const PORTFOLIO_KEY = 'financeos_portfolio';
+
+function loadPortfolioInputs(){
+  try {
+    const p = JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||'{}');
+    ['bbri','bmri','bbni'].forEach(s=>{
+      const lot=el('inp-'+s+'-lot'), avg=el('inp-'+s+'-avg');
+      if(lot&&p[s]){lot.value=p[s].lot||''; avg.value=p[s].avg||'';}
+    });
+  } catch(e){}
+}
+
+function savePortfolio(){
+  const p={};
+  ['bbri','bmri','bbni'].forEach(s=>{
+    p[s]={ lot:parseFloat(el('inp-'+s+'-lot').value)||0, avg:parseFloat(el('inp-'+s+'-avg').value)||0 };
+  });
+  localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(p));
+  updatePortfolio();
+  setSync('ok','Portfolio tersimpan');
+  setTimeout(()=>setSync('ok','synced'),1500);
+}
+
+function getPortfolio(){
+  try { return JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||'{}'); } catch(e){ return {}; }
+}
+
+async function fetchStockPrices(){
+  // Ambil harga via Apps Script yang baca dari GOOGLEFINANCE()
+  try {
+    const d = await api({ action:'getStockPrices' });
+    if(d.ok && d.prices){
+      invPrices = d.prices;
+    }
+  } catch(e){}
+  // Update time badge
+  const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  ['bbri','bmri','bbni'].forEach(s=>{
+    const timeEl = el(s+'-time');
+    if(timeEl) timeEl.textContent = invPrices[s] ? 'Update '+now : 'Tidak tersedia';
+  });
+  updatePortfolio();
+}
+
+function updatePortfolio(){
+  const p = getPortfolio();
+  // Sync inputs ke tampilan
+  ['bbri','bmri','bbni'].forEach(s=>{
+    const lotIn = el('inp-'+s+'-lot'), avgIn = el('inp-'+s+'-avg');
+    if(lotIn) p[s] = p[s]||{};
+    if(lotIn && lotIn.value) p[s].lot = parseFloat(lotIn.value)||0;
+    if(avgIn && avgIn.value) p[s].avg = parseFloat(avgIn.value)||0;
+  });
+
+  let totalVal=0, totalModal=0;
+
+  ['bbri','bmri','bbni'].forEach(s=>{
+    const price   = invPrices[s] || 0;
+    const lot     = (p[s]&&p[s].lot) ? p[s].lot : 0;
+    const avgBeli = (p[s]&&p[s].avg) ? p[s].avg : 0;
+    const shares  = lot * 100; // 1 lot = 100 lembar
+    const modal   = shares * avgBeli;
+    const valNow  = shares * price;
+    const pl      = valNow - modal;
+    const plPct   = modal > 0 ? (pl/modal*100) : 0;
+
+    // Price display
+    const priceEl  = el(s+'-price');
+    const changeEl = el(s+'-change');
+    if(priceEl) priceEl.textContent = price ? 'Rp '+price.toLocaleString('id-ID') : '—';
+
+    // Lot & avg
+    const lotEl = el(s+'-lot'), avgEl = el(s+'-avg');
+    if(lotEl) lotEl.textContent = lot ? lot+' lot' : '—';
+    if(avgEl) avgEl.textContent = avgBeli ? 'Rp '+avgBeli.toLocaleString('id-ID') : '—';
+
+    // Nilai & PL
+    const valEl = el(s+'-val'), plEl = el(s+'-pl');
+    if(valEl) valEl.textContent = valNow ? 'Rp '+Math.round(valNow).toLocaleString('id-ID') : '—';
+    if(plEl){
+      plEl.textContent = pl ? (pl>=0?'+':'') + 'Rp '+Math.round(pl).toLocaleString('id-ID')+' ('+plPct.toFixed(1)+'%)' : '—';
+      plEl.className = 'stock-pl '+(pl>=0?'up':'dn');
+    }
+
+    totalVal   += valNow;
+    totalModal += modal;
+  });
+
+  const totalPL  = totalVal - totalModal;
+  const totalRet = totalModal > 0 ? (totalPL/totalModal*100) : 0;
+  setTxt('inv-total', totalVal   ? 'Rp '+Math.round(totalVal).toLocaleString('id-ID')   : '—');
+  setTxt('inv-modal', totalModal ? 'Rp '+Math.round(totalModal).toLocaleString('id-ID') : '—');
+  const plEl2 = el('inv-pl');
+  if(plEl2){
+    plEl2.textContent = totalPL ? (totalPL>=0?'+':'')+'Rp '+Math.round(totalPL).toLocaleString('id-ID') : '—';
+    plEl2.style.color = totalPL>=0 ? 'var(--grn)' : 'var(--red)';
+  }
+  setTxt('inv-ret', totalRet ? (totalRet>=0?'+':'')+totalRet.toFixed(2)+'%' : '—');
+  if(el('inv-ret')) el('inv-ret').style.color = totalRet>=0?'var(--grn)':'var(--red)';
+
+  renderInvDonut(p);
+}
+
+function renderInvDonut(p){
+  const labels=[], data=[], colors=[];
+  ['bbri','bmri','bbni'].forEach(s=>{
+    const price  = invPrices[s]||0;
+    const lot    = (p[s]&&p[s].lot)||0;
+    const val    = lot * 100 * price;
+    if(val>0){ labels.push(s.toUpperCase()); data.push(val); colors.push(STOCKS[s].color); }
+  });
+  const canvas=el('inv-donut'); if(!canvas)return;
+  if(invDonutC){invDonutC.destroy();invDonutC=null;}
+  if(!data.length) return;
+  invDonutC=new Chart(canvas,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Rp '+Math.round(c.parsed).toLocaleString('id-ID')}}}}
+  });
+  const leg=el('inv-legend');
+  if(leg) leg.innerHTML=labels.map((l,i)=>`<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#96a6c2;font-family:var(--fmono)"><span style="width:8px;height:8px;border-radius:2px;background:${colors[i]};display:inline-block;flex-shrink:0"></span>${l}</div>`).join('');
+}
+
+function initInvestasi(){
+  loadPortfolioInputs();
+  fetchStockPrices();
 }
 
 el('sav-mo').value=ymNow();
