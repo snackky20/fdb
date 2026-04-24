@@ -1102,13 +1102,8 @@ async function hitungAlokasi(){
   const d=ym+'-01';
   showLoad();
   try{
-    await api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,inv});
-    if(bca>0) await api({action:'updateBalance',bank:'BCA',balance:DB.balances.BCA+bca});
-    if(bni>0) await api({action:'updateBalance',bank:'BNI',balance:DB.balances.BNI+bni});
-    if(inv>0) await api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+inv});
-    if(bca>0) await api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BCA',type:'tabungan',bank:'BCA',amount:bca});
-    if(bni>0) await api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BNI',type:'tabungan',bank:'BNI',amount:bni});
-    if(inv>0) await api({action:'addTransaction',id:uid(),date:d,desc:'Investasi '+ymLbl(ym),cat:'Saham',type:'investasi',bank:'Investasi',amount:inv});
+    const res = await api({action:'doAlokasi', ym, salary:gaji||0, bca, bni, inv, d, salId:uid()});
+    if(!res.ok) throw new Error(res.error||'Alokasi gagal');
     await syncNow();
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
@@ -1357,18 +1352,17 @@ function renderAll(){
   // Bank cards
   setTxt('d-bca-bal', fmt(bca));
   setTxt('d-bni-bal', fmt(bni));
-  setTxt('d-inv-bal', calcDanaTotal()>0?fmt(calcDanaTotal()):fmt(inv));
   const bP=Math.min(100,Math.round(bca/BCA_TARGET*100));
   const nP=Math.min(100,Math.round(bni/BNI_MAX*100));
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
   setTxt('d-bca-pct',bP+'%');setTxt('d-bni-pct',nP+'%');
 
-  // Investasi card — hitung dari StockTx
+  // BBCA card — live price x lot
   const invPos = calcInvPositions();
-  const invTickers = Object.keys(invPos).filter(t=>invPos[t].lot>0);
-  const invTotalLot = invTickers.reduce((s,t)=>s+invPos[t].lot,0);
-  const invTotalVal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPrices[t]||0)),0);
-  setTxt('d-inv-lot', invTotalLot?invTotalLot+' lot':'—');
+  const bbcaLot = invPos.BBCA?.lot||0;
+  const bbcaVal = bbcaLot*100*(invPrices.BBCA||0);
+  setTxt('d-inv-bal', bbcaVal>0?fmt(bbcaVal):bbcaLot>0?bbcaLot+' lot':'—');
+  setTxt('d-inv-lot', bbcaLot?bbcaLot+' lot':'—');
   // Progress bar = % saldo investasi terpakai beli saham
   const danaTotal = calcDanaTotal();
   const danaUsed  = calcDanaUsed();
