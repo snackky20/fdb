@@ -502,7 +502,7 @@ body {
 
       <!-- KPI Row 2: Invest Rate -->
       <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r);padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:24px">
-        <div style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap">Investasi</div>
+        <div style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap">'SAHAM_BBCA'</div>
         <div style="display:flex;gap:32px;flex-wrap:wrap">
           <div>
             <div style="font-size:10px;color:var(--tx3);margin-bottom:2px">Return</div>
@@ -540,7 +540,7 @@ body {
         </div>
         <div class="bcard bi">
           <div class="bcard-header">
-            <div><div class="bcard-name">Saham</div><div class="bcard-tag" id="d-inv-tag">—</div></div>
+            <div><div class="bcard-name">'INVESTASI BBCA'</div><div class="bcard-tag" id="d-inv-tag">—</div></div>
             <div class="bcard-alloc" id="d-inv-lot">—</div>
           </div>
           <div class="bcard-bal" id="d-inv-bal">—</div>
@@ -555,7 +555,7 @@ body {
           <div class="card-title">Alokasi Terakhir</div>
           <div id="alloc-bars"></div>
           <div class="cw-sm" style="margin-top:16px">
-            <canvas id="donut-c" role="img" aria-label="Donut alokasi">BCA BNI SeaBank</canvas>
+            <canvas id="donut-c" role="img" aria-label="Donut alokasi">BCA BNI 'SAHAM_BBCA'</canvas>
           </div>
         </div>
         <div class="card">
@@ -599,7 +599,7 @@ body {
             <input type="text" id="sav-in" placeholder="0" oninput="fmtF(this);previewAlokasi()" inputmode="numeric">
           </div>
           <div class="fg">
-            <label>Investasi BBCA (Rp)</label>
+            <label>'SAHAM_BBCA' BBCA (Rp)</label>
             <input type="text" id="inv-in" placeholder="0" oninput="fmtF(this);previewAlokasi()" inputmode="numeric">
           </div>
           <div class="fg">
@@ -612,7 +612,7 @@ body {
           </div>
           <div id="alloc-preview" style="background:var(--s2);border-radius:var(--r2);padding:12px;margin-bottom:12px;display:none;font-size:11px;font-family:var(--fmono)">
             <div style="color:var(--tx3);margin-bottom:8px">Preview pembagian</div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--inv)">Investasi BBCA</span><span id="pv-inv">—</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--inv)">'SAHAM_BBCA' BBCA</span><span id="pv-inv">—</span></div>
             <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--bni)">Dana Darurat (BNI)</span><span id="pv-bni">—</span></div>
             <div style="display:flex;justify-content:space-between"><span style="color:var(--bca)">Tabungan (BCA)</span><span id="pv-bca">—</span></div>
           </div>
@@ -626,12 +626,12 @@ body {
           <div class="bk-cards">
             <div class="bk bca"><div class="bk-left"><div class="bk-name">BCA</div><div class="bk-role">Tabungan</div></div><div class="bk-right"><div class="bk-amt" id="r-bca">—</div><div class="bk-pct" id="r-bca-p">—</div></div></div>
             <div class="bk bni"><div class="bk-left"><div class="bk-name">BNI</div><div class="bk-role">Dana Darurat</div></div><div class="bk-right"><div class="bk-amt" id="r-bni">—</div><div class="bk-pct" id="r-bni-p">—</div></div></div>
-            <div class="bk sea"><div class="bk-left"><div class="bk-name">Investasi</div><div class="bk-role">Investasi (BBCA)</div></div><div class="bk-right"><div class="bk-amt" id="r-inv">—</div><div class="bk-pct" id="r-inv-p">—</div></div></div>
+            <div class="bk sea"><div class="bk-left"><div class="bk-name">'SAHAM_BBCA'</div><div class="bk-role">'SAHAM_BBCA' (BBCA)</div></div><div class="bk-right"><div class="bk-amt" id="r-inv">—</div><div class="bk-pct" id="r-inv-p">—</div></div></div>
           </div>
           <div style="margin-top:16px">
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bca)"></div>BCA</div><div class="abar-val" id="bb-bca-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bca" style="background:var(--bca);width:0%"></div></div></div>
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bni)"></div>BNI</div><div class="abar-val" id="bb-bni-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bni" style="background:var(--bni);width:0%"></div></div></div>
-            <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--inv)"></div>Saham</div><div class="abar-val" id="bb-inv-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-inv" style="background:var(--inv);width:0%"></div></div></div>
+            <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--inv)"></div>'SAHAM_BBCA'</div><div class="abar-val" id="bb-inv-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-inv" style="background:var(--inv);width:0%"></div></div></div>
           </div>
         </div>
 
@@ -688,7 +688,7 @@ body {
           <button class="ftab" onclick="setFilt('income',this)">Pemasukan</button>
           <button class="ftab" onclick="setFilt('expense',this)">Pengeluaran</button>
           <button class="ftab" onclick="setFilt('tabungan',this)">Tabungan</button>
-          <button class="ftab" onclick="setFilt('investasi',this)">Investasi</button>
+          <button class="ftab" onclick="setFilt('investasi',this)">'SAHAM_BBCA'</button>
         </div>
         <button class="add-btn" onclick="openModal()">+ Transaksi</button>
       </div>
@@ -780,7 +780,7 @@ body {
           <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbca-pl">—</span></div>
         </div>
         <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:16px">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:4px">Dana Investasi</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:4px">Dana 'SAHAM_BBCA'</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div>
               <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Dialokasikan</div>
@@ -825,13 +825,13 @@ body {
       <div class="card" style="margin-bottom:16px">
         <div class="card-title">Catat Transaksi DCA</div>
         <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:4px">
-          <div class="mfg"><label>Saham</label>
+          <div class="mfg"><label>'SAHAM_BBCA'</label>
             <select id="dca-ticker" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%;font-family:var(--fmono)">
               <option value="BBCA">BBCA</option>
             </select>
           </div>
           <div class="mfg"><label>Aksi</label>
-            <select id="dca-action" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%">
+            <select id="dca-type" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%">
               <option value="buy">Beli</option>
               <option value="sell">Jual</option>
             </select>
@@ -848,7 +848,7 @@ body {
         <div class="tx-scroll">
           <table class="tx-tbl">
             <thead><tr>
-              <th>Tanggal</th><th>Saham</th><th>Aksi</th><th>Lot</th>
+              <th>Tanggal</th><th>'SAHAM_BBCA'</th><th>Aksi</th><th>Lot</th>
               <th style="text-align:right">Harga</th><th style="text-align:right">Nilai</th><th></th>
             </tr></thead>
             <tbody id="dca-body"></tbody>
@@ -881,7 +881,7 @@ body {
       </button>
       <button class="bot-tab" onclick="switchTab('investasi',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        Investasi
+        'Investasi'
       </button>
     </div>
   </nav>
@@ -924,7 +924,7 @@ body {
       <div class="type-btn" id="opt-in"  onclick="setType('income')">+ Pemasukan</div>
       <div class="type-btn s-out" id="opt-out" onclick="setType('expense')">− Pengeluaran</div>
       <div class="type-btn" id="opt-sav" onclick="setType('tabungan')">⬆ Tabungan</div>
-      <div class="type-btn" id="opt-inv" onclick="setType('investasi')">◆ Investasi</div>
+      <div class="type-btn" id="opt-inv" onclick="setType('investasi')">◆ 'SAHAM_BBCA'</div>
     </div>
     <div class="mfg"><label>Keterangan</label><input type="text" id="m-desc"></div>
     <div class="m2">
@@ -936,7 +936,7 @@ body {
         <select id="m-bank">
           <option value="BCA">BCA</option>
           <option value="BNI">BNI</option>
-          <option value="Investasi">Investasi</option>
+          <option value="'SAHAM_BBCA'">'SAHAM_BBCA'</option>
           <option value="Cash">Cash</option>
         </select>
       </div>
@@ -954,12 +954,14 @@ body {
 </div>
 
 <script>
+let latYM = null;
+  
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyYXL1h-We_a6XGNaun2-qcRrPbkq3b4A5tJadj1BCe4BpeE74jR3EOXiVZqbvvDrU/exec';
 const BNI_MAX=25000000,BCA_TARGET=150000000,DEADLINE='2027-10';
 const MNS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-const TAG={BCA:'tag-bca',BNI:'tag-bni',SeaBank:'tag-sea',Cash:'tag-cash'};
+const TAG={BCA:'tag-bca',BNI:'tag-bni','SAHAM_BBCA':'tag-sea',Cash:'tag-cash'};
 
-let DB={transactions:[],salaries:{},balances:{BCA:0,BNI:0,Investasi:0},riel:[]};
+let DB={transactions:[],salaries:{},balances:{BCA:0,BNI:0,'SAHAM_BBCA':0},riel:[]};
 let txFilter='all',editId=null,mType='expense';
 
 const fmt  =n=>'Rp '+Math.round(n).toLocaleString('id-ID');
@@ -977,7 +979,7 @@ const setSty  =(id,p,v)=>{const e=el(id);if(e)e.style[p]=v;};
 function fmtF(inp){const v=inp.value.replace(/\D/g,'');inp.value=v?Number(v).toLocaleString('id-ID'):'';}
 
 async function api(p){
-  const r=await fetch(SCRIPT_URL+'?action='+p.action,{method:'POST',body:JSON.stringify(p),headers:{'Content-Type':'text/plain'}});
+  const r=await fetch(SCRIPT_URL+'?type='+p.type,{method:'POST',body:JSON.stringify(p),headers:{'Content-Type':'text/plain'}});
   const d=await r.json();if(d.error)throw new Error(d.error);return d;
 }
 
@@ -986,7 +988,7 @@ function setSync(s,msg){const b=el('sync-bar');b.className='sync '+s;setTxt('syn
 async function syncNow(){
   setSync('loading','syncing');
   try{
-    const d=await api({action:'getAll'});
+    const d=await api({type:'getAll'});
     DB.transactions=(d.transactions||[]).map(t=>({...t,amount:Number(t.amount)||0}));
     DB.salaries={};
     (d.salaries||[]).forEach(s=>{
@@ -1001,7 +1003,7 @@ async function syncNow(){
       if(!ym) return;
       DB.salaries[ym]={...s,ym,salary:Number(s.salary)||0,bca:Number(s.bca)||0,bni:Number(s.bni)||0,inv:Number(s.inv||s.sea)||0};
     });
-    DB.balances={BCA:0,BNI:0,Investasi:0,...d.balances};
+    DB.balances={BCA:0,BNI:0,'SAHAM_BBCA':0,...d.balances};
     DB.riel=(d.riel||[]).map(t=>{
       let type = String(t.type||'').trim().toLowerCase();
       if(!type) type = (t.cat==='Uang Masuk') ? 'income' : 'expense';
@@ -1010,7 +1012,7 @@ async function syncNow(){
     });
     // Load StockTx for dashboard investasi card
     try {
-      const sd = await api({action:'getStockTx'});
+      const sd = await api({type:'getStockTx'});
       if(sd.ok && sd.txs) invStockTx = sd.txs;
     } catch(e){}
     setSync('ok','synced · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
@@ -1027,7 +1029,7 @@ function switchTab(id,btn){
   if(sib)sib.classList.add('active');
   if(id==='catatan'){renderTx();populateCatMonthFilter();renderCatChart();renderExpTrend();}
   if(id==='riel'){renderRiel();populateRielMonthFilter();renderRielCatChart();renderRielTrend();}
-  if(id==='investasi')initInvestasi();
+  if(id==='SAHAM_BBCA')init();
 }
 
 // ── ALOKASI ──
@@ -1096,22 +1098,28 @@ async function hitungAlokasi(){
     if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
     // Hapus transaksi tabungan/investasi lama bulan ini
     const oldTxs=DB.transactions.filter(t=>t.date.startsWith(ym)&&(t.type==='tabungan'||t.type==='investasi'));
-    await Promise.all(oldTxs.map(t=>api({action:'deleteTransaction',id:t.id}))).catch(()=>{});
+    await Promise.all(oldTxs.map(t=>api({type:'deleteTransaction',id:t.id}))).catch(()=>{});
   }
 
   const d=ym+'-01';
   showLoad();
   try{
     const jobs=[
-      api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,inv}),
+      api({type:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,inv}),
       // Update saldo bank
-      bca>0?api({action:'updateBalance',bank:'BCA',balance:DB.balances.BCA+bca}):Promise.resolve(),
-      bni>0?api({action:'updateBalance',bank:'BNI',balance:DB.balances.BNI+bni}):Promise.resolve(),
-      inv>0?api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+inv}):Promise.resolve(),
+      bca>0?api({type:'updateBalance',bank:'BCA',balance:DB.balances.BCA+bca}):Promise.resolve(),
+      bni>0?api({type:'updateBalance',bank:'BNI',balance:DB.balances.BNI+bni}):Promise.resolve(),
+      inv > 0
+  ? api({
+      type: 'updateBalance',
+      bank: 'SAHAM_BBCA',
+      balance: (DB.balances['SAHAM_BBCA'] || 0) + inv
+    })
+  : Promise.resolve(),
       // Auto-catat di Catatan
-      bca>0?api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BCA',type:'tabungan',bank:'BCA',amount:bca}):Promise.resolve(),
-      bni>0?api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BNI',type:'tabungan',bank:'BNI',amount:bni}):Promise.resolve(),
-      inv>0?api({action:'addTransaction',id:uid(),date:d,desc:'Investasi '+ymLbl(ym),cat:'Saham',type:'investasi',bank:'Saham',amount:inv}):Promise.resolve(),
+      bca>0?api({type:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BCA',type:'tabungan',bank:'BCA',amount:bca}):Promise.resolve(),
+      bni>0?api({type:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BNI',type:'tabungan',bank:'BNI',amount:bni}):Promise.resolve(),
+      inv>0?api({type:'addTransaction',id:uid(),date:d,desc:"SAHAM BBCA " + ymLbl(ym),cat:'SAHAM_BBCA',type:'investasi',bank:'SAHAM_BBCA',amount:inv}):Promise.resolve(),
     ];
     await Promise.all(jobs);
     await syncNow();
@@ -1140,7 +1148,7 @@ function renderSalaryHistory(){
 }
 async function delSalary(id,ym){
   if(!confirm('Hapus riwayat '+ymLbl(ym)+'?'))return;
-  try{await api({action:'deleteSalary',id});await syncNow();}catch(e){alert(e.message);}
+  try{await api({type:'deleteSalary',id});await syncNow();}catch(e){alert(e.message);}
 }
 
 // ── TRANSAKSI ──
@@ -1259,7 +1267,7 @@ const TYPE_CATS={
   income:   ['Gaji','Bonus','Uang Arisan','Bayar Hutang','Lainnya'],
   expense:  ['Tagihan','Bayar Arisan','Keluarga','Bayar Hutang','Beli Riel','Lainnya'],
   tabungan: ['BCA','BNI'],
-  investasi:['Saham'],
+  investasi:['SAHAM_BBCA'],
 };
 
 function setType(t){
@@ -1277,7 +1285,7 @@ function setType(t){
     el('m-cat').onchange=()=>{el('m-bank').value=el('m-cat').value;};
   }else if(t==='investasi'){
     bankRow.style.display='none';
-    el('m-bank').value='Investasi';
+    el('m-bank').value='SAHAM_BBCA';
     el('m-cat').onchange=null;
   }else{
     bankRow.style.display='';
@@ -1303,7 +1311,7 @@ function openModal(id){
     setType('expense');
     el('m-desc').value='';el('m-amt').value='';
     el('m-date').value=today();
-    el('m-bank').value='Investasi';
+    el('m-bank').value='SAHAM_BBCA';
   }
   el('modal-bg').classList.add('open');
 }
@@ -1316,22 +1324,22 @@ async function saveTx(){
   if(!desc||!amount||!date){alert('Isi semua field');return;}
   closeModal();showLoad();
   try{
-    if(editId)await api({action:'editTransaction',id:editId,type,bank,desc,amount,date,cat});
-    else await api({action:'addTransaction',id:uid(),type,bank,desc,amount,date,cat});
+    if(editId)await api({type:'editTransaction',id:editId,type,bank,desc,amount,date,cat});
+    else await api({type:'addTransaction',id:uid(),type,bank,desc,amount,date,cat});
     await syncNow();
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
 async function delTx(id){
   if(!confirm('Hapus transaksi?'))return;showLoad();
-  try{await api({action:'deleteTransaction',id});await syncNow();}catch(e){setSync('err','error: '+e.message);}
+  try{await api({type:'deleteTransaction',id});await syncNow();}catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
 
 // ── RENDER ──
 let donutC=null,trendC=null;
 function renderAll(){
-  const{BCA:bca,BNI:bni,SeaBank:sea}=DB.balances;
+  const{BCA:bca,BNI:bni,'SAHAM_BBCA':SAHAM}=DB.balances;
   const total=bca+bni;
 
   // Bulan ini
@@ -1364,13 +1372,13 @@ function renderAll(){
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
   setTxt('d-bca-pct',bP+'%');setTxt('d-bni-pct',nP+'%');
 
-  // Investasi card — hitung dari StockTx
+  // 'SAHAM_BBCA' card — hitung dari StockTx
   const invPos = calcInvPositions();
   const invTickers = Object.keys(invPos).filter(t=>invPos[t].lot>0);
   const invTotalVal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPrices[t]||0)),0);
   const invTotalLot = invTickers.reduce((s,t)=>s+invPos[t].lot,0);
   setTxt('d-inv-bal', invTotalVal>0?'Rp '+fmt(invTotalVal):'—');
-  setTxt('d-inv-tag', invTickers.length?invTickers.join(' · '):'Saham');
+  setTxt('d-inv-tag', invTickers.length?invTickers.join(' · '):'SAHAM_BBCA');
   setTxt('d-inv-lot', invTotalLot?invTotalLot+' lot total':'—');
   // P&L pct untuk progress bar
   const invModal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPos[t].avg_beli||0)),0);
@@ -1395,7 +1403,7 @@ function renderAll(){
   if(el('kpi-invest-rate')) el('kpi-invest-rate').style.color=invRet2>=0?'var(--grn)':'var(--red)';
   if(el('kpi-invest-sisa')) el('kpi-invest-sisa').style.color=invSisa2>=0?'var(--acc2)':'var(--red)';
   setTxt('top-month',ymLbl(latYM||ym));
-  if(latYM){
+  if(typeof latYM !== 'undefined' && latYM){
     const s=DB.salaries[latYM];
     setTxt('d-bca-mo',fmtS(s.bca));
     setTxt('d-bni-mo',fmtS(s.bni));
@@ -1407,7 +1415,7 @@ function renderAll(){
     el('alloc-bars').innerHTML=[
       ['BCA',bkP,fmt(s.bca),'var(--bca)'],
       ['BNI',nkP,fmt(s.bni),'var(--bni)'],
-      ['Investasi',skP,fmt(s.inv),'var(--inv)']
+      ['SAHAM_BBCA',skP,fmt(s.inv),'var(--inv)']
     ].map(([n,p,a,c])=>`
       <div class="abar">
         <div class="abar-top">
@@ -1421,7 +1429,7 @@ function renderAll(){
   // Donut
   const dd=[bca,bni,sea].some(v=>v>0)?[bca,bni,sea]:[1,1,1];
   if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
-  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','Investasi'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
+  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SAHAM_BBCA'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
   // Trend
   const now=new Date();const mos=[],lbls=[];
@@ -1437,7 +1445,7 @@ function renderAll(){
     DB.transactions.filter(t=>t.date.startsWith(m+'-')&&t.type==='expense').forEach(tx=>{
       if(tx.bank==='BCA')cumBCA=Math.max(0,cumBCA-tx.amount);
       if(tx.bank==='BNI')cumBNI=Math.max(0,cumBNI-tx.amount);
-      if(tx.bank==='Investasi')cumInv=Math.max(0,cumInv-tx.amount);
+      if(tx.bank==='SAHAM_BBCA')cumInv=Math.max(0,cumInv-tx.amount);
     });
     bD.push(cumBCA);nD.push(cumBNI);iD.push(cumInv);
   });
@@ -1445,14 +1453,14 @@ function renderAll(){
   else trendC=new Chart(el('trend-c'),{type:'line',data:{labels:lbls,datasets:[
     {label:'BCA',data:bD,borderColor:'#3b9eff',backgroundColor:'rgba(59,158,255,.08)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#3b9eff'},
     {label:'BNI',data:nD,borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#f97316'},
-    {label:'Investasi',data:iD,borderColor:'#10d9a0',backgroundColor:'rgba(16,217,160,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#10d9a0'}
+    {label:'SAHAM_BBCA',data:iD,borderColor:'#10d9a0',backgroundColor:'rgba(16,217,160,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#10d9a0'}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtS(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtS(v)},border:{display:false}}}}});
 
   // Projection
   const pill=el('proj-pill');
-  if(latYM){
+  if(typeof latYM !== 'undefined' && latYM){
     const s=DB.salaries[latYM],savTot=s.bca+s.bni+s.inv;
-    const bniMo=s.bni,bcaFull=savTot-SEA_FIXED;
+    const bniMo=s.bni,bcaFull=savTot - s.inv;
     const bniGap=Math.max(0,BNI_MAX-bni);
     const bniML=bniGap<=0||bniMo<=0?0:Math.ceil(bniGap/bniMo);
     const bcaGap=Math.max(0,BCA_TARGET-bca);
@@ -1484,7 +1492,7 @@ async function confirmReset(){
   if(!confirm('Reset semua data?'))return;
   if(!confirm('Yakin? Tidak bisa dibatalkan.'))return;
   showLoad();
-  try{await api({action:'resetAll'});if(donutC){donutC.destroy();donutC=null;}if(trendC){trendC.destroy();trendC=null;}if(catDonutC){catDonutC.destroy();catDonutC=null;}if(expTrendC){expTrendC.destroy();expTrendC=null;}if(rielDonutC){rielDonutC.destroy();rielDonutC=null;}if(rielTrendC){rielTrendC.destroy();rielTrendC=null;}await syncNow();}catch(e){setSync('err','error: '+e.message);}
+  try{await api({type:'resetAll'});if(donutC){donutC.destroy();donutC=null;}if(trendC){trendC.destroy();trendC=null;}if(catDonutC){catDonutC.destroy();catDonutC=null;}if(expTrendC){expTrendC.destroy();expTrendC=null;}if(rielDonutC){rielDonutC.destroy();rielDonutC=null;}if(rielTrendC){rielTrendC.destroy();rielTrendC=null;}await syncNow();}catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
 
@@ -1594,8 +1602,8 @@ async function saveRiel(){
   if(!desc||!amount||!date){alert('Isi semua field');return;}
   closeRielModal();showLoad();
   try{
-    if(rielEditId)await api({action:'editRiel',id:rielEditId,desc,amount,date,cat,type});
-    else await api({action:'addRiel',id:uid(),desc,amount,date,cat,type});
+    if(rielEditId)await api({type:'editRiel',id:rielEditId,desc,amount,date,cat,type});
+    else await api({type:'addRiel',id:uid(),desc,amount,date,cat,type});
     await syncNow();
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
@@ -1604,7 +1612,7 @@ async function saveRiel(){
 async function delRiel(id){
   if(!confirm('Hapus?'))return;showLoad();
   try{
-    await api({action:'deleteRiel',id:String(id)});
+    await api({type:'deleteRiel',id:String(id)});
     await syncNow();
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
@@ -1668,7 +1676,7 @@ function calcPositions(){
     const t=tx.ticker.toUpperCase();
     if(!pos[t])return;
     const lot=Number(tx.lot)||0, price=Number(tx.price)||0;
-    if(tx.action==='buy'){
+    if(tx.type==='buy'){
       pos[t].cost += lot*100*price;
       pos[t].lot  += lot;
     } else {
@@ -1696,11 +1704,11 @@ async function tambahDana(){
   try{
     await Promise.all([
       // Catat di StockTx sebagai dana masuk
-      api({action:'addStockTx',id:uid(),ticker:'__DANA__',txtype:'dana',lot:0,price:amt,date:today()}),
+      api({type:'addStockTx',id:uid(),ticker:'__DANA__',type:'dana',lot:0,price:amt,date:today()}),
       // Auto-catat di Catatan sebagai investasi
-      api({action:'addTransaction',id:uid(),date:today(),desc:'Dana Investasi',cat:'Saham',type:'investasi',bank:'Investasi',amount:amt}),
-      // Update saldo Investasi
-      api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+amt}),
+      api({type:'addTransaction',id:uid(),date:today(),desc:'Dana Saham BBCA',cat:'SAHAM_BBCA',type:'investasi',bank:'SAHAM_BBCA',amount:amt}),
+      // Update saldo 'SAHAM_BBCA'
+      api({type:'updateBalance',bank:'SAHAM_BBCA',balance:(DB.balances.SAHAM BBCA||0)+amt}),
     ]);
     el('inv-dana-input').value='';
     await syncNow();
@@ -1709,11 +1717,11 @@ async function tambahDana(){
 }
 
 function calcDanaTotal(){
-  return invStockTx.filter(t=>t.txtype==='dana'||t.action==='dana').reduce((s,t)=>s+Number(t.price||0),0);
+  return invStockTx.filter(t=>t.type==='dana'||t.type==='dana').reduce((s,t)=>s+Number(t.price||0),0);
 }
 
 function calcDanaUsed(){
-  return invStockTx.filter(t=>(t.txtype==='buy'||t.action==='buy')).reduce((s,t)=>s+Number(t.lot||0)*100*Number(t.price||0),0);
+  return invStockTx.filter(t=>(t.type==='buy'||t.type==='buy')).reduce((s,t)=>s+Number(t.lot||0)*100*Number(t.price||0),0);
 }
 
 function renderDanaBalance(){
@@ -1736,13 +1744,13 @@ function renderInvMonthly(){
   // Hitung nilai portofolio per bulan berdasarkan posisi sampai bulan itu
   const vals = mos.map(m=>{
     const endDate = m+'-31';
-    const txsUpTo = invStockTx.filter(t=>t.date<=endDate&&(t.txtype==='buy'||t.txtype==='sell'||t.action==='buy'||t.action==='sell'));
-    const pos={BBRI:{lot:0,cost:0},BMRI:{lot:0,cost:0},BBNI:{lot:0,cost:0}};
+    const txsUpTo = invStockTx.filter(t=>t.date<=endDate&&(t.type==='buy'||t.type==='sell'||t.type==='buy'||t.type==='sell'));
+    const pos={BBCA:{lot:0,cost:0}};
     txsUpTo.forEach(tx=>{
       const t=tx.ticker.toUpperCase();
       if(!pos[t])return;
       const lot=Number(tx.lot)||0,price=Number(tx.price)||0;
-      const isBuy=tx.txtype==='buy'||tx.action==='buy';
+      const isBuy=tx.type==='buy'||tx.type==='buy';
       if(isBuy){pos[t].cost+=lot*100*price;pos[t].lot+=lot;}
       else{const r=pos[t].lot>0?lot/pos[t].lot:0;pos[t].cost-=pos[t].cost*r;pos[t].lot-=lot;}
       pos[t].lot=Math.max(0,pos[t].lot);pos[t].cost=Math.max(0,pos[t].cost);
@@ -1769,8 +1777,8 @@ function renderInvMonthly(){
 async function fetchStockPrices(){
   try {
     const [pd, sd] = await Promise.all([
-      api({action:'getStockPrices'}),
-      api({action:'getStockTx'})
+      api({type:'getStockPrices'}),
+      api({type:'getStockTx'})
     ]);
     if(pd.ok && pd.prices){
       // normalize keys to uppercase
@@ -1851,15 +1859,15 @@ function renderInvDonut(pos){
 // ── DCA CRUD ──
 async function saveDCA(){
   const ticker=el('dca-ticker').value;
-  const action=el('dca-action').value;
+  const type=el('dca-type').value;
   const lot   =parseFloat(el('dca-lot').value)||0;
   const price =parseFloat(el('dca-price').value)||0;
   const date  =el('dca-date').value;
   if(!lot||!price||!date){alert('Isi semua field');return;}
   showLoad();
   try{
-    await api({action:'addStockTx',id:uid(),ticker,txtype:action,lot,price,date});
-    const sd=await api({action:'getStockTx'});
+    await api({type:'addStockTx',id:uid(),ticker,type:type,lot,price,date});
+    const sd=await api({type:'getStockTx'});
     if(sd.ok&&sd.txs) invStockTx=sd.txs;
     updatePortfolio();
     renderDCAHistory();
@@ -1873,7 +1881,7 @@ async function delDCATx(id){
   if(!confirm('Hapus transaksi ini?'))return;
   showLoad();
   try{
-    await api({action:'deleteStockTx',id});
+    await api({type:'deleteStockTx',id});
     invStockTx=invStockTx.filter(t=>String(t.id)!==String(id));
     updatePortfolio();renderDCAHistory();
   }catch(e){setSync('err','error: '+e.message);}
@@ -1886,7 +1894,7 @@ function renderDCAHistory(){
   if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
   emp.style.display='none';
   tbody.innerHTML=txs.map(tx=>{
-    const isBuy=(tx.txtype||tx.action)==='buy';
+    const isBuy=(tx.type||tx.type)==='buy';
     const val=Number(tx.lot)*100*Number(tx.price);
     const color=STOCKS[tx.ticker.toUpperCase()]?.color||'var(--acc)';
     return`<tr>
@@ -1904,7 +1912,7 @@ function renderDCAHistory(){
   }).join('');
 }
 
-function initInvestasi(){
+function initBBCA(){
   el('dca-date').value=today();
   fetchStockPrices();
 }
