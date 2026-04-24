@@ -881,7 +881,7 @@ body {
       </button>
       <button class="bot-tab" onclick="switchTab('investasi',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-        'Investasi'
+        Investasi
       </button>
     </div>
   </nav>
@@ -1029,7 +1029,7 @@ function switchTab(id,btn){
   if(sib)sib.classList.add('active');
   if(id==='catatan'){renderTx();populateCatMonthFilter();renderCatChart();renderExpTrend();}
   if(id==='riel'){renderRiel();populateRielMonthFilter();renderRielCatChart();renderRielTrend();}
-  if(id==='SAHAM_BBCA')init();
+  if(id==='investasi') initBBCA();
 }
 
 // ── ALOKASI ──
@@ -1427,7 +1427,7 @@ function renderAll(){
   }
 
   // Donut
-  const dd=[bca,bni,sea].some(v=>v>0)?[bca,bni,sea]:[1,1,1];
+  const dd=[bca,bni,SAHAM].some(v=>v>0)?[bca,bni,SAHAM]:[1,1,1];
   if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
   else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SAHAM_BBCA'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
