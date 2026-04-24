@@ -631,7 +631,7 @@ body {
           <div style="margin-top:16px">
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bca)"></div>BCA</div><div class="abar-val" id="bb-bca-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bca" style="background:var(--bca);width:0%"></div></div></div>
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bni)"></div>BNI</div><div class="abar-val" id="bb-bni-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bni" style="background:var(--bni);width:0%"></div></div></div>
-            <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--inv)"></div>Investasi</div><div class="abar-val" id="bb-inv-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-inv" style="background:var(--inv);width:0%"></div></div></div>
+            <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--inv)"></div>Saham</div><div class="abar-val" id="bb-inv-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-inv" style="background:var(--inv);width:0%"></div></div></div>
           </div>
         </div>
 
@@ -646,7 +646,7 @@ body {
       <div class="hist-card">
         <div class="empty" id="sal-emp" style="padding:24px">—</div>
         <table class="htbl" id="sal-tbl" style="display:none">
-          <thead><tr><th>Bulan</th><th>Ditabung</th><th>BCA</th><th>BNI</th><th>Investasi</th><th></th></tr></thead>
+          <thead><tr><th>Bulan</th><th>Ditabung</th><th>BCA</th><th>BNI</th><th>SAHAM</th><th></th></tr></thead>
           <tbody id="sal-body"></tbody>
         </table>
       </div>
@@ -1111,7 +1111,7 @@ async function hitungAlokasi(){
       // Auto-catat di Catatan
       bca>0?api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BCA',type:'tabungan',bank:'BCA',amount:bca}):Promise.resolve(),
       bni>0?api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BNI',type:'tabungan',bank:'BNI',amount:bni}):Promise.resolve(),
-      inv>0?api({action:'addTransaction',id:uid(),date:d,desc:'Investasi '+ymLbl(ym),cat:'Saham',type:'investasi',bank:'Investasi',amount:inv}):Promise.resolve(),
+      inv>0?api({action:'addTransaction',id:uid(),date:d,desc:'Investasi '+ymLbl(ym),cat:'Saham',type:'investasi',bank:'Saham',amount:inv}):Promise.resolve(),
     ];
     await Promise.all(jobs);
     await syncNow();
