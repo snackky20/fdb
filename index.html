@@ -737,28 +737,14 @@ body {
 
       <!-- KPI row -->
       <div class="inv-kpi">
-        <div class="kpi">
-          <div class="kpi-label">Nilai Portofolio</div>
-          <div class="kpi-value c-acc" id="inv-total">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Modal</div>
-          <div class="kpi-value" id="inv-modal">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Profit / Loss</div>
-          <div class="kpi-value" id="inv-pl">—</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Return</div>
-          <div class="kpi-value" id="inv-ret">—</div>
-        </div>
+        <div class="kpi"><div class="kpi-label">Nilai Portofolio</div><div class="kpi-value c-acc" id="inv-total">—</div></div>
+        <div class="kpi"><div class="kpi-label">Modal</div><div class="kpi-value" id="inv-modal">—</div></div>
+        <div class="kpi"><div class="kpi-label">Profit / Loss</div><div class="kpi-value" id="inv-pl">—</div></div>
+        <div class="kpi"><div class="kpi-label">Return</div><div class="kpi-value" id="inv-ret">—</div></div>
       </div>
 
       <!-- Stock Cards -->
       <div class="stock-grid">
-
-        <!-- BBRI -->
         <div class="stock-card" style="--sc:#e74c3c">
           <div class="stock-ticker">BBRI</div>
           <div class="stock-name">Bank Rakyat Indonesia</div>
@@ -771,8 +757,6 @@ body {
           <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbri-val">—</span></div>
           <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbri-pl">—</span></div>
         </div>
-
-        <!-- BMRI -->
         <div class="stock-card" style="--sc:#3b9eff">
           <div class="stock-ticker">BMRI</div>
           <div class="stock-name">Bank Mandiri</div>
@@ -785,8 +769,6 @@ body {
           <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bmri-val">—</span></div>
           <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bmri-pl">—</span></div>
         </div>
-
-        <!-- BBNI -->
         <div class="stock-card" style="--sc:#f97316">
           <div class="stock-ticker">BBNI</div>
           <div class="stock-name">Bank Negara Indonesia</div>
@@ -801,42 +783,54 @@ body {
         </div>
       </div>
 
-      <!-- Charts -->
+      <!-- Charts + DCA form -->
       <div class="inv-charts">
         <div class="card">
           <div class="card-title">Alokasi Portofolio</div>
           <div style="display:flex;align-items:center;gap:20px">
-            <div style="position:relative;height:180px;min-width:180px;flex:0 0 180px">
-              <canvas id="inv-donut"></canvas>
-            </div>
+            <div style="position:relative;height:180px;min-width:180px;flex:0 0 180px"><canvas id="inv-donut"></canvas></div>
             <div id="inv-legend" style="display:flex;flex-direction:column;gap:8px"></div>
           </div>
         </div>
         <div class="card">
-          <div class="card-title">Input Portofolio</div>
+          <div class="card-title">Catat Transaksi DCA</div>
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
-            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
-              <div style="font-size:11px;color:var(--tx3);font-family:var(--fmono)">Saham</div>
-              <div style="font-size:11px;color:var(--tx3)">Lot</div>
-              <div style="font-size:11px;color:var(--tx3)">Avg Beli (Rp)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="mfg"><label>Saham</label>
+                <select id="dca-ticker" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%;font-family:var(--fmono)">
+                  <option value="BBRI">BBRI</option>
+                  <option value="BMRI">BMRI</option>
+                  <option value="BBNI">BBNI</option>
+                </select>
+              </div>
+              <div class="mfg"><label>Aksi</label>
+                <select id="dca-action" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%">
+                  <option value="buy">Beli</option>
+                  <option value="sell">Jual</option>
+                </select>
+              </div>
             </div>
-            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
-              <div style="font-size:12px;font-family:var(--fmono);color:#e74c3c">BBRI</div>
-              <input type="number" id="inp-bbri-lot" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
-              <input type="number" id="inp-bbri-avg" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="mfg"><label>Lot</label><input type="number" id="dca-lot" placeholder="0" min="1" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
+              <div class="mfg"><label>Harga / Lembar (Rp)</label><input type="number" id="dca-price" placeholder="0" min="0" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
             </div>
-            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
-              <div style="font-size:12px;font-family:var(--fmono);color:#3b9eff">BMRI</div>
-              <input type="number" id="inp-bmri-lot" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
-              <input type="number" id="inp-bmri-avg" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
-            </div>
-            <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;align-items:center">
-              <div style="font-size:12px;font-family:var(--fmono);color:#f97316">BBNI</div>
-              <input type="number" id="inp-bbni-lot" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
-              <input type="number" id="inp-bbni-avg" placeholder="0" min="0" oninput="updatePortfolio()" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:6px 10px;font-size:12px;outline:none;width:100%">
-            </div>
-            <button class="btn-primary" onclick="savePortfolio()" style="margin-top:4px">Simpan</button>
+            <div class="mfg"><label>Tanggal</label><input type="date" id="dca-date" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
+            <button class="btn-primary" onclick="saveDCA()">Catat</button>
           </div>
+        </div>
+      </div>
+
+      <!-- DCA History -->
+      <div class="tx-card">
+        <div class="tx-scroll">
+          <table class="tx-tbl">
+            <thead><tr>
+              <th>Tanggal</th><th>Saham</th><th>Aksi</th><th>Lot</th>
+              <th style="text-align:right">Harga</th><th style="text-align:right">Nilai</th><th></th>
+            </tr></thead>
+            <tbody id="dca-body"></tbody>
+          </table>
+          <div class="empty" id="dca-empty">Belum ada transaksi DCA</div>
         </div>
       </div>
 
@@ -1540,137 +1534,181 @@ function renderRiel(){
 
 // ── INVESTASI ──
 const STOCKS = {
-  bbri: { ticker:'BBRI.JK', name:'Bank Rakyat Indonesia', color:'#e74c3c' },
-  bmri: { ticker:'BMRI.JK', name:'Bank Mandiri',          color:'#3b9eff' },
-  bbni: { ticker:'BBNI.JK', name:'Bank Negara Indonesia', color:'#f97316' },
+  BBRI:{ name:'Bank Rakyat Indonesia', color:'#e74c3c' },
+  BMRI:{ name:'Bank Mandiri',          color:'#3b9eff' },
+  BBNI:{ name:'Bank Negara Indonesia', color:'#f97316' },
 };
-let invPrices = { bbri:0, bmri:0, bbni:0 };
-let invDonutC = null;
-const PORTFOLIO_KEY = 'financeos_portfolio';
+let invPrices   = { BBRI:0, BMRI:0, BBNI:0 };
+let invStockTx  = []; // history DCA
+let invDonutC   = null;
 
-function loadPortfolioInputs(){
-  try {
-    const p = JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||'{}');
-    ['bbri','bmri','bbni'].forEach(s=>{
-      const lot=el('inp-'+s+'-lot'), avg=el('inp-'+s+'-avg');
-      if(lot&&p[s]){lot.value=p[s].lot||''; avg.value=p[s].avg||'';}
-    });
-  } catch(e){}
-}
-
-function savePortfolio(){
-  const p={};
-  ['bbri','bmri','bbni'].forEach(s=>{
-    p[s]={ lot:parseFloat(el('inp-'+s+'-lot').value)||0, avg:parseFloat(el('inp-'+s+'-avg').value)||0 };
+// ── HITUNG POSISI DARI HISTORY ──
+function calcPositions(){
+  const pos = { BBRI:{lot:0,cost:0}, BMRI:{lot:0,cost:0}, BBNI:{lot:0,cost:0} };
+  invStockTx.forEach(tx=>{
+    const t=tx.ticker.toUpperCase();
+    if(!pos[t])return;
+    const lot=Number(tx.lot)||0, price=Number(tx.price)||0;
+    if(tx.action==='buy'){
+      pos[t].cost += lot*100*price;
+      pos[t].lot  += lot;
+    } else {
+      // Jual — kurangi lot, cost proporsional
+      const ratio = pos[t].lot>0 ? lot/pos[t].lot : 0;
+      pos[t].cost -= pos[t].cost*ratio;
+      pos[t].lot  -= lot;
+    }
+    pos[t].lot  = Math.max(0, pos[t].lot);
+    pos[t].cost = Math.max(0, pos[t].cost);
   });
-  localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(p));
-  updatePortfolio();
-  setSync('ok','Portfolio tersimpan');
-  setTimeout(()=>setSync('ok','synced'),1500);
+  // Hitung avg beli
+  Object.keys(pos).forEach(t=>{
+    const shares = pos[t].lot*100;
+    pos[t].avg_beli = shares>0 ? Math.round(pos[t].cost/shares) : 0;
+  });
+  return pos;
 }
 
-function getPortfolio(){
-  try { return JSON.parse(localStorage.getItem(PORTFOLIO_KEY)||'{}'); } catch(e){ return {}; }
-}
-
+// ── FETCH HARGA + DATA ──
 async function fetchStockPrices(){
-  // Ambil harga via Apps Script yang baca dari GOOGLEFINANCE()
   try {
-    const d = await api({ action:'getStockPrices' });
-    if(d.ok && d.prices){
-      invPrices = d.prices;
+    const [pd, sd] = await Promise.all([
+      api({action:'getStockPrices'}),
+      api({action:'getStockTx'})
+    ]);
+    if(pd.ok && pd.prices){
+      // normalize keys to uppercase
+      Object.entries(pd.prices).forEach(([k,v])=>{ invPrices[k.toUpperCase()]=Number(v)||0; });
     }
+    if(sd.ok && sd.txs) invStockTx = sd.txs;
   } catch(e){}
-  // Update time badge
   const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-  ['bbri','bmri','bbni'].forEach(s=>{
-    const timeEl = el(s+'-time');
-    if(timeEl) timeEl.textContent = invPrices[s] ? 'Update '+now : 'Tidak tersedia';
+  ['BBRI','BMRI','BBNI'].forEach(s=>{
+    const timeEl=el(s.toLowerCase()+'-time');
+    if(timeEl) timeEl.textContent = invPrices[s]?'Update '+now:'Tidak tersedia';
   });
   updatePortfolio();
+  renderDCAHistory();
 }
 
+// ── UPDATE TAMPILAN ──
 function updatePortfolio(){
-  const p = getPortfolio();
-  // Sync inputs ke tampilan
-  ['bbri','bmri','bbni'].forEach(s=>{
-    const lotIn = el('inp-'+s+'-lot'), avgIn = el('inp-'+s+'-avg');
-    if(lotIn) p[s] = p[s]||{};
-    if(lotIn && lotIn.value) p[s].lot = parseFloat(lotIn.value)||0;
-    if(avgIn && avgIn.value) p[s].avg = parseFloat(avgIn.value)||0;
-  });
-
+  const pos = calcPositions();
   let totalVal=0, totalModal=0;
+  ['BBRI','BMRI','BBNI'].forEach(s=>{
+    const price   = invPrices[s]||0;
+    const lot     = pos[s].lot||0;
+    const avgBeli = pos[s].avg_beli||0;
+    const shares  = lot*100;
+    const modal   = shares*avgBeli;
+    const valNow  = shares*price;
+    const pl      = valNow-modal;
+    const plPct   = modal>0?(pl/modal*100):0;
+    const key     = s.toLowerCase();
 
-  ['bbri','bmri','bbni'].forEach(s=>{
-    const price   = invPrices[s] || 0;
-    const lot     = (p[s]&&p[s].lot) ? p[s].lot : 0;
-    const avgBeli = (p[s]&&p[s].avg) ? p[s].avg : 0;
-    const shares  = lot * 100; // 1 lot = 100 lembar
-    const modal   = shares * avgBeli;
-    const valNow  = shares * price;
-    const pl      = valNow - modal;
-    const plPct   = modal > 0 ? (pl/modal*100) : 0;
-
-    // Price display
-    const priceEl  = el(s+'-price');
-    const changeEl = el(s+'-change');
-    if(priceEl) priceEl.textContent = price ? 'Rp '+price.toLocaleString('id-ID') : '—';
-
-    // Lot & avg
-    const lotEl = el(s+'-lot'), avgEl = el(s+'-avg');
-    if(lotEl) lotEl.textContent = lot ? lot+' lot' : '—';
-    if(avgEl) avgEl.textContent = avgBeli ? 'Rp '+avgBeli.toLocaleString('id-ID') : '—';
-
-    // Nilai & PL
-    const valEl = el(s+'-val'), plEl = el(s+'-pl');
-    if(valEl) valEl.textContent = valNow ? 'Rp '+Math.round(valNow).toLocaleString('id-ID') : '—';
+    if(el(key+'-price')) el(key+'-price').textContent = price?'Rp '+price.toLocaleString('id-ID'):'—';
+    if(el(key+'-lot'))   el(key+'-lot').textContent   = lot?lot+' lot':'—';
+    if(el(key+'-avg'))   el(key+'-avg').textContent   = avgBeli?'Rp '+avgBeli.toLocaleString('id-ID'):'—';
+    if(el(key+'-val'))   el(key+'-val').textContent   = valNow?'Rp '+Math.round(valNow).toLocaleString('id-ID'):'—';
+    const plEl=el(key+'-pl');
     if(plEl){
-      plEl.textContent = pl ? (pl>=0?'+':'') + 'Rp '+Math.round(pl).toLocaleString('id-ID')+' ('+plPct.toFixed(1)+'%)' : '—';
-      plEl.className = 'stock-pl '+(pl>=0?'up':'dn');
+      plEl.textContent = pl?(pl>=0?'+':'')+'Rp '+Math.round(Math.abs(pl)).toLocaleString('id-ID')+(modal>0?' ('+plPct.toFixed(1)+'%)':''):'—';
+      plEl.className='stock-pl '+(pl>=0?'up':'dn');
     }
-
     totalVal   += valNow;
     totalModal += modal;
   });
 
-  const totalPL  = totalVal - totalModal;
-  const totalRet = totalModal > 0 ? (totalPL/totalModal*100) : 0;
-  setTxt('inv-total', totalVal   ? 'Rp '+Math.round(totalVal).toLocaleString('id-ID')   : '—');
-  setTxt('inv-modal', totalModal ? 'Rp '+Math.round(totalModal).toLocaleString('id-ID') : '—');
-  const plEl2 = el('inv-pl');
+  const totalPL  = totalVal-totalModal;
+  const totalRet = totalModal>0?(totalPL/totalModal*100):0;
+  setTxt('inv-total', totalVal?'Rp '+Math.round(totalVal).toLocaleString('id-ID'):'—');
+  setTxt('inv-modal', totalModal?'Rp '+Math.round(totalModal).toLocaleString('id-ID'):'—');
+  const plEl2=el('inv-pl');
   if(plEl2){
-    plEl2.textContent = totalPL ? (totalPL>=0?'+':'')+'Rp '+Math.round(totalPL).toLocaleString('id-ID') : '—';
-    plEl2.style.color = totalPL>=0 ? 'var(--grn)' : 'var(--red)';
+    plEl2.textContent=totalPL?(totalPL>=0?'+':'')+'Rp '+Math.round(Math.abs(totalPL)).toLocaleString('id-ID'):'—';
+    plEl2.style.color=totalPL>=0?'var(--grn)':'var(--red)';
   }
-  setTxt('inv-ret', totalRet ? (totalRet>=0?'+':'')+totalRet.toFixed(2)+'%' : '—');
-  if(el('inv-ret')) el('inv-ret').style.color = totalRet>=0?'var(--grn)':'var(--red)';
-
-  renderInvDonut(p);
+  const retEl=el('inv-ret');
+  if(retEl){
+    retEl.textContent=totalRet?(totalRet>=0?'+':'')+totalRet.toFixed(2)+'%':'—';
+    retEl.style.color=totalRet>=0?'var(--grn)':'var(--red)';
+  }
+  renderInvDonut(pos);
 }
 
-function renderInvDonut(p){
-  const labels=[], data=[], colors=[];
-  ['bbri','bmri','bbni'].forEach(s=>{
-    const price  = invPrices[s]||0;
-    const lot    = (p[s]&&p[s].lot)||0;
-    const val    = lot * 100 * price;
-    if(val>0){ labels.push(s.toUpperCase()); data.push(val); colors.push(STOCKS[s].color); }
+function renderInvDonut(pos){
+  const labels=[],data=[],colors=[];
+  ['BBRI','BMRI','BBNI'].forEach(s=>{
+    const val=(pos[s].lot||0)*100*(invPrices[s]||0);
+    if(val>0){labels.push(s);data.push(val);colors.push(STOCKS[s].color);}
   });
-  const canvas=el('inv-donut'); if(!canvas)return;
+  const canvas=el('inv-donut');if(!canvas)return;
   if(invDonutC){invDonutC.destroy();invDonutC=null;}
-  if(!data.length) return;
-  invDonutC=new Chart(canvas,{
-    type:'doughnut',
-    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Rp '+Math.round(c.parsed).toLocaleString('id-ID')}}}}
-  });
+  if(!data.length)return;
+  invDonutC=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Rp '+Math.round(c.parsed).toLocaleString('id-ID')}}}}});
   const leg=el('inv-legend');
   if(leg) leg.innerHTML=labels.map((l,i)=>`<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#96a6c2;font-family:var(--fmono)"><span style="width:8px;height:8px;border-radius:2px;background:${colors[i]};display:inline-block;flex-shrink:0"></span>${l}</div>`).join('');
 }
 
+// ── DCA CRUD ──
+async function saveDCA(){
+  const ticker=el('dca-ticker').value;
+  const action=el('dca-action').value;
+  const lot   =parseFloat(el('dca-lot').value)||0;
+  const price =parseFloat(el('dca-price').value)||0;
+  const date  =el('dca-date').value;
+  if(!lot||!price||!date){alert('Isi semua field');return;}
+  showLoad();
+  try{
+    await api({action:'addStockTx',id:uid(),ticker,action:action,lot,price,date});
+    const sd=await api({action:'getStockTx'});
+    if(sd.ok&&sd.txs) invStockTx=sd.txs;
+    updatePortfolio();
+    renderDCAHistory();
+    // Reset form
+    el('dca-lot').value='';el('dca-price').value='';
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+async function delDCATx(id){
+  if(!confirm('Hapus transaksi ini?'))return;
+  showLoad();
+  try{
+    await api({action:'deleteStockTx',id});
+    invStockTx=invStockTx.filter(t=>String(t.id)!==String(id));
+    updatePortfolio();renderDCAHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+function renderDCAHistory(){
+  const tbody=el('dca-body'),emp=el('dca-empty');
+  const txs=[...invStockTx].sort((a,b)=>b.date.localeCompare(a.date));
+  if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  tbody.innerHTML=txs.map(tx=>{
+    const isBuy=tx.action==='buy';
+    const val=Number(tx.lot)*100*Number(tx.price);
+    const color=STOCKS[tx.ticker.toUpperCase()]?.color||'var(--acc)';
+    return`<tr>
+      <td class="tx-date">${tx.date}</td>
+      <td style="font-family:var(--fmono);font-weight:500;color:${color}">${tx.ticker.toUpperCase()}</td>
+      <td style="font-size:11px;color:${isBuy?'var(--grn)':'var(--red)'}">${isBuy?'Beli':'Jual'}</td>
+      <td style="font-family:var(--fmono);color:var(--tx2)">${tx.lot} lot</td>
+      <td style="font-family:var(--fmono);text-align:right;color:var(--tx2)">Rp ${Number(tx.price).toLocaleString('id-ID')}</td>
+      <td style="font-family:var(--fmono);text-align:right;color:${isBuy?'var(--red)':'var(--grn)'}">
+        ${isBuy?'-':'+'}Rp ${Math.round(val).toLocaleString('id-ID')}</td>
+      <td><div class="act">
+        <button class="act-btn d" onclick="delDCATx('${String(tx.id)}')">del</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
 function initInvestasi(){
-  loadPortfolioInputs();
+  el('dca-date').value=today();
   fetchStockPrices();
 }
 
