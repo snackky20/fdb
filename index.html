@@ -25,9 +25,9 @@
   --bni:   #f97316;
   --bni-d: rgba(249,115,22,.1);
   --bni-b: rgba(249,115,22,.2);
-  --sea:   #10d9a0;
-  --sea-d: rgba(16,217,160,.1);
-  --sea-b: rgba(16,217,160,.2);
+  --inv:   #10d9a0;
+  --inv-d: rgba(16,217,160,.1);
+  --inv-b: rgba(16,217,160,.2);
   --grn:   #10d9a0;
   --red:   #f75f7e;
   --acc:   #3b9eff;
@@ -236,13 +236,13 @@ body {
 .bcard.bc::before { background: var(--bca); }
 .bcard.bn { background: linear-gradient(135deg,#251808,#321f08); border-color: rgba(249,115,22,.28); }
 .bcard.bn::before { background: var(--bni); }
-.bcard.bs { background: linear-gradient(135deg,#0e2420,#112e28); border-color: rgba(16,217,160,.28); }
-.bcard.bs::before { background: var(--sea); }
+.bcard.bi { background: linear-gradient(135deg,#151a38,#1a2050); border-color: rgba(59,158,255,.28); }
+.bcard.bi::before { background: var(--acc); }
 .bcard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
 .bcard-name { font-family: var(--fsans); font-size: 18px; font-weight: 700; }
 .bc .bcard-name { color: var(--bca); }
 .bn .bcard-name { color: var(--bni); }
-.bs .bcard-name { color: var(--sea); }
+.bs .bcard-name { color: var(--inv); }
 .bcard-tag { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--tx3); font-weight: 500; margin-top: 2px; }
 .bcard-alloc { font-family: var(--fmono); font-size: 11px; color: var(--tx3); }
 .bcard-bal { font-family: var(--fmono); font-size: 24px; font-weight: 500; letter-spacing: -.03em; color: var(--tx); margin-bottom: 14px; }
@@ -250,7 +250,7 @@ body {
 .bprog-f { height: 100%; border-radius: 99px; transition: width .7s ease; }
 .bc .bprog-f { background: var(--bca); }
 .bn .bprog-f { background: var(--bni); }
-.bs .bprog-f { background: var(--sea); }
+.bs .bprog-f { background: var(--inv); }
 .bprog-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--tx3); font-family: var(--fmono); }
 
 /* ── TWO COL ── */
@@ -325,7 +325,7 @@ body {
 .bk-left .bk-name { font-size: 13px; font-weight: 600; }
 .bca .bk-name { color: var(--bca); }
 .bni .bk-name { color: var(--bni); }
-.sea .bk-name { color: var(--sea); }
+.sea .bk-name { color: var(--inv); }
 .bk-left .bk-role { font-size: 10px; color: var(--tx3); margin-top: 2px; }
 .bk-right { text-align: right; }
 .bk-amt { font-family: var(--fmono); font-size: 17px; font-weight: 500; color: var(--tx); letter-spacing: -.02em; }
@@ -366,10 +366,12 @@ body {
 .tx-amt  { font-family: var(--fmono); font-size: 13px; font-weight: 500; text-align: right; white-space: nowrap; }
 .tx-amt.inc { color: var(--acc2); }
 .tx-amt.exp { color: var(--red); }
+.tx-amt.sav { color: var(--grn); }
+.tx-amt.inv { color: #c4b5fd; }
 .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--r3); font-size: 10px; font-weight: 500; border: 1px solid; }
 .tag-bca { background: var(--bca-d); color: var(--bca); border-color: rgba(59,158,255,.2); }
 .tag-bni { background: var(--bni-d); color: var(--bni); border-color: rgba(249,115,22,.2); }
-.tag-sea { background: var(--sea-d); color: var(--sea); border-color: rgba(16,217,160,.2); }
+.tag-sea { background: var(--sea-d); color: var(--inv); border-color: rgba(16,217,160,.2); }
 .tag-cash{ background: var(--s3); color: var(--tx3); border-color: var(--bd); }
 .act { display: flex; gap: 4px; justify-content: flex-end; }
 .act-btn { background: transparent; border: 1px solid var(--bd2); border-radius: var(--r3); color: var(--tx3); font-size: 10px; padding: 3px 9px; cursor: pointer; transition: all .13s; }
@@ -384,8 +386,10 @@ body {
 .modal-title { font-family: var(--fsans); font-size: 17px; font-weight: 700; color: var(--tx2); margin-bottom: 18px; }
 .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; }
 .type-btn { padding: 9px; border-radius: var(--r2); border: 1px solid var(--bd2); background: var(--s2); color: var(--tx3); font-size: 12px; font-weight: 500; cursor: pointer; text-align: center; transition: all .13s; font-family: var(--fsans); }
-.type-btn.s-in  { background: var(--sea-d); border-color: rgba(16,217,160,.25); color: var(--grn); }
+.type-btn.s-in  { background: rgba(59,158,255,.1); border-color: rgba(59,158,255,.25); color: var(--acc2); }
 .type-btn.s-out { background: rgba(247,95,95,.08); border-color: rgba(247,95,95,.2); color: var(--red); }
+.type-btn.s-sav { background: rgba(16,217,160,.08); border-color: rgba(16,217,160,.2); color: var(--grn); }
+.type-btn.s-inv { background: rgba(155,127,255,.1); border-color: rgba(155,127,255,.25); color: #c4b5fd; }
 .mfg { margin-bottom: 12px; }
 .mfg label { display: block; font-size: 9px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--tx3); margin-bottom: 6px; }
 .mfg input, .mfg select { width: 100%; background: var(--s2); border: 1px solid var(--bd2); border-radius: var(--r2); padding: 9px 12px; color: var(--tx); font-family: var(--fmono); font-size: 13px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
@@ -461,11 +465,11 @@ body {
     <!-- ══ DASHBOARD ══ -->
     <div class="tab-pane active" id="tab-dashboard">
 
-      <div class="kpi-row">
+      <!-- KPI Row 1: 4 metrics -->
+      <div class="kpi-row" style="margin-bottom:8px">
         <div class="kpi">
           <div class="kpi-label">Total Tabungan</div>
           <div class="kpi-value c-acc" id="kpi-total">—</div>
-          <div class="kpi-sub"></div>
         </div>
         <div class="kpi">
           <div class="kpi-label" id="kpi-gaji-lbl">Gaji Bulan Ini</div>
@@ -475,12 +479,10 @@ body {
         <div class="kpi">
           <div class="kpi-label">Pengeluaran</div>
           <div class="kpi-value c-red" id="kpi-expense">—</div>
-          <div class="kpi-sub"></div>
         </div>
         <div class="kpi">
           <div class="kpi-label">Savings Bersih</div>
           <div class="kpi-value c-tx" id="kpi-savings">—</div>
-          <div class="kpi-sub"></div>
         </div>
         <div class="kpi rate-kpi">
           <svg class="rate-ring" viewBox="0 0 48 48" width="48" height="48">
@@ -498,6 +500,24 @@ body {
         </div>
       </div>
 
+      <!-- KPI Row 2: Invest Rate -->
+      <div style="background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r);padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+        <div style="font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap">Investasi</div>
+        <div style="display:flex;gap:32px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:10px;color:var(--tx3);margin-bottom:2px">Return</div>
+            <div class="kpi-value" id="kpi-invest-rate" style="font-size:18px;color:var(--acc2)">—</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--tx3);margin-bottom:2px">Nilai Portofolio</div>
+            <div class="kpi-value" id="kpi-invest-sub" style="font-size:18px;color:var(--tx2)">—</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--tx3);margin-bottom:2px">Sisa Dana</div>
+            <div class="kpi-value" id="kpi-invest-sisa" style="font-size:18px;color:var(--tx2)">—</div>
+          </div>
+        </div>
+      </div>
       <!-- Bank Cards -->
       <div class="bank-row">
         <div class="bcard bc">
@@ -518,14 +538,14 @@ body {
           <div class="bprog"><div class="bprog-f" id="d-bni-prog" style="width:0%"></div></div>
           <div class="bprog-meta"><span id="d-bni-pct">0%</span></div>
         </div>
-        <div class="bcard bs">
+        <div class="bcard bi">
           <div class="bcard-header">
-            <div><div class="bcard-name">SeaBank</div><div class="bcard-tag">Dana Cadangan</div></div>
-            <div class="bcard-alloc"></div>
+            <div><div class="bcard-name">Saham</div><div class="bcard-tag" id="d-inv-tag">—</div></div>
+            <div class="bcard-alloc" id="d-inv-lot">—</div>
           </div>
-          <div class="bcard-bal" id="d-sea-bal">Rp 0</div>
-          <div class="bprog"><div class="bprog-f" style="width:100%"></div></div>
-          <div class="bprog-meta"></div>
+          <div class="bcard-bal" id="d-inv-bal">—</div>
+          <div class="bprog"><div class="bprog-f" id="d-inv-prog" style="width:0%;background:var(--acc)"></div></div>
+          <div class="bprog-meta"><span id="d-inv-pct" style="color:var(--acc)">—</span></div>
         </div>
       </div>
 
@@ -575,16 +595,26 @@ body {
         <div class="form-card">
           <div class="form-title">Alokasi Tabungan</div>
           <div class="fg">
-            <label>Uang yang ditabung (Rp)</label>
-            <input type="text" id="sav-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
+            <label>Total Ditabung (Rp)</label>
+            <input type="text" id="sav-in" placeholder="0" oninput="fmtF(this);previewAlokasi()" inputmode="numeric">
           </div>
           <div class="fg">
-            <label>Gaji  (Rp)</label>
+            <label>Investasi BBCA (Rp)</label>
+            <input type="text" id="inv-in" placeholder="0" oninput="fmtF(this);previewAlokasi()" inputmode="numeric">
+          </div>
+          <div class="fg">
+            <label>Gaji Bulan Ini (Rp)</label>
             <input type="text" id="gaji-in" placeholder="0" oninput="fmtF(this)" inputmode="numeric">
           </div>
           <div class="fg">
             <label>Bulan</label>
             <input type="month" id="sav-mo">
+          </div>
+          <div id="alloc-preview" style="background:var(--s2);border-radius:var(--r2);padding:12px;margin-bottom:12px;display:none;font-size:11px;font-family:var(--fmono)">
+            <div style="color:var(--tx3);margin-bottom:8px">Preview pembagian</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--inv)">Investasi BBCA</span><span id="pv-inv">—</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--bni)">Dana Darurat (BNI)</span><span id="pv-bni">—</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--bca)">Tabungan (BCA)</span><span id="pv-bca">—</span></div>
           </div>
           <button class="btn-primary" onclick="hitungAlokasi()">Hitung</button>
         </div>
@@ -596,12 +626,12 @@ body {
           <div class="bk-cards">
             <div class="bk bca"><div class="bk-left"><div class="bk-name">BCA</div><div class="bk-role">Tabungan</div></div><div class="bk-right"><div class="bk-amt" id="r-bca">—</div><div class="bk-pct" id="r-bca-p">—</div></div></div>
             <div class="bk bni"><div class="bk-left"><div class="bk-name">BNI</div><div class="bk-role">Dana Darurat</div></div><div class="bk-right"><div class="bk-amt" id="r-bni">—</div><div class="bk-pct" id="r-bni-p">—</div></div></div>
-            <div class="bk sea"><div class="bk-left"><div class="bk-name">SeaBank</div><div class="bk-role">Dana Cadangan</div></div><div class="bk-right"><div class="bk-amt" id="r-sea">—</div><div class="bk-pct" id="r-sea-p">—</div></div></div>
+            <div class="bk sea"><div class="bk-left"><div class="bk-name">Investasi</div><div class="bk-role">Investasi (BBCA)</div></div><div class="bk-right"><div class="bk-amt" id="r-inv">—</div><div class="bk-pct" id="r-inv-p">—</div></div></div>
           </div>
           <div style="margin-top:16px">
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bca)"></div>BCA</div><div class="abar-val" id="bb-bca-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bca" style="background:var(--bca);width:0%"></div></div></div>
             <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--bni)"></div>BNI</div><div class="abar-val" id="bb-bni-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-bni" style="background:var(--bni);width:0%"></div></div></div>
-            <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--sea)"></div>SeaBank</div><div class="abar-val" id="bb-sea-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-sea" style="background:var(--sea);width:0%"></div></div></div>
+            <div class="abar"><div class="abar-top"><div class="abar-name"><div class="adot" style="background:var(--inv)"></div>Investasi</div><div class="abar-val" id="bb-inv-v">—</div></div><div class="bar-t"><div class="bar-f" id="bb-inv" style="background:var(--inv);width:0%"></div></div></div>
           </div>
         </div>
 
@@ -616,7 +646,7 @@ body {
       <div class="hist-card">
         <div class="empty" id="sal-emp" style="padding:24px">—</div>
         <table class="htbl" id="sal-tbl" style="display:none">
-          <thead><tr><th>Bulan</th><th>Ditabung</th><th>BCA</th><th>BNI</th><th>SeaBank</th><th></th></tr></thead>
+          <thead><tr><th>Bulan</th><th>Ditabung</th><th>BCA</th><th>BNI</th><th>Investasi</th><th></th></tr></thead>
           <tbody id="sal-body"></tbody>
         </table>
       </div>
@@ -655,11 +685,10 @@ body {
       <div class="toolbar">
         <div class="ftabs">
           <button class="ftab on" onclick="setFilt('all',this)">Semua</button>
-          <button class="ftab" onclick="setFilt('expense',this)">Pengeluaran</button>
           <button class="ftab" onclick="setFilt('income',this)">Pemasukan</button>
-          <button class="ftab" onclick="setFilt('BCA',this)">BCA</button>
-          <button class="ftab" onclick="setFilt('BNI',this)">BNI</button>
-          <button class="ftab" onclick="setFilt('SeaBank',this)">SeaBank</button>
+          <button class="ftab" onclick="setFilt('expense',this)">Pengeluaran</button>
+          <button class="ftab" onclick="setFilt('tabungan',this)">Tabungan</button>
+          <button class="ftab" onclick="setFilt('investasi',this)">Investasi</button>
         </div>
         <button class="add-btn" onclick="openModal()">+ Transaksi</button>
       </div>
@@ -735,88 +764,82 @@ body {
     <!-- ══ INVESTASI ══ -->
     <div class="tab-pane" id="tab-investasi">
 
-      <!-- KPI row -->
-      <div class="inv-kpi">
-        <div class="kpi"><div class="kpi-label">Nilai Portofolio</div><div class="kpi-value c-acc" id="inv-total">—</div></div>
-        <div class="kpi"><div class="kpi-label">Modal</div><div class="kpi-value" id="inv-modal">—</div></div>
-        <div class="kpi"><div class="kpi-label">Profit / Loss</div><div class="kpi-value" id="inv-pl">—</div></div>
-        <div class="kpi"><div class="kpi-label">Return</div><div class="kpi-value" id="inv-ret">—</div></div>
-      </div>
 
-      <!-- Stock Cards -->
-      <div class="stock-grid">
-        <div class="stock-card" style="--sc:#e74c3c">
-          <div class="stock-ticker">BBRI</div>
-          <div class="stock-name">Bank Rakyat Indonesia</div>
-          <div class="stock-price" id="bbri-price">—</div>
-          <div class="stock-change" id="bbri-change">—</div>
-          <div class="price-badge"><span class="dot"></span><span id="bbri-time">memuat...</span></div>
-          <hr class="stock-divider">
-          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bbri-lot">—</span></div>
-          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bbri-avg">—</span></div>
-          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbri-val">—</span></div>
-          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbri-pl">—</span></div>
-        </div>
+      <!-- Stock Card BBCA -->
+      <div style="display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:12px;margin-bottom:24px">
         <div class="stock-card" style="--sc:#3b9eff">
-          <div class="stock-ticker">BMRI</div>
-          <div class="stock-name">Bank Mandiri</div>
-          <div class="stock-price" id="bmri-price">—</div>
-          <div class="stock-change" id="bmri-change">—</div>
-          <div class="price-badge"><span class="dot"></span><span id="bmri-time">memuat...</span></div>
+          <div class="stock-ticker">BBCA</div>
+          <div class="stock-name">Bank Central Asia</div>
+          <div class="stock-price" id="bbca-price">—</div>
+          <div class="stock-change" id="bbca-change">—</div>
+          <div class="price-badge"><span class="dot"></span><span id="bbca-time">memuat...</span></div>
           <hr class="stock-divider">
-          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bmri-lot">—</span></div>
-          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bmri-avg">—</span></div>
-          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bmri-val">—</span></div>
-          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bmri-pl">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bbca-lot">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bbca-avg">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbca-val">—</span></div>
+          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbca-pl">—</span></div>
         </div>
-        <div class="stock-card" style="--sc:#f97316">
-          <div class="stock-ticker">BBNI</div>
-          <div class="stock-name">Bank Negara Indonesia</div>
-          <div class="stock-price" id="bbni-price">—</div>
-          <div class="stock-change" id="bbni-change">—</div>
-          <div class="price-badge"><span class="dot"></span><span id="bbni-time">memuat...</span></div>
-          <hr class="stock-divider">
-          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bbni-lot">—</span></div>
-          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bbni-avg">—</span></div>
-          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbni-val">—</span></div>
-          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbni-pl">—</span></div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:16px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:4px">Dana Investasi</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Dialokasikan</div>
+              <div class="kpi-value" id="inv-dana-total" style="font-size:20px;color:var(--acc2)">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Terpakai</div>
+              <div class="kpi-value" id="inv-dana-used" style="font-size:20px;color:var(--red)">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Sisa Dana</div>
+              <div class="kpi-value" id="inv-dana-sisa" style="font-size:20px;color:var(--grn)">—</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Lot Total</div>
+              <div class="kpi-value" id="inv-lot-total" style="font-size:20px;color:var(--tx2)">—</div>
+            </div>
+          </div>
+          <div style="margin-top:8px">
+            <div style="font-size:11px;color:var(--tx3);margin-bottom:6px">Tambah Dana (Rp)</div>
+            <div style="display:flex;gap:8px">
+              <input type="text" id="inv-dana-input" placeholder="0" oninput="fmtF(this)" inputmode="numeric"
+                style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;flex:1">
+              <button class="btn-primary" onclick="tambahDana()" style="padding:7px 16px;white-space:nowrap">Tambah</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Charts + DCA form -->
-      <div class="inv-charts">
+      <!-- Charts -->
+      <div style="margin-bottom:16px">
         <div class="card">
-          <div class="card-title">Alokasi Portofolio</div>
-          <div style="display:flex;align-items:center;gap:20px">
-            <div style="position:relative;height:180px;min-width:180px;flex:0 0 180px"><canvas id="inv-donut"></canvas></div>
-            <div id="inv-legend" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+            <span>Nilai Portofolio Bulanan</span>
+            <div id="inv-legend" style="display:flex;gap:12px"></div>
           </div>
+          <div style="position:relative;height:200px"><canvas id="inv-monthly"></canvas></div>
         </div>
-        <div class="card">
-          <div class="card-title">Catat Transaksi DCA</div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <div class="mfg"><label>Saham</label>
-                <select id="dca-ticker" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%;font-family:var(--fmono)">
-                  <option value="BBRI">BBRI</option>
-                  <option value="BMRI">BMRI</option>
-                  <option value="BBNI">BBNI</option>
-                </select>
-              </div>
-              <div class="mfg"><label>Aksi</label>
-                <select id="dca-action" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%">
-                  <option value="buy">Beli</option>
-                  <option value="sell">Jual</option>
-                </select>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-              <div class="mfg"><label>Lot</label><input type="number" id="dca-lot" placeholder="0" min="1" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
-              <div class="mfg"><label>Harga / Lembar (Rp)</label><input type="number" id="dca-price" placeholder="0" min="0" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
-            </div>
-            <div class="mfg"><label>Tanggal</label><input type="date" id="dca-date" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
-            <button class="btn-primary" onclick="saveDCA()">Catat</button>
+      </div>
+
+      <!-- DCA Form -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Catat Transaksi DCA</div>
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:4px">
+          <div class="mfg"><label>Saham</label>
+            <select id="dca-ticker" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%;font-family:var(--fmono)">
+              <option value="BBCA">BBCA</option>
+            </select>
           </div>
+          <div class="mfg"><label>Aksi</label>
+            <select id="dca-action" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%">
+              <option value="buy">Beli</option>
+              <option value="sell">Jual</option>
+            </select>
+          </div>
+          <div class="mfg"><label>Lot</label><input type="number" id="dca-lot" placeholder="0" min="1" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
+          <div class="mfg"><label>Harga / Lembar (Rp)</label><input type="number" id="dca-price" placeholder="0" min="0" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
+          <div class="mfg"><label>Tanggal</label><input type="date" id="dca-date" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"></div>
+          <div class="mfg" style="display:flex;align-items:flex-end"><button class="btn-primary" onclick="saveDCA()" style="width:100%;padding:9px">Catat</button></div>
         </div>
       </div>
 
@@ -897,9 +920,11 @@ body {
 <div class="modal-bg" id="modal-bg" onclick="closeOut(event)">
   <div class="modal">
     <div class="modal-title" id="modal-h">Tambah Transaksi</div>
-    <div class="type-row">
-      <div class="type-btn" id="opt-in" onclick="setType('income')">+ Pemasukan</div>
+    <div class="type-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="type-btn" id="opt-in"  onclick="setType('income')">+ Pemasukan</div>
       <div class="type-btn s-out" id="opt-out" onclick="setType('expense')">− Pengeluaran</div>
+      <div class="type-btn" id="opt-sav" onclick="setType('tabungan')">⬆ Tabungan</div>
+      <div class="type-btn" id="opt-inv" onclick="setType('investasi')">◆ Investasi</div>
     </div>
     <div class="mfg"><label>Keterangan</label><input type="text" id="m-desc"></div>
     <div class="m2">
@@ -907,8 +932,13 @@ body {
       <div class="mfg"><label>Tanggal</label><input type="date" id="m-date"></div>
     </div>
     <div class="m2">
-      <div class="mfg"><label>Bank</label>
-        <select id="m-bank"><option value="SeaBank">SeaBank</option><option value="BCA">BCA</option><option value="BNI">BNI</option><option value="Cash">Cash</option></select>
+      <div class="mfg"><label>Bank / Tujuan</label>
+        <select id="m-bank">
+          <option value="BCA">BCA</option>
+          <option value="BNI">BNI</option>
+          <option value="Investasi">Investasi</option>
+          <option value="Cash">Cash</option>
+        </select>
       </div>
       <div class="mfg"><label>Kategori</label>
         <select id="m-cat">
@@ -925,11 +955,11 @@ body {
 
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyYXL1h-We_a6XGNaun2-qcRrPbkq3b4A5tJadj1BCe4BpeE74jR3EOXiVZqbvvDrU/exec';
-const BNI_MAX=25000000,SEA_FIXED=1500000,BCA_TARGET=150000000,DEADLINE='2027-10';
+const BNI_MAX=25000000,BCA_TARGET=150000000,DEADLINE='2027-10';
 const MNS=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 const TAG={BCA:'tag-bca',BNI:'tag-bni',SeaBank:'tag-sea',Cash:'tag-cash'};
 
-let DB={transactions:[],salaries:{},balances:{BCA:0,BNI:0,SeaBank:0},riel:[]};
+let DB={transactions:[],salaries:{},balances:{BCA:0,BNI:0,Investasi:0},riel:[]};
 let txFilter='all',editId=null,mType='expense';
 
 const fmt  =n=>'Rp '+Math.round(n).toLocaleString('id-ID');
@@ -969,15 +999,20 @@ async function syncNow(){
         ym = String(ym||'').trim().slice(0,7);
       }
       if(!ym) return;
-      DB.salaries[ym]={...s,ym,salary:Number(s.salary)||0,bca:Number(s.bca)||0,bni:Number(s.bni)||0,sea:Number(s.sea)||0};
+      DB.salaries[ym]={...s,ym,salary:Number(s.salary)||0,bca:Number(s.bca)||0,bni:Number(s.bni)||0,inv:Number(s.inv||s.sea)||0};
     });
-    DB.balances={BCA:0,BNI:0,SeaBank:0,...d.balances};
+    DB.balances={BCA:0,BNI:0,Investasi:0,...d.balances};
     DB.riel=(d.riel||[]).map(t=>{
       let type = String(t.type||'').trim().toLowerCase();
       if(!type) type = (t.cat==='Uang Masuk') ? 'income' : 'expense';
       const amount = parseFloat(String(t.amount||'0').replace(/[^0-9.-]/g,''))||0;
       return {...t, amount, type};
     });
+    // Load StockTx for dashboard investasi card
+    try {
+      const sd = await api({action:'getStockTx'});
+      if(sd.ok && sd.txs) invStockTx = sd.txs;
+    } catch(e){}
     setSync('ok','synced · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
     renderAll();
   }catch(e){setSync('err','error: '+e.message);}
@@ -999,24 +1034,24 @@ function switchTab(id,btn){
 function showResult(ym){
   const s=DB.salaries[ym];
   if(!s)return;
-  const sav=s.bca+s.bni+s.sea;
+  const sav=s.bca+s.bni+s.inv;
   // Persentase dari total ditabung
   const bp=sav>0?Math.round(s.bca/sav*100):0;
   const np=sav>0?Math.round(s.bni/sav*100):0;
-  const sp=sav>0?Math.round(s.sea/sav*100):0;
+  const sp=sav>0?Math.round(s.inv/sav*100):0;
   // Persentase dari gaji jika ada
   const bcaPGaji=s.salary>0?Math.round(s.bca/s.salary*100):bp;
   const bniPGaji=s.salary>0?Math.round(s.bni/s.salary*100):np;
-  const seaPGaji=s.salary>0?Math.round(s.sea/s.salary*100):sp;
+  const seaPGaji=s.salary>0?Math.round(s.inv/s.salary*100):sp;
   const rateStr=s.salary>0?Math.round(sav/s.salary*100)+'% savings rate':'';
   setTxt('res-total',fmt(sav));
   setTxt('res-sub',ymLbl(ym)+(rateStr?' · '+rateStr:''));
   setTxt('r-bca',fmt(s.bca));setTxt('r-bca-p',bcaPGaji+'% dari gaji');
   setTxt('r-bni',fmt(s.bni));setTxt('r-bni-p',bniPGaji+'% dari gaji');
-  setTxt('r-sea',fmt(s.sea));setTxt('r-sea-p',seaPGaji+'% dari gaji');
-  ['bca','bni','sea'].forEach(b=>{
+  setTxt('r-inv',fmt(s.inv));setTxt('r-inv-p',seaPGaji+'% dari gaji');
+  ['bca','bni','inv'].forEach(b=>{
     const p=b==='bca'?bp:b==='bni'?np:sp;
-    const a=b==='bca'?s.bca:b==='bni'?s.bni:s.sea;
+    const a=b==='bca'?s.bca:b==='bni'?s.bni:s.inv;
     setSty('bb-'+b,'width',p+'%');
     setTxt('bb-'+b+'-v',p+'% · '+fmt(a));
   });
@@ -1027,29 +1062,58 @@ function showResult(ym){
   if(row)row.classList.add('active-row');
 }
 
+function calcAlokasi(sav, invAmt){
+  const inv = Math.min(invAmt||0, sav);
+  const rem = sav - inv;
+  const bniRoom = Math.max(0, BNI_MAX - DB.balances.BNI);
+  let bni=0, bca=0;
+  if(rem>0){
+    if(bniRoom>0){ bni=Math.min(Math.round(rem*.40),bniRoom); bca=rem-bni; }
+    else bca=rem;
+  }
+  return {inv, bni, bca};
+}
+
+function previewAlokasi(){
+  const sav=parseN(el('sav-in').value), invAmt=parseN(el('inv-in').value);
+  const prev=el('alloc-preview');
+  if(!sav){prev.style.display='none';return;}
+  prev.style.display='block';
+  const {inv,bni,bca}=calcAlokasi(sav,invAmt);
+  setTxt('pv-inv', fmt(inv));
+  setTxt('pv-bni', fmt(bni));
+  setTxt('pv-bca', fmt(bca));
+}
+
 async function hitungAlokasi(){
   const sav=parseN(el('sav-in').value),gaji=parseN(el('gaji-in').value),ym=el('sav-mo').value;
+  const invAmt=parseN(el('inv-in').value);
   if(!sav){alert('Masukkan jumlah tabungan');return;}
   if(!ym){alert('Pilih bulan');return;}
-  const sea=Math.min(SEA_FIXED,sav),rem=sav-sea;
-  const bniRoom=Math.max(0,BNI_MAX-DB.balances.BNI);
-  let bni=0,bca=0;
-  if(rem>0){if(bniRoom>0){bni=Math.min(Math.round(rem*.40),bniRoom);bca=rem-bni;}else bca=rem;}
+  const {inv,bni,bca}=calcAlokasi(sav,invAmt);
 
   if(DB.salaries[ym]){
     if(!confirm('Bulan '+ymLbl(ym)+' sudah pernah dialokasikan. Timpa data lama?'))return;
+    // Hapus transaksi tabungan/investasi lama bulan ini
+    const oldTxs=DB.transactions.filter(t=>t.date.startsWith(ym)&&(t.type==='tabungan'||t.type==='investasi'));
+    await Promise.all(oldTxs.map(t=>api({action:'deleteTransaction',id:t.id}))).catch(()=>{});
   }
 
+  const d=ym+'-01';
   showLoad();
   try{
-    // Simpan riwayat alokasi
-    await api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,sea});
-    // Update saldo bank
-    await Promise.all([
+    const jobs=[
+      api({action:'addSalary',id:uid(),ym,salary:gaji||0,bca,bni,inv}),
+      // Update saldo bank
       bca>0?api({action:'updateBalance',bank:'BCA',balance:DB.balances.BCA+bca}):Promise.resolve(),
       bni>0?api({action:'updateBalance',bank:'BNI',balance:DB.balances.BNI+bni}):Promise.resolve(),
-      sea>0?api({action:'updateBalance',bank:'SeaBank',balance:DB.balances.SeaBank+sea}):Promise.resolve(),
-    ]);
+      inv>0?api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+inv}):Promise.resolve(),
+      // Auto-catat di Catatan
+      bca>0?api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BCA',type:'tabungan',bank:'BCA',amount:bca}):Promise.resolve(),
+      bni>0?api({action:'addTransaction',id:uid(),date:d,desc:'Tabungan '+ymLbl(ym),cat:'BNI',type:'tabungan',bank:'BNI',amount:bni}):Promise.resolve(),
+      inv>0?api({action:'addTransaction',id:uid(),date:d,desc:'Investasi '+ymLbl(ym),cat:'Saham',type:'investasi',bank:'Investasi',amount:inv}):Promise.resolve(),
+    ];
+    await Promise.all(jobs);
     await syncNow();
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
@@ -1067,7 +1131,7 @@ function renderSalaryHistory(){
       <td style="color:var(--tx2)">${s.salary?fmtS(s.salary):'—'}</td>
       <td style="color:var(--bca)">${fmt(s.bca)}</td>
       <td style="color:var(--bni)">${fmt(s.bni)}</td>
-      <td style="color:var(--sea)">${fmt(s.sea)}</td>
+      <td style="color:var(--inv)">${fmt(s.inv)}</td>
       <td><button class="del-btn" onclick="event.stopPropagation();delSalary('${s.id}','${ym}')">×</button></td>
     </tr>`;
   }).join('');
@@ -1107,7 +1171,7 @@ function populateCatMonthFilter(){
 function renderCatChart(){
   const sel=el('cat-month-filter');
   const ym=sel?sel.value:ymNow();
-  const txs=DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(ym+'-'));
+  const txs=DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(ym+'-')); // pengeluaran only
   const grouped={};
   txs.forEach(t=>{const c=t.cat||'Lainnya';grouped[c]=(grouped[c]||0)+t.amount;});
   const entries=Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
@@ -1158,13 +1222,14 @@ function setFilt(f,btn){txFilter=f;document.querySelectorAll('.ftab').forEach(b=
 
 function renderTx(){
   let txs=[...DB.transactions].sort((a,b)=>b.date.localeCompare(a.date)||String(b.id).localeCompare(String(a.id)));
-  if(txFilter==='income')txs=txs.filter(t=>t.type==='income');
-  else if(txFilter==='expense')txs=txs.filter(t=>t.type==='expense');
-  else if(['BCA','BNI','SeaBank'].includes(txFilter))txs=txs.filter(t=>t.bank===txFilter);
+  if(['income','expense','tabungan','investasi'].includes(txFilter)) txs=txs.filter(t=>t.type===txFilter);
+
   const allTx=DB.transactions;
-  const tIn=allTx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
-  const tOut=allTx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
-  const net=tIn-tOut;
+  const tIn   =allTx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const tOut  =allTx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const tSav  =allTx.filter(t=>t.type==='tabungan').reduce((s,t)=>s+t.amount,0);
+  const tInv  =allTx.filter(t=>t.type==='investasi').reduce((s,t)=>s+t.amount,0);
+  const net   =tIn-tOut-tSav-tInv;
   setTxt('c-in',fmtS(tIn));setTxt('c-out',fmtS(tOut));setTxt('c-net',fmtS(net));
   setSty('c-net','color',net>=0?'var(--acc2)':'var(--red)');
   populateCatMonthFilter();
@@ -1179,7 +1244,7 @@ function renderTx(){
       <td><div class="tx-desc">${tx.desc}</div><div class="tx-cat">${tx.cat||''}</div></td>
       <td><span class="tag ${TAG[tx.bank]||'tag-cash'}">${tx.bank}</span></td>
       <td style="font-size:11px;color:var(--tx3)">${tx.cat||'—'}</td>
-      <td class="tx-amt ${tx.type==='income'?'inc':'exp'}">${tx.type==='income'?'+':'-'}${fmt(tx.amount)}</td>
+      <td class="tx-amt ${{income:'inc',expense:'exp',tabungan:'sav',investasi:'inv'}[tx.type]||'exp'}">${{income:'+',tabungan:'→',investasi:'◆'}[tx.type]||'-'}${fmt(tx.amount)}</td>
       <td><div class="act">
         <button class="act-btn" onclick="openModal('${tx.id}')">edit</button>
         <button class="act-btn d" onclick="delTx('${tx.id}')">del</button>
@@ -1190,13 +1255,35 @@ function renderTx(){
 const CATS_IN  = ['Gaji','Bonus','Uang Arisan','Bayar Hutang','Lainnya'];
 const CATS_OUT = ['Tagihan','Bayar Arisan','Keluarga','Bayar Hutang','Beli Riel','Lainnya'];
 
+const TYPE_CATS={
+  income:   ['Gaji','Bonus','Uang Arisan','Bayar Hutang','Lainnya'],
+  expense:  ['Tagihan','Bayar Arisan','Keluarga','Bayar Hutang','Beli Riel','Lainnya'],
+  tabungan: ['BCA','BNI'],
+  investasi:['Saham'],
+};
+
 function setType(t){
   mType=t;
-  el('opt-in').className='type-btn'+(t==='income'?' s-in':'');
-  el('opt-out').className='type-btn'+(t==='expense'?' s-out':'');
-  const cats=t==='income'?CATS_IN:CATS_OUT;
+  el('opt-in').className  ='type-btn'+(t==='income'   ?' s-in':'');
+  el('opt-out').className ='type-btn'+(t==='expense'  ?' s-out':'');
+  if(el('opt-sav')) el('opt-sav').className='type-btn'+(t==='tabungan' ?' s-sav':'');
+  if(el('opt-inv')) el('opt-inv').className='type-btn'+(t==='investasi'?' s-inv':'');
+  const cats=TYPE_CATS[t]||TYPE_CATS.expense;
   el('m-cat').innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
-  el('m-bank').value=t==='income'?'BCA':'SeaBank';
+  const bankRow=el('m-bank').closest('.mfg');
+  if(t==='tabungan'){
+    bankRow.style.display='none';
+    el('m-bank').value=cats[0];
+    el('m-cat').onchange=()=>{el('m-bank').value=el('m-cat').value;};
+  }else if(t==='investasi'){
+    bankRow.style.display='none';
+    el('m-bank').value='Investasi';
+    el('m-cat').onchange=null;
+  }else{
+    bankRow.style.display='';
+    el('m-cat').onchange=null;
+    el('m-bank').value=t==='income'?'BCA':'Cash';
+  }
 }
 function openModal(id){
   editId=id||null;
@@ -1216,7 +1303,7 @@ function openModal(id){
     setType('expense');
     el('m-desc').value='';el('m-amt').value='';
     el('m-date').value=today();
-    el('m-bank').value='SeaBank';
+    el('m-bank').value='Investasi';
   }
   el('modal-bg').classList.add('open');
 }
@@ -1251,7 +1338,7 @@ function renderAll(){
   const ym=ymNow();
   const salNow=DB.salaries[ym];
   const gajiIni=salNow?salNow.salary:0;
-  const savIni=salNow?(salNow.bca+salNow.bni+salNow.sea):0;
+  const savIni=salNow?(salNow.bca+salNow.bni+salNow.inv):0;
   // Kalau salary tidak diisi, pakai total ditabung sebagai referensi
   const gajiDisplay=gajiIni>0?gajiIni:savIni;
   const expIni=DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(ym+'-')).reduce((s,t)=>s+t.amount,0);
@@ -1271,27 +1358,56 @@ function renderAll(){
   if(rc)rc.setAttribute('stroke-dashoffset',(circ-circ*Math.min(100,rate)/100).toFixed(2));
 
   // Bank cards
-  setTxt('d-bca-bal',fmt(bca));setTxt('d-bni-bal',fmt(bni));setTxt('d-sea-bal',fmt(sea));
+  setTxt('d-bca-bal','Rp '+fmt(bca));setTxt('d-bni-bal','Rp '+fmt(bni));
   const bP=Math.min(100,Math.round(bca/BCA_TARGET*100));
   const nP=Math.min(100,Math.round(bni/BNI_MAX*100));
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
   setTxt('d-bca-pct',bP+'%');setTxt('d-bni-pct',nP+'%');
 
-  const latYM=Object.keys(DB.salaries).sort().reverse()[0];
+  // Investasi card — hitung dari StockTx
+  const invPos = calcInvPositions();
+  const invTickers = Object.keys(invPos).filter(t=>invPos[t].lot>0);
+  const invTotalVal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPrices[t]||0)),0);
+  const invTotalLot = invTickers.reduce((s,t)=>s+invPos[t].lot,0);
+  setTxt('d-inv-bal', invTotalVal>0?'Rp '+fmt(invTotalVal):'—');
+  setTxt('d-inv-tag', invTickers.length?invTickers.join(' · '):'Saham');
+  setTxt('d-inv-lot', invTotalLot?invTotalLot+' lot total':'—');
+  // P&L pct untuk progress bar
+  const invModal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPos[t].avg_beli||0)),0);
+  const invRet   = invModal>0?((invTotalVal-invModal)/invModal*100):0;
+  const invBar   = Math.min(100,Math.max(0,50+invRet)); // 50% = breakeven
+  setSty('d-inv-prog','width',invBar+'%');
+  setSty('d-inv-prog','background',invRet>=0?'var(--grn)':'var(--red)');
+  setTxt('d-inv-pct',(invRet>=0?'+':'')+invRet.toFixed(1)+'%');
+  if(el('d-inv-pct')) el('d-inv-pct').style.color=invRet>=0?'var(--grn)':'var(--red)';
+
+  // Invest Rate KPI
+  const _pos = calcInvPositions();
+  const invModal2 = Object.keys(_pos).reduce((s,t)=>s+_pos[t].lot*100*(_pos[t].avg_beli||0),0);
+  const invVal2   = Object.keys(_pos).reduce((s,t)=>s+_pos[t].lot*100*(invPrices[t]||0),0);
+  const invRet2   = invModal2>0?((invVal2-invModal2)/invModal2*100):0;
+  const invDana2  = calcDanaTotal();
+  const invUsed2  = calcDanaUsed();
+  const invSisa2  = invDana2-invUsed2;
+  setTxt('kpi-invest-rate', invVal2>0?(invRet2>=0?'+':'')+invRet2.toFixed(1)+'%':'—');
+  setTxt('kpi-invest-sub',  invVal2>0?'Rp '+fmtS(invVal2):'—');
+  setTxt('kpi-invest-sisa', invDana2>0?'Rp '+fmtS(Math.max(0,invSisa2)):'—');
+  if(el('kpi-invest-rate')) el('kpi-invest-rate').style.color=invRet2>=0?'var(--grn)':'var(--red)';
+  if(el('kpi-invest-sisa')) el('kpi-invest-sisa').style.color=invSisa2>=0?'var(--acc2)':'var(--red)';
   setTxt('top-month',ymLbl(latYM||ym));
   if(latYM){
     const s=DB.salaries[latYM];
     setTxt('d-bca-mo',fmtS(s.bca));
     setTxt('d-bni-mo',fmtS(s.bni));
     // Alloc bars — pakai alokasi terakhir (konsisten sama label bank card)
-    const alTot=s.bca+s.bni+s.sea;
+    const alTot=s.bca+s.bni+s.inv;
     const bkP=alTot>0?Math.round(s.bca/alTot*100):0;
     const nkP=alTot>0?Math.round(s.bni/alTot*100):0;
-    const skP=alTot>0?Math.round(s.sea/alTot*100):0;
+    const skP=alTot>0?Math.round(s.inv/alTot*100):0;
     el('alloc-bars').innerHTML=[
       ['BCA',bkP,fmt(s.bca),'var(--bca)'],
       ['BNI',nkP,fmt(s.bni),'var(--bni)'],
-      ['SeaBank',skP,fmt(s.sea),'var(--sea)']
+      ['Investasi',skP,fmt(s.inv),'var(--inv)']
     ].map(([n,p,a,c])=>`
       <div class="abar">
         <div class="abar-top">
@@ -1305,35 +1421,37 @@ function renderAll(){
   // Donut
   const dd=[bca,bni,sea].some(v=>v>0)?[bca,bni,sea]:[1,1,1];
   if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
-  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SeaBank'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
+  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','Investasi'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
   // Trend
   const now=new Date();const mos=[],lbls=[];
   for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));lbls.push(MNS[d.getMonth()]);}
-  const bD=[],nD=[];
-  // Akumulasi saldo dari alokasi — tiap bulan tambah alokasi bulan itu
-  let cumBCA=0,cumBNI=0;
-  const allYMs=Object.keys(DB.salaries).sort();
+  const bD=[],nD=[],iD=[];
+  let cumBCA=0,cumBNI=0,cumInv=0;
   mos.forEach(m=>{
-    // Tambah alokasi bulan ini kalau ada
-    if(DB.salaries[m]){cumBCA+=DB.salaries[m].bca;cumBNI+=DB.salaries[m].bni;}
-    // Kurangi pengeluaran bulan ini dari masing-masing bank
+    if(DB.salaries[m]){
+      cumBCA+=DB.salaries[m].bca||0;
+      cumBNI+=DB.salaries[m].bni||0;
+      cumInv+=DB.salaries[m].inv||0;
+    }
     DB.transactions.filter(t=>t.date.startsWith(m+'-')&&t.type==='expense').forEach(tx=>{
       if(tx.bank==='BCA')cumBCA=Math.max(0,cumBCA-tx.amount);
       if(tx.bank==='BNI')cumBNI=Math.max(0,cumBNI-tx.amount);
+      if(tx.bank==='Investasi')cumInv=Math.max(0,cumInv-tx.amount);
     });
-    bD.push(cumBCA);nD.push(cumBNI);
+    bD.push(cumBCA);nD.push(cumBNI);iD.push(cumInv);
   });
-  if(trendC){trendC.data.labels=lbls;trendC.data.datasets[0].data=bD;trendC.data.datasets[1].data=nD;trendC.update();}
+  if(trendC){trendC.data.labels=lbls;trendC.data.datasets[0].data=bD;trendC.data.datasets[1].data=nD;trendC.data.datasets[2].data=iD;trendC.update();}
   else trendC=new Chart(el('trend-c'),{type:'line',data:{labels:lbls,datasets:[
     {label:'BCA',data:bD,borderColor:'#3b9eff',backgroundColor:'rgba(59,158,255,.08)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#3b9eff'},
-    {label:'BNI',data:nD,borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#f97316'}
+    {label:'BNI',data:nD,borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#f97316'},
+    {label:'Investasi',data:iD,borderColor:'#10d9a0',backgroundColor:'rgba(16,217,160,.06)',tension:.4,fill:true,pointRadius:2.5,pointBackgroundColor:'#10d9a0'}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtS(c.parsed.y)}}},scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtS(v)},border:{display:false}}}}});
 
   // Projection
   const pill=el('proj-pill');
   if(latYM){
-    const s=DB.salaries[latYM],savTot=s.bca+s.bni+s.sea;
+    const s=DB.salaries[latYM],savTot=s.bca+s.bni+s.inv;
     const bniMo=s.bni,bcaFull=savTot-SEA_FIXED;
     const bniGap=Math.max(0,BNI_MAX-bni);
     const bniML=bniGap<=0||bniMo<=0?0:Math.ceil(bniGap/bniMo);
@@ -1534,17 +1652,18 @@ function renderRiel(){
 
 // ── INVESTASI ──
 const STOCKS = {
-  BBRI:{ name:'Bank Rakyat Indonesia', color:'#e74c3c' },
-  BMRI:{ name:'Bank Mandiri',          color:'#3b9eff' },
-  BBNI:{ name:'Bank Negara Indonesia', color:'#f97316' },
+  BBCA:{ name:'Bank Central Asia', color:'#3b9eff' },
 };
-let invPrices   = { BBRI:0, BMRI:0, BBNI:0 };
-let invStockTx  = []; // history DCA
-let invDonutC   = null;
+let invPrices    = { BBCA:0 };
+let invStockTx   = [];
+let invDanaTotal = 0; // total dana yang pernah dialokasikan
+let invMonthlyC  = null;
+let invDonutC    = null;
 
 // ── HITUNG POSISI DARI HISTORY ──
+function calcInvPositions(){ return calcPositions(); }
 function calcPositions(){
-  const pos = { BBRI:{lot:0,cost:0}, BMRI:{lot:0,cost:0}, BBNI:{lot:0,cost:0} };
+  const pos = { BBCA:{lot:0,cost:0} };
   invStockTx.forEach(tx=>{
     const t=tx.ticker.toUpperCase();
     if(!pos[t])return;
@@ -1570,6 +1689,83 @@ function calcPositions(){
 }
 
 // ── FETCH HARGA + DATA ──
+async function tambahDana(){
+  const amt = parseN(el('inv-dana-input').value);
+  if(!amt){alert('Masukkan jumlah dana');return;}
+  showLoad();
+  try{
+    await Promise.all([
+      // Catat di StockTx sebagai dana masuk
+      api({action:'addStockTx',id:uid(),ticker:'__DANA__',txtype:'dana',lot:0,price:amt,date:today()}),
+      // Auto-catat di Catatan sebagai investasi
+      api({action:'addTransaction',id:uid(),date:today(),desc:'Dana Investasi',cat:'Saham',type:'investasi',bank:'Investasi',amount:amt}),
+      // Update saldo Investasi
+      api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+amt}),
+    ]);
+    el('inv-dana-input').value='';
+    await syncNow();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+function calcDanaTotal(){
+  return invStockTx.filter(t=>t.txtype==='dana'||t.action==='dana').reduce((s,t)=>s+Number(t.price||0),0);
+}
+
+function calcDanaUsed(){
+  return invStockTx.filter(t=>(t.txtype==='buy'||t.action==='buy')).reduce((s,t)=>s+Number(t.lot||0)*100*Number(t.price||0),0);
+}
+
+function renderDanaBalance(){
+  const total = calcDanaTotal();
+  const used  = calcDanaUsed();
+  const sisa  = total - used;
+  setTxt('inv-dana-total', total?'Rp '+fmt(total):'—');
+  setTxt('inv-dana-used',  used ?'Rp '+fmt(used) :'—');
+  setTxt('inv-dana-sisa',  'Rp '+fmt(Math.max(0,sisa)));
+  if(el('inv-dana-sisa')) el('inv-dana-sisa').style.color = sisa>=0?'var(--grn)':'var(--red)';
+}
+
+function renderInvMonthly(){
+  const now=new Date(); const mos=[],lbls=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));
+    lbls.push(MNS[d.getMonth()]);
+  }
+  // Hitung nilai portofolio per bulan berdasarkan posisi sampai bulan itu
+  const vals = mos.map(m=>{
+    const endDate = m+'-31';
+    const txsUpTo = invStockTx.filter(t=>t.date<=endDate&&(t.txtype==='buy'||t.txtype==='sell'||t.action==='buy'||t.action==='sell'));
+    const pos={BBRI:{lot:0,cost:0},BMRI:{lot:0,cost:0},BBNI:{lot:0,cost:0}};
+    txsUpTo.forEach(tx=>{
+      const t=tx.ticker.toUpperCase();
+      if(!pos[t])return;
+      const lot=Number(tx.lot)||0,price=Number(tx.price)||0;
+      const isBuy=tx.txtype==='buy'||tx.action==='buy';
+      if(isBuy){pos[t].cost+=lot*100*price;pos[t].lot+=lot;}
+      else{const r=pos[t].lot>0?lot/pos[t].lot:0;pos[t].cost-=pos[t].cost*r;pos[t].lot-=lot;}
+      pos[t].lot=Math.max(0,pos[t].lot);pos[t].cost=Math.max(0,pos[t].cost);
+    });
+    return Object.keys(pos).reduce((s,t)=>s+pos[t].lot*100*(invPrices[t]||0),0);
+  });
+  const canvas=el('inv-monthly');if(!canvas)return;
+  if(invMonthlyC){invMonthlyC.destroy();invMonthlyC=null;}
+  invMonthlyC=new Chart(canvas,{type:'line',
+    data:{labels:lbls,datasets:[
+      {label:'Nilai',data:vals,borderColor:'var(--acc)',backgroundColor:'rgba(59,158,255,.08)',
+        fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'var(--acc)',borderWidth:2}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Rp '+Math.round(c.parsed.y).toLocaleString('id-ID')}}},
+      scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},
+        y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtS(v)},border:{display:false}}}}
+  });
+  // Legend per ticker
+  const leg=el('inv-legend');
+  if(leg) leg.innerHTML=Object.keys(STOCKS).map(t=>`<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#96a6c2;font-family:var(--fmono)"><span style="width:8px;height:8px;border-radius:50%;background:${STOCKS[t].color};display:inline-block"></span>${t}</div>`).join('');
+}
+
 async function fetchStockPrices(){
   try {
     const [pd, sd] = await Promise.all([
@@ -1583,10 +1779,8 @@ async function fetchStockPrices(){
     if(sd.ok && sd.txs) invStockTx = sd.txs;
   } catch(e){}
   const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-  ['BBRI','BMRI','BBNI'].forEach(s=>{
-    const timeEl=el(s.toLowerCase()+'-time');
-    if(timeEl) timeEl.textContent = invPrices[s]?'Update '+now:'Tidak tersedia';
-  });
+  const timeEl=el('bbca-time');
+  if(timeEl) timeEl.textContent = invPrices.BBCA?'Update '+now:'Tidak tersedia';
   updatePortfolio();
   renderDCAHistory();
 }
@@ -1595,7 +1789,7 @@ async function fetchStockPrices(){
 function updatePortfolio(){
   const pos = calcPositions();
   let totalVal=0, totalModal=0;
-  ['BBRI','BMRI','BBNI'].forEach(s=>{
+  ['BBCA'].forEach(s=>{
     const price   = invPrices[s]||0;
     const lot     = pos[s].lot||0;
     const avgBeli = pos[s].avg_beli||0;
@@ -1633,12 +1827,15 @@ function updatePortfolio(){
     retEl.textContent=totalRet?(totalRet>=0?'+':'')+totalRet.toFixed(2)+'%':'—';
     retEl.style.color=totalRet>=0?'var(--grn)':'var(--red)';
   }
-  renderInvDonut(pos);
+  const lotTotEl=el('inv-lot-total');
+  if(lotTotEl) lotTotEl.textContent=(pos.BBCA?.lot||0)+' lot';
+  renderDanaBalance();
+  renderInvMonthly();
 }
 
 function renderInvDonut(pos){
   const labels=[],data=[],colors=[];
-  ['BBRI','BMRI','BBNI'].forEach(s=>{
+  ['BBCA'].forEach(s=>{
     const val=(pos[s].lot||0)*100*(invPrices[s]||0);
     if(val>0){labels.push(s);data.push(val);colors.push(STOCKS[s].color);}
   });
@@ -1711,7 +1908,6 @@ function initInvestasi(){
   el('dca-date').value=today();
   fetchStockPrices();
 }
-
 el('sav-mo').value=ymNow();
 el('m-date').value=today();
 syncNow().finally(hideLoad);
