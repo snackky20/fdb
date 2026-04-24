@@ -1231,7 +1231,7 @@ function renderTx(){
   const tOut  =allTx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
   const tSav  =allTx.filter(t=>t.type==='tabungan').reduce((s,t)=>s+t.amount,0);
   const tInv  =allTx.filter(t=>t.type==='investasi').reduce((s,t)=>s+t.amount,0);
-  const net   =tIn-tOut-tSav-tInv;
+  const net   =tIn-tOut; // net hanya pemasukan - pengeluaran
   setTxt('c-in',fmtS(tIn));setTxt('c-out',fmtS(tOut));
   setTxt('c-sav',fmtS(tSav));setTxt('c-inv',fmtS(tInv));
   setTxt('c-net',fmtS(net));
@@ -1362,7 +1362,7 @@ function renderAll(){
   if(rc)rc.setAttribute('stroke-dashoffset',(circ-circ*Math.min(100,rate)/100).toFixed(2));
 
   // Bank cards
-  setTxt('d-bca-bal','Rp '+fmt(bca));setTxt('d-bni-bal','Rp '+fmt(bni));
+  setTxt('d-bca-bal',fmt(bca));setTxt('d-bni-bal',fmt(bni));
   const bP=Math.min(100,Math.round(bca/BCA_TARGET*100));
   const nP=Math.min(100,Math.round(bni/BNI_MAX*100));
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
@@ -1373,7 +1373,7 @@ function renderAll(){
   const invTickers = Object.keys(invPos).filter(t=>invPos[t].lot>0);
   const invTotalVal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPrices[t]||0)),0);
   const invTotalLot = invTickers.reduce((s,t)=>s+invPos[t].lot,0);
-  setTxt('d-inv-bal', invTotalVal>0?'Rp '+fmt(invTotalVal):'—');
+  setTxt('d-inv-bal', invTotalVal>0?fmt(invTotalVal):'—');
   setTxt('d-inv-tag', invTickers.length?invTickers.join(' · '):'Saham');
   setTxt('d-inv-lot', invTotalLot?invTotalLot+' lot total':'—');
   // P&L pct untuk progress bar
@@ -1426,8 +1426,8 @@ function renderAll(){
 
   // Donut
   const dd=[bca,bni,inv].some(v=>v>0)?[bca,bni,inv]:[1,1,1];
-  if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
-  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','Investasi'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
+  if(donutC){donutC.destroy();donutC=null;}
+  donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','BBCA'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#7ec8ff'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
   // Trend
   const now=new Date();const mos=[],lbls=[];
@@ -1477,7 +1477,7 @@ function renderAll(){
     setSty('tl-bni','width',bPt+'%');setSty('tl-bca','left',bPt+'%');setSty('tl-bca','width',Math.max(8,bWt)+'%');
   }else pill.style.display='none';
 
-  renderTx();renderSalaryHistory();renderRiel();
+  renderTx();renderSalaryHistory();renderRiel();renderDanaBalance();
 }
 
 function exportCSV(){
@@ -1701,11 +1701,7 @@ async function tambahDana(){
   showLoad();
   try{
     await Promise.all([
-      // Catat di StockTx sebagai dana masuk
       api({action:'addStockTx',id:uid(),ticker:'__DANA__',txtype:'dana',lot:0,price:amt,date:today()}),
-      // Auto-catat di Catatan sebagai investasi
-      api({action:'addTransaction',id:uid(),date:today(),desc:'Dana Investasi',cat:'Saham',type:'investasi',bank:'Investasi',amount:amt}),
-      // Update saldo Investasi
       api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+amt}),
     ]);
     el('inv-dana-input').value='';
@@ -1715,11 +1711,13 @@ async function tambahDana(){
 }
 
 function calcDanaTotal(){
-  return invStockTx.filter(t=>t.txtype==='dana'||t.action==='dana').reduce((s,t)=>s+Number(t.price||0),0);
+  // Total dana = saldo Investasi (sudah terupdate setiap alokasi/tambahDana)
+  return (DB.balances.Investasi||0) + calcDanaUsed();
 }
 
 function calcDanaUsed(){
-  return invStockTx.filter(t=>(t.txtype==='buy'||t.action==='buy')).reduce((s,t)=>s+Number(t.lot||0)*100*Number(t.price||0),0);
+  return invStockTx.filter(t=>t.txtype==='buy'||t.action==='buy')
+    .reduce((s,t)=>s+Number(t.lot||0)*100*Number(t.price||0),0);
 }
 
 function renderDanaBalance(){
