@@ -1429,7 +1429,7 @@ function renderAll(){
   // Donut
   const dd=[bca,bni,SAHAM].some(v=>v>0)?[bca,bni,SAHAM]:[1,1,1];
   if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
-  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SAHAM_BBCA'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
+  else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','SAHAM BBCA'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
   // Trend
   const now=new Date();const mos=[],lbls=[];
@@ -1704,7 +1704,7 @@ async function tambahDana(){
   try{
     await Promise.all([
       // Catat di StockTx sebagai dana masuk
-      api({type:'addStockTx',id:uid(),ticker:'__DANA__',type:'dana',lot:0,price:amt,date:today()}),
+      api({type:'addStockTx',id:uid(),ticker:'__DANA__',actionType:'dana',lot:0,price:amt,date:today()})
       // Auto-catat di Catatan sebagai investasi
       api({type:'addTransaction',id:uid(),date:today(),desc:'Dana Saham BBCA',cat:'SAHAM_BBCA',type:'investasi',bank:'SAHAM_BBCA',amount:amt}),
       // Update saldo 'SAHAM_BBCA'
@@ -1866,7 +1866,7 @@ async function saveDCA(){
   if(!lot||!price||!date){alert('Isi semua field');return;}
   showLoad();
   try{
-    await api({type:'addStockTx',id:uid(),ticker,type:type,lot,price,date});
+    await api({type:'addStockTx',id:uid(),ticker,actionType:type,lot,price,date});
     const sd=await api({type:'getStockTx'});
     if(sd.ok&&sd.txs) invStockTx=sd.txs;
     updatePortfolio();
