@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinanceOS</title>
+<title>Personal Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -440,7 +440,7 @@ body {
 
   <!-- TOP NAV -->
   <header class="topnav">
-    <div class="logo"><div class="logo-dot"></div>FinanceOS</div>
+    <div class="logo"><div class="logo-dot"></div>Personal Tracker</div>
     <nav class="nav-center">
       <button class="nav-tab active" onclick="switchTab('dashboard',this)">Dashboard</button>
       <button class="nav-tab" onclick="switchTab('alokasi',this)">Alokasi</button>
@@ -540,7 +540,7 @@ body {
         </div>
         <div class="bcard bi">
           <div class="bcard-header">
-            <div><div class="bcard-name">Saham</div><div class="bcard-tag" id="d-inv-tag">—</div></div>
+            <div><div class="bcard-name">BBCA</div><div class="bcard-tag">Saham</div></div>
             <div class="bcard-alloc" id="d-inv-lot">—</div>
           </div>
           <div class="bcard-bal" id="d-inv-bal">—</div>
@@ -555,7 +555,7 @@ body {
           <div class="card-title">Alokasi Terakhir</div>
           <div id="alloc-bars"></div>
           <div class="cw-sm" style="margin-top:16px">
-            <canvas id="donut-c" role="img" aria-label="Donut alokasi">BCA BNI SeaBank</canvas>
+            <canvas id="donut-c" role="img" aria-label="Donut alokasi">BCA BNI BBCA</canvas>
           </div>
         </div>
         <div class="card">
@@ -654,10 +654,12 @@ body {
 
     <!-- ══ CATATAN ══ -->
     <div class="tab-pane" id="tab-catatan">
-      <div class="cata-kpi">
+      <div class="cata-kpi" style="grid-template-columns:repeat(5,minmax(0,1fr))">
         <div class="ckpi"><div class="ckpi-label">Pemasukan</div><div class="ckpi-value" id="c-in" style="color:var(--acc2)">—</div></div>
         <div class="ckpi"><div class="ckpi-label">Pengeluaran</div><div class="ckpi-value" id="c-out" style="color:var(--red)">—</div></div>
-        <div class="ckpi"><div class="ckpi-label">Net</div><div class="ckpi-value" id="c-net" style="color:var(--acc2)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Tabungan</div><div class="ckpi-value" id="c-sav" style="color:var(--grn)">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Investasi</div><div class="ckpi-value" id="c-inv" style="color:#c4b5fd">—</div></div>
+        <div class="ckpi"><div class="ckpi-label">Net Bersih</div><div class="ckpi-value" id="c-net" style="color:var(--acc2)">—</div></div>
       </div>
 
       <!-- Expense breakdown chart -->
@@ -1230,7 +1232,9 @@ function renderTx(){
   const tSav  =allTx.filter(t=>t.type==='tabungan').reduce((s,t)=>s+t.amount,0);
   const tInv  =allTx.filter(t=>t.type==='investasi').reduce((s,t)=>s+t.amount,0);
   const net   =tIn-tOut-tSav-tInv;
-  setTxt('c-in',fmtS(tIn));setTxt('c-out',fmtS(tOut));setTxt('c-net',fmtS(net));
+  setTxt('c-in',fmtS(tIn));setTxt('c-out',fmtS(tOut));
+  setTxt('c-sav',fmtS(tSav));setTxt('c-inv',fmtS(tInv));
+  setTxt('c-net',fmtS(net));
   setSty('c-net','color',net>=0?'var(--acc2)':'var(--red)');
   populateCatMonthFilter();
   renderCatChart();
@@ -1331,7 +1335,7 @@ async function delTx(id){
 // ── RENDER ──
 let donutC=null,trendC=null;
 function renderAll(){
-  const{BCA:bca,BNI:bni,SeaBank:sea}=DB.balances;
+  const bca=DB.balances.BCA||0, bni=DB.balances.BNI||0, inv=DB.balances.Investasi||0;
   const total=bca+bni;
 
   // Bulan ini
@@ -1394,6 +1398,8 @@ function renderAll(){
   setTxt('kpi-invest-sisa', invDana2>0?'Rp '+fmtS(Math.max(0,invSisa2)):'—');
   if(el('kpi-invest-rate')) el('kpi-invest-rate').style.color=invRet2>=0?'var(--grn)':'var(--red)';
   if(el('kpi-invest-sisa')) el('kpi-invest-sisa').style.color=invSisa2>=0?'var(--acc2)':'var(--red)';
+
+  const latYM=Object.keys(DB.salaries).sort().reverse()[0];
   setTxt('top-month',ymLbl(latYM||ym));
   if(latYM){
     const s=DB.salaries[latYM];
@@ -1419,7 +1425,7 @@ function renderAll(){
   }
 
   // Donut
-  const dd=[bca,bni,sea].some(v=>v>0)?[bca,bni,sea]:[1,1,1];
+  const dd=[bca,bni,inv].some(v=>v>0)?[bca,bni,inv]:[1,1,1];
   if(donutC){donutC.data.datasets[0].data=dd;donutC.update();}
   else donutC=new Chart(el('donut-c'),{type:'doughnut',data:{labels:['BCA','BNI','Investasi'],datasets:[{data:dd,backgroundColor:['#3b9eff','#f97316','#10d9a0'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+fmtS(c.parsed)}}}}});
 
