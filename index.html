@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tracker</title>
+<title>FinanceOS</title>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -436,7 +436,7 @@ body {
 
   <!-- TOP NAV -->
   <header class="topnav">
-    <div class="logo"><div class="logo-dot"></div>Tracker</div>
+    <div class="logo"><div class="logo-dot"></div>FinanceOS</div>
     <nav class="nav-center">
       <button class="nav-tab active" onclick="switchTab('dashboard',this)">Dashboard</button>
       <button class="nav-tab" onclick="switchTab('alokasi',this)">Alokasi</button>
@@ -1661,7 +1661,7 @@ async function saveDCA(){
   if(!lot||!price||!date){alert('Isi semua field');return;}
   showLoad();
   try{
-    await api({action:'addStockTx',id:uid(),ticker,action:action,lot,price,date});
+    await api({action:'addStockTx',id:uid(),ticker,txtype:action,lot,price,date});
     const sd=await api({action:'getStockTx'});
     if(sd.ok&&sd.txs) invStockTx=sd.txs;
     updatePortfolio();
@@ -1689,7 +1689,7 @@ function renderDCAHistory(){
   if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
   emp.style.display='none';
   tbody.innerHTML=txs.map(tx=>{
-    const isBuy=tx.action==='buy';
+    const isBuy=(tx.txtype||tx.action)==='buy';
     const val=Number(tx.lot)*100*Number(tx.price);
     const color=STOCKS[tx.ticker.toUpperCase()]?.color||'var(--acc)';
     return`<tr>
