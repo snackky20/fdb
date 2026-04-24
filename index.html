@@ -997,21 +997,21 @@ function renderCatChart(){
 function renderExpTrend(){
   const now=new Date();const mos=[],lbls=[];
   for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));lbls.push(MNS[d.getMonth()]);}
-  const cats=['Makanan','Transport','Belanja','Kesehatan','Hiburan','Tagihan','Lainnya'];
+  // Ambil kategori dari data aktual, bukan hardcoded
+  const cats=[...new Set(DB.transactions.filter(t=>t.type==='expense').map(t=>t.cat||'Lainnya'))];
+  if(!cats.length){if(expTrendC){expTrendC.destroy();expTrendC=null;}return;}
   const datasets=cats.map(cat=>({
     label:cat,
     data:mos.map(m=>DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(m+'-')&&(t.cat||'Lainnya')===cat).reduce((s,t)=>s+t.amount,0)),
-    backgroundColor:CAT_COLORS[cat]||'#a0a0a8',
+    backgroundColor:CAT_COLORS[cat]||'#6b7280',
     borderRadius:3,borderSkipped:false,
-  }));
-  // filter out all-zero datasets
-  const active=datasets.filter(d=>d.data.some(v=>v>0));
+  })).filter(d=>d.data.some(v=>v>0));
   const canvas=el('exp-trend');
   if(!canvas)return;
-  if(expTrendC){expTrendC.data.labels=lbls;expTrendC.data.datasets=active;expTrendC.update();return;}
+  if(expTrendC){expTrendC.data.labels=lbls;expTrendC.data.datasets=datasets;expTrendC.update();return;}
   expTrendC=new Chart(canvas,{
     type:'bar',
-    data:{labels:lbls,datasets:active},
+    data:{labels:lbls,datasets},
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmtS(c.parsed.y)}}},
