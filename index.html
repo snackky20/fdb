@@ -1362,7 +1362,7 @@ function renderAll(){
   // Bank cards
   setTxt('d-bca-bal', fmt(bca));
   setTxt('d-bni-bal', fmt(bni));
-  setTxt('d-inv-bal', fmt(inv));
+  setTxt('d-inv-bal', calcDanaTotal()>0?fmt(calcDanaTotal()):fmt(inv));
   const bP=Math.min(100,Math.round(bca/BCA_TARGET*100));
   const nP=Math.min(100,Math.round(bni/BNI_MAX*100));
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
@@ -1709,7 +1709,12 @@ async function tambahDana(){
 }
 
 function calcDanaTotal(){
-  return (DB.balances.Investasi||0) + calcDanaUsed();
+  // Total = semua dana yang masuk: dari StockTx __DANA__ + dari alokasi (type=investasi)
+  const fromTambah = invStockTx.filter(t=>t.ticker==='__DANA__'&&(t.txtype==='dana'||t.action==='dana'))
+    .reduce((s,t)=>s+Number(t.price||0),0);
+  const fromAlokasi = DB.transactions.filter(t=>t.type==='investasi')
+    .reduce((s,t)=>s+t.amount,0);
+  return fromTambah + fromAlokasi;
 }
 
 function calcDanaUsed(){
@@ -1718,12 +1723,12 @@ function calcDanaUsed(){
 }
 
 function renderDanaBalance(){
+  const total = calcDanaTotal();
   const used  = calcDanaUsed();
-  const sisa  = DB.balances.Investasi||0; // sisa = saldo investasi yg belum terpakai beli saham
-  const total = sisa + used; // total yg pernah dialokasikan
+  const sisa  = Math.max(0, total - used);
   setTxt('inv-dana-total', total>0?fmt(total):'—');
   setTxt('inv-dana-used',  used>0?fmt(used):'—');
-  setTxt('inv-dana-sisa',  sisa>=0?fmt(sisa):'—');
+  setTxt('inv-dana-sisa',  total>0?fmt(sisa):'—');
   if(el('inv-dana-sisa')) el('inv-dana-sisa').style.color=sisa>=0?'var(--grn)':'var(--red)';
   const pos=calcPositions();
   const totalLot=Object.values(pos).reduce((s,p)=>s+p.lot,0);
