@@ -1360,7 +1360,9 @@ function renderAll(){
   if(rc)rc.setAttribute('stroke-dashoffset',(circ-circ*Math.min(100,rate)/100).toFixed(2));
 
   // Bank cards
-  setTxt('d-bca-bal',fmt(bca));setTxt('d-bni-bal',fmt(bni));
+  setTxt('d-bca-bal', fmt(bca));
+  setTxt('d-bni-bal', fmt(bni));
+  setTxt('d-inv-bal', fmt(inv));
   const bP=Math.min(100,Math.round(bca/BCA_TARGET*100));
   const nP=Math.min(100,Math.round(bni/BNI_MAX*100));
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
@@ -1369,19 +1371,17 @@ function renderAll(){
   // Investasi card — hitung dari StockTx
   const invPos = calcInvPositions();
   const invTickers = Object.keys(invPos).filter(t=>invPos[t].lot>0);
-  const invTotalVal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPrices[t]||0)),0);
   const invTotalLot = invTickers.reduce((s,t)=>s+invPos[t].lot,0);
-  setTxt('d-inv-bal', invTotalVal>0?fmt(invTotalVal):'—');
-  setTxt('d-inv-tag', invTickers.length?invTickers.join(' · '):'Saham');
-  setTxt('d-inv-lot', invTotalLot?invTotalLot+' lot total':'—');
-  // P&L pct untuk progress bar
-  const invModal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPos[t].avg_beli||0)),0);
-  const invRet   = invModal>0?((invTotalVal-invModal)/invModal*100):0;
-  const invBar   = Math.min(100,Math.max(0,50+invRet)); // 50% = breakeven
-  setSty('d-inv-prog','width',invBar+'%');
-  setSty('d-inv-prog','background',invRet>=0?'var(--grn)':'var(--red)');
-  setTxt('d-inv-pct',(invRet>=0?'+':'')+invRet.toFixed(1)+'%');
-  if(el('d-inv-pct')) el('d-inv-pct').style.color=invRet>=0?'var(--grn)':'var(--red)';
+  const invTotalVal = invTickers.reduce((s,t)=>s+(invPos[t].lot*100*(invPrices[t]||0)),0);
+  setTxt('d-inv-lot', invTotalLot?invTotalLot+' lot':'—');
+  // Progress bar = % saldo investasi terpakai beli saham
+  const danaTotal = calcDanaTotal();
+  const danaUsed  = calcDanaUsed();
+  const danaBar   = danaTotal>0?Math.min(100,Math.round(danaUsed/danaTotal*100)):0;
+  setSty('d-inv-prog','width',danaBar+'%');
+  setSty('d-inv-prog','background','var(--acc)');
+  setTxt('d-inv-pct',danaBar+'% terpakai');
+  if(el('d-inv-pct')) el('d-inv-pct').style.color='var(--tx3)';
 
   // Invest Rate KPI
   const _pos = calcInvPositions();
@@ -1709,7 +1709,6 @@ async function tambahDana(){
 }
 
 function calcDanaTotal(){
-  // Total dana = saldo Investasi (sudah terupdate setiap alokasi/tambahDana)
   return (DB.balances.Investasi||0) + calcDanaUsed();
 }
 
@@ -1719,13 +1718,16 @@ function calcDanaUsed(){
 }
 
 function renderDanaBalance(){
-  const total = calcDanaTotal();
   const used  = calcDanaUsed();
-  const sisa  = total - used;
-  setTxt('inv-dana-total', total?'Rp '+fmt(total):'—');
-  setTxt('inv-dana-used',  used ?'Rp '+fmt(used) :'—');
-  setTxt('inv-dana-sisa',  'Rp '+fmt(Math.max(0,sisa)));
-  if(el('inv-dana-sisa')) el('inv-dana-sisa').style.color = sisa>=0?'var(--grn)':'var(--red)';
+  const sisa  = DB.balances.Investasi||0; // sisa = saldo investasi yg belum terpakai beli saham
+  const total = sisa + used; // total yg pernah dialokasikan
+  setTxt('inv-dana-total', total>0?fmt(total):'—');
+  setTxt('inv-dana-used',  used>0?fmt(used):'—');
+  setTxt('inv-dana-sisa',  sisa>=0?fmt(sisa):'—');
+  if(el('inv-dana-sisa')) el('inv-dana-sisa').style.color=sisa>=0?'var(--grn)':'var(--red)';
+  const pos=calcPositions();
+  const totalLot=Object.values(pos).reduce((s,p)=>s+p.lot,0);
+  if(el('inv-lot-total')) setTxt('inv-lot-total', totalLot?totalLot+' lot':'—');
 }
 
 function renderInvMonthly(){
