@@ -1458,7 +1458,7 @@ function renderAll(){
   const pill=el('proj-pill');
   if(latYM){
     const s=DB.salaries[latYM],savTot=s.bca+s.bni+s.inv;
-    const bniMo=s.bni,bcaFull=savTot-SEA_FIXED;
+    const bniMo=s.bni,bcaFull=savTot-s.inv;
     const bniGap=Math.max(0,BNI_MAX-bni);
     const bniML=bniGap<=0||bniMo<=0?0:Math.ceil(bniGap/bniMo);
     const bcaGap=Math.max(0,BCA_TARGET-bca);
