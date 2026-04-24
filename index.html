@@ -1010,11 +1010,9 @@ async function syncNow(){
       const amount = parseFloat(String(t.amount||'0').replace(/[^0-9.-]/g,''))||0;
       return {...t, amount, type};
     });
-    // Load StockTx for dashboard investasi card
-    try {
-      const sd = await api({action:'getStockTx'});
-      if(sd.ok && sd.txs) invStockTx = sd.txs;
-    } catch(e){}
+    // Load StockTx from getAll (no extra API call needed)
+    if(d.stockTxs) invStockTx = d.stockTxs;
+    // Load stock prices separately (only when on investasi tab)
     setSync('ok','synced · '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
     renderAll();
   }catch(e){setSync('err','error: '+e.message);}
@@ -1772,15 +1770,10 @@ function renderInvMonthly(){
 
 async function fetchStockPrices(){
   try {
-    const [pd, sd] = await Promise.all([
-      api({action:'getStockPrices'}),
-      api({action:'getStockTx'})
-    ]);
-    if(pd.ok && pd.prices){
-      // normalize keys to uppercase
-      Object.entries(pd.prices).forEach(([k,v])=>{ invPrices[k.toUpperCase()]=Number(v)||0; });
+    const d = await api({action:'getStockPrices'});
+    if(d.ok && d.prices){
+      Object.entries(d.prices).forEach(([k,v])=>{ invPrices[k.toUpperCase()]=Number(v)||0; });
     }
-    if(sd.ok && sd.txs) invStockTx = sd.txs;
   } catch(e){}
   const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
   const timeEl=el('bbca-time');
