@@ -1180,10 +1180,18 @@ function renderAll(){
   const now=new Date();const mos=[],lbls=[];
   for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));lbls.push(MNS[d.getMonth()]);}
   const bD=[],nD=[];
+  // Akumulasi saldo dari alokasi — tiap bulan tambah alokasi bulan itu
+  let cumBCA=0,cumBNI=0;
+  const allYMs=Object.keys(DB.salaries).sort();
   mos.forEach(m=>{
-    const end=m+'-31';let b=0,n=0;
-    DB.transactions.filter(t=>t.date<=end).forEach(tx=>{const sg=tx.type==='income'?1:-1;if(tx.bank==='BCA')b+=sg*tx.amount;if(tx.bank==='BNI')n+=sg*tx.amount;});
-    bD.push(Math.max(0,b));nD.push(Math.max(0,n));
+    // Tambah alokasi bulan ini kalau ada
+    if(DB.salaries[m]){cumBCA+=DB.salaries[m].bca;cumBNI+=DB.salaries[m].bni;}
+    // Kurangi pengeluaran bulan ini dari masing-masing bank
+    DB.transactions.filter(t=>t.date.startsWith(m+'-')&&t.type==='expense').forEach(tx=>{
+      if(tx.bank==='BCA')cumBCA=Math.max(0,cumBCA-tx.amount);
+      if(tx.bank==='BNI')cumBNI=Math.max(0,cumBNI-tx.amount);
+    });
+    bD.push(cumBCA);nD.push(cumBNI);
   });
   if(trendC){trendC.data.labels=lbls;trendC.data.datasets[0].data=bD;trendC.data.datasets[1].data=nD;trendC.update();}
   else trendC=new Chart(el('trend-c'),{type:'line',data:{labels:lbls,datasets:[
