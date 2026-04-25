@@ -830,18 +830,18 @@ body {
 
       <!-- Charts — line + donut -->
       <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px;margin-bottom:16px">
-        <div class="card">
+        <div class="card" style="overflow:hidden">
           <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
             <span>Nilai Portofolio Bulanan</span>
             <div id="inv-legend" style="display:flex;gap:12px"></div>
           </div>
-          <div style="position:relative;height:200px"><canvas id="inv-monthly"></canvas></div>
+          <div style="position:relative;height:180px;width:100%"><canvas id="inv-monthly"></canvas></div>
         </div>
-        <div class="card">
+        <div class="card" style="overflow:hidden">
           <div class="card-title">Alokasi Portofolio</div>
-          <div style="display:flex;align-items:center;gap:12px;height:200px">
-            <div style="position:relative;flex:1;height:100%"><canvas id="inv-donut"></canvas></div>
-            <div id="inv-donut-legend" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div style="display:flex;align-items:center;gap:12px;height:180px">
+            <div style="position:relative;width:150px;height:150px;flex-shrink:0"><canvas id="inv-donut"></canvas></div>
+            <div id="inv-donut-legend" style="display:flex;flex-direction:column;gap:10px"></div>
           </div>
         </div>
       </div>
