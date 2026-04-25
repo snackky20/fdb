@@ -863,7 +863,7 @@ body {
       </div>
 
       <!-- DCA History -->
-      <div class="tx-card">
+      <div class="tx-card" style="margin-bottom:16px">
         <div class="tx-scroll">
           <table class="tx-tbl">
             <thead><tr>
@@ -873,6 +873,48 @@ body {
             <tbody id="dca-body"></tbody>
           </table>
           <div class="empty" id="dca-empty">Belum ada transaksi DCA</div>
+        </div>
+      </div>
+
+      <!-- Dividen Form -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Catat Dividen</div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:4px;align-items:flex-end">
+          <div class="mfg"><label>Saham</label>
+            <select id="div-ticker" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%;font-family:var(--fmono)">
+              <option value="BBCA">BBCA</option>
+              <option value="BMRI">BMRI</option>
+            </select>
+          </div>
+          <div class="mfg"><label>Dividen / Lembar (Rp)</label>
+            <input type="number" id="div-per-share" placeholder="0" min="0"
+              style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%"
+              oninput="previewDividen()">
+          </div>
+          <div class="mfg"><label>Tanggal</label>
+            <input type="date" id="div-date"
+              style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%">
+          </div>
+          <div class="mfg">
+            <label>Total Diterima</label>
+            <div id="div-preview" style="font-family:var(--fmono);font-size:14px;color:var(--grn);padding:8px 0">—</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="saveDividen()" style="margin-top:4px;padding:8px 24px">Catat Dividen</button>
+      </div>
+
+      <!-- Dividen History -->
+      <div class="tx-card">
+        <div class="tx-scroll">
+          <table class="tx-tbl">
+            <thead><tr>
+              <th>Tanggal</th><th>Saham</th><th>Lot</th>
+              <th style="text-align:right">Per Lembar</th>
+              <th style="text-align:right">Total Diterima</th><th></th>
+            </tr></thead>
+            <tbody id="div-body"></tbody>
+          </table>
+          <div class="empty" id="div-empty">Belum ada dividen</div>
         </div>
       </div>
 
@@ -1491,7 +1533,7 @@ function renderAll(){
     setSty('tl-bni','width',bPt+'%');setSty('tl-bca','left',bPt+'%');setSty('tl-bca','width',Math.max(8,bWt)+'%');
   }else pill.style.display='none';
 
-  renderTx();renderSalaryHistory();renderRiel();renderDanaBalance();
+  renderTx();renderSalaryHistory();renderRiel();renderDanaBalance();renderDividenHistory();
 }
 
 function exportCSV(){
@@ -1884,6 +1926,76 @@ function renderInvDonut(pos){
 }
 
 // ── DCA CRUD ──
+// ── DIVIDEN ──
+function previewDividen(){
+  const ticker = el('div-ticker').value;
+  const perShare = parseFloat(el('div-per-share').value)||0;
+  const pos = calcPositions();
+  const lot = pos[ticker]?.lot||0;
+  const total = lot * 100 * perShare;
+  el('div-preview').textContent = total>0 ? fmt(total) : '—';
+}
+
+async function saveDividen(){
+  const ticker   = el('div-ticker').value;
+  const perShare = parseFloat(el('div-per-share').value)||0;
+  const date     = el('div-date').value;
+  if(!perShare||!date){alert('Isi dividen per lembar dan tanggal');return;}
+  const pos   = calcPositions();
+  const lot   = pos[ticker]?.lot||0;
+  if(!lot){alert('Tidak punya lot '+ticker);return;}
+  const total = lot * 100 * perShare;
+  showLoad();
+  try{
+    // Simpan ke StockTx sebagai dividen
+    await api({action:'addStockTx',id:uid(),ticker,txtype:'dividen',lot,price:perShare,date});
+    // Tambahkan total ke dana investasi (balance Investasi)
+    await api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+total});
+    el('div-per-share').value='';
+    el('div-preview').textContent='—';
+    await syncNow();
+    updatePortfolio();
+    renderDividenHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+function renderDividenHistory(){
+  const tbody=el('div-body'),emp=el('div-empty');
+  const txs=[...invStockTx]
+    .filter(t=>String(t.txtype||t.action)==='dividen')
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  const color={BBCA:'#3b9eff',BMRI:'#f97316'};
+  tbody.innerHTML=txs.map(tx=>{
+    const total=Number(tx.lot)*100*Number(tx.price);
+    return`<tr>
+      <td class="tx-date">${tx.date}</td>
+      <td style="font-family:var(--fmono);font-weight:500;color:${color[tx.ticker.toUpperCase()]||'var(--acc)'}">${tx.ticker.toUpperCase()}</td>
+      <td style="font-family:var(--fmono);color:var(--tx2)">${tx.lot} lot</td>
+      <td style="font-family:var(--fmono);text-align:right;color:var(--tx2)">Rp ${Number(tx.price).toLocaleString('id-ID')}</td>
+      <td style="font-family:var(--fmono);text-align:right;color:var(--grn)">+${fmt(total)}</td>
+      <td><div class="act"><button class="act-btn d" onclick="delDividen('${tx.id}')">del</button></div></td>
+    </tr>`;
+  }).join('');
+}
+
+async function delDividen(id){
+  const tx=invStockTx.find(t=>String(t.id)===String(id));
+  if(!tx||!confirm('Hapus dividen ini?'))return;
+  const total=Number(tx.lot)*100*Number(tx.price);
+  showLoad();
+  try{
+    await api({action:'deleteStockTx',id:String(id)});
+    await api({action:'updateBalance',bank:'Investasi',balance:Math.max(0,(DB.balances.Investasi||0)-total)});
+    await syncNow();
+    updatePortfolio();
+    renderDividenHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
 async function saveDCA(){
   const ticker=el('dca-ticker').value;
   const action=el('dca-action').value;
@@ -1940,9 +2052,12 @@ function renderDCAHistory(){
 
 function initInvestasi(){
   el('dca-date').value=today();
-  updatePortfolio();   // render dulu pakai data yang sudah ada
+  el('div-date').value=today();
+  if(el('div-ticker')) el('div-ticker').onchange=previewDividen;
+  updatePortfolio();
   renderDCAHistory();
-  fetchStockPrices();  // fetch harga baru, update lagi setelah dapat
+  renderDividenHistory();
+  fetchStockPrices();
 }
 el('sav-mo').value=ymNow();
 el('m-date').value=today();
