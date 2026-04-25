@@ -1760,37 +1760,41 @@ function renderInvMonthly(){
     mos.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));
     lbls.push(MNS[d.getMonth()]);
   }
-  // Hitung nilai portofolio per bulan berdasarkan posisi sampai bulan itu
-  const vals = mos.map(m=>{
-    const endDate = m+'-31';
-    const txsUpTo = invStockTx.filter(t=>t.date<=endDate&&(t.txtype==='buy'||t.txtype==='sell'||t.action==='buy'||t.action==='sell'));
-    const pos={BBRI:{lot:0,cost:0},BMRI:{lot:0,cost:0},BBNI:{lot:0,cost:0}};
-    txsUpTo.forEach(tx=>{
-      const t=tx.ticker.toUpperCase();
-      if(!pos[t])return;
-      const lot=Number(tx.lot)||0,price=Number(tx.price)||0;
-      const isBuy=(tx.txtype||tx.action)==='buy';
-      if(isBuy){pos[t].cost+=lot*100*price;pos[t].lot+=lot;}
-      else{const r=pos[t].lot>0?lot/pos[t].lot:0;pos[t].cost-=pos[t].cost*r;pos[t].lot-=lot;}
-      pos[t].lot=Math.max(0,pos[t].lot);pos[t].cost=Math.max(0,pos[t].cost);
+  const calcVal=(ticker,m)=>{
+    const endDate=m+'-31';
+    const txs=invStockTx.filter(t=>t.date<=endDate&&t.ticker.toUpperCase()===ticker);
+    let lot=0,cost=0;
+    txs.forEach(tx=>{
+      const l=Number(tx.lot)||0,p=Number(tx.price)||0;
+      const txtype=String(tx.txtype||tx.action||'').toLowerCase();
+      if(txtype==='buy'){cost+=l*100*p;lot+=l;}
+      else{const r=lot>0?l/lot:0;cost-=cost*r;lot-=l;}
+      lot=Math.max(0,lot);cost=Math.max(0,cost);
     });
-    return Object.keys(pos).reduce((s,t)=>s+pos[t].lot*100*(invPrices[t]||0),0);
-  });
+    return lot*100*(invPrices[ticker]||0);
+  };
+  const bbcaVals=mos.map(m=>calcVal('BBCA',m));
+  const bmriVals=mos.map(m=>calcVal('BMRI',m));
   const canvas=el('inv-monthly');if(!canvas)return;
   if(invMonthlyC){invMonthlyC.destroy();invMonthlyC=null;}
   invMonthlyC=new Chart(canvas,{type:'line',
     data:{labels:lbls,datasets:[
-      {label:'Nilai',data:vals,borderColor:'var(--acc)',backgroundColor:'rgba(59,158,255,.08)',
-        fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'var(--acc)',borderWidth:2}
+      {label:'BBCA',data:bbcaVals,borderColor:'#3b9eff',backgroundColor:'rgba(59,158,255,.06)',
+        fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#3b9eff',borderWidth:2},
+      {label:'BMRI',data:bmriVals,borderColor:'#f97316',backgroundColor:'rgba(249,115,22,.06)',
+        fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#f97316',borderWidth:2}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Rp '+Math.round(c.parsed.y).toLocaleString('id-ID')}}},
+      plugins:{
+        legend:{display:true,position:'top',labels:{color:'#96a6c2',font:{size:11,family:'Geist Mono'},boxWidth:10,padding:12}},
+        tooltip:{callbacks:{label:c=>' '+c.dataset.label+': Rp '+Math.round(c.parsed.y).toLocaleString('id-ID')}}
+      },
       scales:{x:{grid:{display:false},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'}},border:{display:false}},
         y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#5a5a64',font:{size:10,family:'Geist Mono'},callback:v=>fmtS(v)},border:{display:false}}}}
   });
-  // Legend per ticker
+  // Update legend
   const leg=el('inv-legend');
-  if(leg) leg.innerHTML=Object.keys(STOCKS).map(t=>`<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#96a6c2;font-family:var(--fmono)"><span style="width:8px;height:8px;border-radius:50%;background:${STOCKS[t].color};display:inline-block"></span>${t}</div>`).join('');
+  if(leg) leg.innerHTML='';
 }
 
 async function fetchStockPrices(){
