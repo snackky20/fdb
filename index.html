@@ -540,10 +540,15 @@ body {
         </div>
         <div class="bcard bi">
           <div class="bcard-header">
-            <div><div class="bcard-name">BBCA</div><div class="bcard-tag">Saham</div></div>
+            <div><div class="bcard-name">Saham</div><div class="bcard-tag">BBCA &amp; BMRI</div></div>
             <div class="bcard-alloc" id="d-inv-lot">—</div>
           </div>
           <div class="bcard-bal" id="d-inv-bal">—</div>
+          <div style="display:flex;gap:6px;margin:6px 0 2px">
+            <span style="font-size:10px;color:var(--tx3)">BBCA <span id="d-bbca-lot" style="color:#3b9eff">—</span></span>
+            <span style="font-size:10px;color:var(--tx3)">·</span>
+            <span style="font-size:10px;color:var(--tx3)">BMRI <span id="d-bmri-lot" style="color:#f97316">—</span></span>
+          </div>
           <div class="bprog"><div class="bprog-f" id="d-inv-prog" style="width:0%;background:var(--acc)"></div></div>
           <div class="bprog-meta"><span id="d-inv-pct" style="color:var(--acc)">—</span></div>
         </div>
@@ -781,6 +786,18 @@ body {
           <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bbca-val">—</span></div>
           <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bbca-pl">—</span></div>
         </div>
+        <div class="stock-card" style="--sc:#f97316">
+          <div class="stock-ticker">BMRI</div>
+          <div class="stock-name">Bank Mandiri</div>
+          <div class="stock-price" id="bmri-price">—</div>
+          <div class="stock-change" id="bmri-change">—</div>
+          <div class="price-badge"><span class="dot"></span><span id="bmri-time">memuat...</span></div>
+          <hr class="stock-divider">
+          <div class="stock-row"><span class="stock-row-label">Lot</span><span class="stock-row-val" id="bmri-lot">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Avg Beli</span><span class="stock-row-val" id="bmri-avg">—</span></div>
+          <div class="stock-row"><span class="stock-row-label">Nilai Sekarang</span><span class="stock-row-val" id="bmri-val">—</span></div>
+          <div class="stock-row" style="margin-top:8px"><span class="stock-row-label">P&L</span><span class="stock-pl" id="bmri-pl">—</span></div>
+        </div>
         <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:16px">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:4px">Dana Investasi</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
@@ -830,6 +847,7 @@ body {
           <div class="mfg"><label>Saham</label>
             <select id="dca-ticker" style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r3);color:var(--tx);padding:7px 10px;font-size:12px;outline:none;width:100%;font-family:var(--fmono)">
               <option value="BBCA">BBCA</option>
+              <option value="BMRI">BMRI</option>
             </select>
           </div>
           <div class="mfg"><label>Aksi</label>
@@ -1361,12 +1379,18 @@ function renderAll(){
   setSty('d-bca-prog','width',bP+'%');setSty('d-bni-prog','width',nP+'%');
   setTxt('d-bca-pct',bP+'%');setTxt('d-bni-pct',nP+'%');
 
-  // BBCA card — live price x lot
-  const invPos = calcInvPositions();
+  // Saham card — total nilai BBCA + BMRI
+  const invPos  = calcInvPositions();
   const bbcaLot = invPos.BBCA?.lot||0;
+  const bmriLot = invPos.BMRI?.lot||0;
   const bbcaVal = bbcaLot*100*(invPrices.BBCA||0);
-  setTxt('d-inv-bal', bbcaVal>0?fmt(bbcaVal):bbcaLot>0?bbcaLot+' lot':'—');
-  setTxt('d-inv-lot', bbcaLot?bbcaLot+' lot':'—');
+  const bmriVal = bmriLot*100*(invPrices.BMRI||0);
+  const totInvVal = bbcaVal+bmriVal;
+  const totInvLot = bbcaLot+bmriLot;
+  setTxt('d-inv-bal', totInvVal>0?fmt(totInvVal):totInvLot>0?totInvLot+' lot':'—');
+  setTxt('d-inv-lot', totInvLot?totInvLot+' lot':'—');
+  setTxt('d-bbca-lot', bbcaLot?bbcaLot+' lot':'—');
+  setTxt('d-bmri-lot', bmriLot?bmriLot+' lot':'—');
   // Progress bar = % saldo investasi terpakai beli saham
   const danaTotal = calcDanaTotal();
   const danaUsed  = calcDanaUsed();
@@ -1650,8 +1674,9 @@ function renderRiel(){
 // ── INVESTASI ──
 const STOCKS = {
   BBCA:{ name:'Bank Central Asia', color:'#3b9eff' },
+  BMRI:{ name:'Bank Mandiri',      color:'#f97316' },
 };
-let invPrices    = { BBCA:0 };
+let invPrices    = { BBCA:0, BMRI:0 };
 let invStockTx   = [];
 let invDanaTotal = 0; // total dana yang pernah dialokasikan
 let invMonthlyC  = null;
@@ -1660,7 +1685,7 @@ let invDonutC    = null;
 // ── HITUNG POSISI DARI HISTORY ──
 function calcInvPositions(){ return calcPositions(); }
 function calcPositions(){
-  const pos = { BBCA:{lot:0,cost:0} };
+  const pos = { BBCA:{lot:0,cost:0}, BMRI:{lot:0,cost:0} };
   invStockTx.forEach(tx=>{
     const t=tx.ticker.toUpperCase();
     if(!pos[t])return;
@@ -1774,8 +1799,10 @@ async function fetchStockPrices(){
     }
   } catch(e){}
   const now = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
-  const timeEl=el('bbca-time');
-  if(timeEl) timeEl.textContent = invPrices.BBCA?'Update '+now:'Tidak tersedia';
+  ['BBCA','BMRI'].forEach(s=>{
+    const timeEl=el(s.toLowerCase()+'-time');
+    if(timeEl) timeEl.textContent = invPrices[s]?'Update '+now:'Tidak tersedia';
+  });
   updatePortfolio();
   renderDCAHistory();
 }
@@ -1784,7 +1811,7 @@ async function fetchStockPrices(){
 function updatePortfolio(){
   const pos = calcPositions();
   let totalVal=0, totalModal=0;
-  ['BBCA'].forEach(s=>{
+  ['BBCA','BMRI'].forEach(s=>{
     const price   = invPrices[s]||0;
     const lot     = pos[s].lot||0;
     const avgBeli = pos[s].avg_beli||0;
@@ -1853,13 +1880,12 @@ async function saveDCA(){
   if(!lot||!price||!date){alert('Isi semua field');return;}
   showLoad();
   try{
-    await api({action:'addStockTx',id:uid(),ticker,txtype:action,lot,price,date});
-    const sd=await api({action:'getStockTx'});
-    if(sd.ok&&sd.txs) invStockTx=sd.txs;
+    const res=await api({action:'addStockTx',id:uid(),ticker,txtype:action,lot,price,date});
+    if(!res.ok) throw new Error(res.error||'Gagal simpan');
+    el('dca-lot').value='';el('dca-price').value='';
+    await syncNow(); // reload semua data termasuk stockTxs
     updatePortfolio();
     renderDCAHistory();
-    // Reset form
-    el('dca-lot').value='';el('dca-price').value='';
   }catch(e){setSync('err','error: '+e.message);}
   hideLoad();
 }
