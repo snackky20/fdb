@@ -1921,7 +1921,8 @@ function updatePortfolio(){
 function renderInvDonut(pos){
   const labels=[], data=[], colors=[];
   Object.keys(STOCKS).forEach(s=>{
-    const val=(pos[s]?.lot||0)*100*(invPrices[s]||0);
+    const price = invPrices[s]||pos[s]?.avg_beli||0; // fallback ke avg beli
+    const val=(pos[s]?.lot||0)*100*price;
     if(val>0){labels.push(s);data.push(val);colors.push(STOCKS[s].color);}
   });
   const canvas=el('inv-donut');if(!canvas)return;
