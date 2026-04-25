@@ -772,8 +772,8 @@ body {
     <div class="tab-pane" id="tab-investasi">
 
 
-      <!-- Stock Card BBCA -->
-      <div style="display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:12px;margin-bottom:24px">
+      <!-- Stock Cards + Dana Investasi — 1 baris 3 kolom -->
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:24px">
         <div class="stock-card" style="--sc:#3b9eff">
           <div class="stock-ticker">BBCA</div>
           <div class="stock-name">Bank Central Asia</div>
@@ -1690,11 +1690,12 @@ function calcPositions(){
     const t=tx.ticker.toUpperCase();
     if(!pos[t])return;
     const lot=Number(tx.lot)||0, price=Number(tx.price)||0;
-    if(tx.action==='buy'){
+    const isBuy=(tx.txtype||tx.action)==='buy';
+    const isSell=(tx.txtype||tx.action)==='sell';
+    if(isBuy){
       pos[t].cost += lot*100*price;
       pos[t].lot  += lot;
-    } else {
-      // Jual — kurangi lot, cost proporsional
+    } else if(isSell) {
       const ratio = pos[t].lot>0 ? lot/pos[t].lot : 0;
       pos[t].cost -= pos[t].cost*ratio;
       pos[t].lot  -= lot;
@@ -1767,7 +1768,7 @@ function renderInvMonthly(){
       const t=tx.ticker.toUpperCase();
       if(!pos[t])return;
       const lot=Number(tx.lot)||0,price=Number(tx.price)||0;
-      const isBuy=tx.txtype==='buy'||tx.action==='buy';
+      const isBuy=(tx.txtype||tx.action)==='buy';
       if(isBuy){pos[t].cost+=lot*100*price;pos[t].lot+=lot;}
       else{const r=pos[t].lot>0?lot/pos[t].lot:0;pos[t].cost-=pos[t].cost*r;pos[t].lot-=lot;}
       pos[t].lot=Math.max(0,pos[t].lot);pos[t].cost=Math.max(0,pos[t].cost);
