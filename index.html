@@ -466,34 +466,22 @@ body {
     <div class="tab-pane active" id="tab-dashboard">
 
       <div class="kpi-row" style="margin-bottom:24px;grid-template-columns:repeat(4,minmax(0,1fr))">
-
-        <!-- Total Tabungan -->
         <div class="kpi">
           <div class="kpi-label">Total Tabungan</div>
           <div class="kpi-value c-acc" id="kpi-total">—</div>
-          <div style="height:1px;background:var(--bd2);margin:10px 0"></div>
-          <div class="kpi-label" style="margin-top:4px">BCA + BNI</div>
         </div>
-
-        <!-- Cashflow -->
         <div class="kpi">
           <div class="kpi-label">Total Pemasukan</div>
           <div class="kpi-value" id="kpi-total-in" style="color:var(--acc2)">—</div>
-          <div style="height:1px;background:var(--bd2);margin:10px 0"></div>
-          <div class="kpi-label">Total Pengeluaran</div>
-          <div class="kpi-value c-red" id="kpi-total-out" style="font-size:18px;margin-top:2px">—</div>
+          <div class="kpi-label" style="margin-top:8px">Total Pengeluaran</div>
+          <div class="kpi-value c-red" id="kpi-total-out">—</div>
         </div>
-
-        <!-- Investasi -->
         <div class="kpi">
           <div class="kpi-label">Modal Investasi</div>
           <div class="kpi-value" id="kpi-total-inv" style="color:#c4b5fd">—</div>
-          <div style="height:1px;background:var(--bd2);margin:10px 0"></div>
-          <div class="kpi-label">Nilai Aktual</div>
-          <div class="kpi-value" id="kpi-inv-aktual" style="font-size:18px;margin-top:2px">—</div>
+          <div class="kpi-label" style="margin-top:8px">Nilai Aktual</div>
+          <div class="kpi-value" id="kpi-inv-aktual">—</div>
         </div>
-
-        <!-- Rates -->
         <div class="kpi" style="display:flex;flex-direction:column;gap:10px;justify-content:center">
           <div style="display:flex;align-items:center;gap:10px">
             <svg viewBox="0 0 40 40" width="36" height="36" style="flex-shrink:0">
@@ -505,7 +493,7 @@ body {
             </svg>
             <div>
               <div class="kpi-label">Savings Rate</div>
-              <div style="font-family:var(--fmono);font-size:20px;font-weight:500;color:var(--acc2)" id="rate-num">—</div>
+              <div class="kpi-value" id="rate-num" style="color:var(--acc2)">—</div>
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:10px">
@@ -518,11 +506,10 @@ body {
             </svg>
             <div>
               <div class="kpi-label">Invest Rate</div>
-              <div style="font-family:var(--fmono);font-size:20px;font-weight:500;color:#c4b5fd" id="inv-rate-num">—</div>
+              <div class="kpi-value" id="inv-rate-num" style="color:#c4b5fd">—</div>
             </div>
           </div>
         </div>
-
       </div>
 
 
@@ -1414,15 +1401,13 @@ function renderAll(){
   const expIni=DB.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(ym+'-')).reduce((s,t)=>s+t.amount,0);
   const rate=gajiDisplay>0?Math.max(0,Math.round(savIni/gajiDisplay*100)):0;
 
-  // All-time totals
+  // All-time totals — semua transaksi, bukan bulan ini aja
   const allIn  = DB.transactions.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
   const allOut = DB.transactions.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
   const allSav = DB.transactions.filter(t=>t.type==='tabungan').reduce((s,t)=>s+t.amount,0);
   const allInv = DB.transactions.filter(t=>t.type==='investasi').reduce((s,t)=>s+t.amount,0);
-  const allGaji= allIn+allSav+allInv; // total pemasukan termasuk tabungan & investasi
-  // Savings rate = total tabungan / total pemasukan
-  const savRate = allGaji>0?Math.max(0,Math.round((allSav)/allGaji*100)):0;
-  // Invest rate = total investasi / total pemasukan
+  const allGaji= allIn+allSav+allInv;
+  const savRate = allGaji>0?Math.max(0,Math.round(allSav/allGaji*100)):0;
   const invRate = allGaji>0?Math.max(0,Math.round(allInv/allGaji*100)):0;
 
   setTxt('kpi-total',fmtS(total));
