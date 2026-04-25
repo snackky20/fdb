@@ -487,6 +487,16 @@ body {
         <div class="kpi" style="border-right:1px solid var(--bd2);display:flex;flex-direction:column;align-items:center;justify-content:space-between">
           <div class="kpi-label" style="width:100%;text-align:center">Total Tabungan</div>
           <div class="kpi-value c-acc" style="font-size:22px;letter-spacing:-.03em;flex:1;display:flex;align-items:center" id="kpi-total">—</div>
+          <div style="width:100%;margin-top:8px">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--tx3);font-family:var(--fmono);margin-bottom:4px">
+              <span>BCA <span id="kpi-bca-sub" style="color:var(--acc2)">—</span></span>
+              <span>BNI <span id="kpi-bni-sub" style="color:var(--acc2)">—</span></span>
+            </div>
+            <div style="height:3px;background:var(--s4);border-radius:99px;overflow:hidden">
+              <div id="kpi-total-prog" style="height:100%;background:var(--acc);border-radius:99px;width:0%;transition:width .8s ease"></div>
+            </div>
+            <div style="font-size:9px;color:var(--tx3);text-align:right;margin-top:3px"><span id="kpi-total-pct">0%</span> dari target</div>
+          </div>
         </div>
 
         <!-- Cashflow — border kanan, garis tengah -->
@@ -1439,6 +1449,11 @@ function renderAll(){
   const invRate = allGaji>0?Math.max(0,Math.round(allInv/allGaji*100)):0;
 
   setTxt('kpi-total',fmtS(total));
+  setTxt('kpi-bca-sub', fmtS(bca));
+  setTxt('kpi-bni-sub', fmtS(bni));
+  const totalPct = Math.min(100,Math.round(total/BCA_TARGET*100));
+  setSty('kpi-total-prog','width',totalPct+'%');
+  setTxt('kpi-total-pct', totalPct+'%');
   setTxt('kpi-total-in', allIn>0?fmtS(allIn):'—');
   setTxt('kpi-total-out', allOut>0?fmtS(allOut):'—');
   setTxt('kpi-total-inv', allInv>0?fmtS(allInv):'—');
