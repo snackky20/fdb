@@ -1951,6 +1951,139 @@ function renderInvDonut(pos){
 }
 
 
+
+// ── DCA ──
+async function saveDCA(){
+  const ticker=el('dca-ticker').value;
+  const action=el('dca-action').value;
+  const lot=parseFloat(el('dca-lot').value)||0;
+  const price=parseFloat(el('dca-price').value)||0;
+  const date=el('dca-date').value;
+  if(!lot||!price||!date){alert('Isi semua field');return;}
+  showLoad();
+  try{
+    const res=await api({action:'addStockTx',id:uid(),ticker,txtype:action,lot,price,date});
+    if(!res.ok) throw new Error(res.error||'Gagal simpan');
+    el('dca-lot').value='';el('dca-price').value='';
+    await syncNow();
+    updatePortfolio();renderDCAHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+async function delDCATx(id){
+  if(!confirm('Hapus transaksi ini?'))return;
+  showLoad();
+  try{
+    await api({action:'deleteStockTx',id:String(id)});
+    invStockTx=invStockTx.filter(t=>String(t.id)!==String(id));
+    updatePortfolio();renderDCAHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+function renderDCAHistory(){
+  const tbody=el('dca-body'),emp=el('dca-empty');
+  const txs=[...invStockTx].filter(t=>{
+    const tt=String(t.txtype||t.action||'').toLowerCase();
+    return tt==='buy'||tt==='sell';
+  }).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  const color={BBCA:'#3b9eff',BMRI:'#f97316'};
+  tbody.innerHTML=txs.map(tx=>{
+    const isBuy=String(tx.txtype||tx.action||'').toLowerCase()==='buy';
+    const val=Number(tx.lot)*100*Number(tx.price);
+    const txid=String(tx.id);
+    return`<tr>
+      <td class="tx-date">${tx.date}</td>
+      <td style="font-family:var(--fmono);font-weight:500;color:${color[tx.ticker?.toUpperCase()]||'var(--acc)'}">${(tx.ticker||'').toUpperCase()}</td>
+      <td style="font-size:11px;color:${isBuy?'var(--grn)':'var(--red)'}">${isBuy?'Beli':'Jual'}</td>
+      <td style="font-family:var(--fmono);color:var(--tx2)">${tx.lot} lot</td>
+      <td style="font-family:var(--fmono);text-align:right;color:var(--tx2)">Rp ${Number(tx.price).toLocaleString('id-ID')}</td>
+      <td style="font-family:var(--fmono);text-align:right;color:${isBuy?'var(--red)':'var(--grn)'}">
+        ${isBuy?'-':'+'}Rp ${Math.round(val).toLocaleString('id-ID')}</td>
+      <td><div class="act"><button class="act-btn d" onclick="delDCATx('${txid}')">del</button></div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── DIVIDEN ──
+function previewDividen(){
+  const ticker=el('div-ticker').value;
+  const perShare=parseFloat(el('div-per-share').value)||0;
+  const pos=calcPositions();
+  const lot=pos[ticker]?.lot||0;
+  const total=lot*100*perShare;
+  el('div-preview').textContent=total>0?fmt(total):'—';
+}
+
+async function saveDividen(){
+  const ticker=el('div-ticker').value;
+  const perShare=parseFloat(el('div-per-share').value)||0;
+  const date=el('div-date').value;
+  if(!perShare||!date){alert('Isi dividen per lembar dan tanggal');return;}
+  const pos=calcPositions();
+  const lot=pos[ticker]?.lot||0;
+  if(!lot){alert('Tidak punya lot '+ticker);return;}
+  const total=lot*100*perShare;
+  showLoad();
+  try{
+    await api({action:'addStockTx',id:uid(),ticker,txtype:'dividen',lot,price:perShare,date});
+    await api({action:'updateBalance',bank:'Investasi',balance:(DB.balances.Investasi||0)+total});
+    el('div-per-share').value='';el('div-preview').textContent='—';
+    await syncNow();
+    updatePortfolio();renderDividenHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+async function delDividen(id){
+  const tx=invStockTx.find(t=>String(t.id)===String(id));
+  if(!tx||!confirm('Hapus dividen ini?'))return;
+  const total=Number(tx.lot)*100*Number(tx.price);
+  showLoad();
+  try{
+    await api({action:'deleteStockTx',id:String(id)});
+    await api({action:'updateBalance',bank:'Investasi',balance:Math.max(0,(DB.balances.Investasi||0)-total)});
+    await syncNow();
+    updatePortfolio();renderDividenHistory();
+  }catch(e){setSync('err','error: '+e.message);}
+  hideLoad();
+}
+
+function renderDividenHistory(){
+  const tbody=el('div-body'),emp=el('div-empty');
+  if(!tbody)return;
+  const txs=[...invStockTx]
+    .filter(t=>String(t.txtype||t.action||'')==='dividen')
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  if(!txs.length){tbody.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  const color={BBCA:'#3b9eff',BMRI:'#f97316'};
+  tbody.innerHTML=txs.map(tx=>{
+    const total=Number(tx.lot)*100*Number(tx.price);
+    return`<tr>
+      <td class="tx-date">${tx.date}</td>
+      <td style="font-family:var(--fmono);font-weight:500;color:${color[tx.ticker?.toUpperCase()]||'var(--acc)'}">${(tx.ticker||'').toUpperCase()}</td>
+      <td style="font-family:var(--fmono);color:var(--tx2)">${tx.lot} lot</td>
+      <td style="font-family:var(--fmono);text-align:right;color:var(--tx2)">Rp ${Number(tx.price).toLocaleString('id-ID')}</td>
+      <td style="font-family:var(--fmono);text-align:right;color:var(--grn)">+${fmt(total)}</td>
+      <td><div class="act"><button class="act-btn d" onclick="delDividen('${String(tx.id)}')">del</button></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function initInvestasi(){
+  el('dca-date').value=today();
+  if(el('div-date')) el('div-date').value=today();
+  if(el('div-ticker')) el('div-ticker').onchange=previewDividen;
+  updatePortfolio();
+  renderDCAHistory();
+  renderDividenHistory();
+  fetchStockPrices();
+}
+
 el("sav-mo").value=ymNow();
 syncNow().finally(hideLoad);
 </script>
