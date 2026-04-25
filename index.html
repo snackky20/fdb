@@ -466,22 +466,32 @@ body {
     <div class="tab-pane active" id="tab-dashboard">
 
       <div class="kpi-row" style="margin-bottom:24px;grid-template-columns:repeat(4,minmax(0,1fr))">
-        <div class="kpi">
+
+        <!-- Total Tabungan — font besar, border kanan -->
+        <div class="kpi" style="border-right:1px solid var(--bd2);justify-content:center">
           <div class="kpi-label">Total Tabungan</div>
-          <div class="kpi-value c-acc" id="kpi-total">—</div>
+          <div class="kpi-value c-acc" style="font-size:32px;letter-spacing:-.04em" id="kpi-total">—</div>
         </div>
-        <div class="kpi">
+
+        <!-- Cashflow — border kanan, garis tengah -->
+        <div class="kpi" style="border-right:1px solid var(--bd2)">
           <div class="kpi-label">Total Pemasukan</div>
           <div class="kpi-value" id="kpi-total-in" style="color:var(--acc2)">—</div>
-          <div class="kpi-label" style="margin-top:8px">Total Pengeluaran</div>
+          <div style="height:1px;background:var(--bd2);margin:10px 0"></div>
+          <div class="kpi-label">Total Pengeluaran</div>
           <div class="kpi-value c-red" id="kpi-total-out">—</div>
         </div>
-        <div class="kpi">
+
+        <!-- Investasi — border kanan, garis tengah -->
+        <div class="kpi" style="border-right:1px solid var(--bd2)">
           <div class="kpi-label">Modal Investasi</div>
           <div class="kpi-value" id="kpi-total-inv" style="color:#c4b5fd">—</div>
-          <div class="kpi-label" style="margin-top:8px">Nilai Aktual</div>
+          <div style="height:1px;background:var(--bd2);margin:10px 0"></div>
+          <div class="kpi-label">Nilai Aktual</div>
           <div class="kpi-value" id="kpi-inv-aktual">—</div>
         </div>
+
+        <!-- Rates -->
         <div class="kpi" style="display:flex;flex-direction:column;gap:10px;justify-content:center">
           <div style="display:flex;align-items:center;gap:10px">
             <svg viewBox="0 0 40 40" width="36" height="36" style="flex-shrink:0">
@@ -496,6 +506,7 @@ body {
               <div class="kpi-value" id="rate-num" style="color:var(--acc2)">—</div>
             </div>
           </div>
+          <div style="height:1px;background:var(--bd2)"></div>
           <div style="display:flex;align-items:center;gap:10px">
             <svg viewBox="0 0 40 40" width="36" height="36" style="flex-shrink:0">
               <circle cx="20" cy="20" r="15" fill="none" stroke="var(--s4)" stroke-width="3.5"/>
@@ -510,6 +521,7 @@ body {
             </div>
           </div>
         </div>
+
       </div>
 
 
