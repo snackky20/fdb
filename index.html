@@ -828,14 +828,21 @@ body {
         </div>
       </div>
 
-      <!-- Charts -->
-      <div style="margin-bottom:16px">
+      <!-- Charts — line + donut -->
+      <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px;margin-bottom:16px">
         <div class="card">
           <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
             <span>Nilai Portofolio Bulanan</span>
             <div id="inv-legend" style="display:flex;gap:12px"></div>
           </div>
           <div style="position:relative;height:200px"><canvas id="inv-monthly"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Alokasi Portofolio</div>
+          <div style="display:flex;align-items:center;gap:12px;height:200px">
+            <div style="position:relative;flex:1;height:100%"><canvas id="inv-donut"></canvas></div>
+            <div id="inv-donut-legend" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
         </div>
       </div>
 
@@ -1908,6 +1915,38 @@ function updatePortfolio(){
   if(lotTotEl) lotTotEl.textContent=(pos.BBCA?.lot||0)+' lot';
   renderDanaBalance();
   renderInvMonthly();
+  renderInvDonut(pos);
+}
+
+function renderInvDonut(pos){
+  const labels=[], data=[], colors=[];
+  Object.keys(STOCKS).forEach(s=>{
+    const val=(pos[s]?.lot||0)*100*(invPrices[s]||0);
+    if(val>0){labels.push(s);data.push(val);colors.push(STOCKS[s].color);}
+  });
+  const canvas=el('inv-donut');if(!canvas)return;
+  if(invDonutC){invDonutC.destroy();invDonutC=null;}
+  if(!data.length){
+    const leg=el('inv-donut-legend');
+    if(leg) leg.innerHTML='<div style="font-size:11px;color:var(--tx3)">Belum ada data</div>';
+    return;
+  }
+  invDonutC=new Chart(canvas,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Rp '+Math.round(c.parsed).toLocaleString('id-ID')}}}}
+  });
+  const leg=el('inv-donut-legend');
+  if(leg) leg.innerHTML=labels.map((l,i)=>{
+    const pct=data.reduce((s,v)=>s+v,0)>0?Math.round(data[i]/data.reduce((s,v)=>s+v,0)*100):0;
+    return`<div style="display:flex;flex-direction:column;gap:2px">
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2);font-family:var(--fmono)">
+        <span style="width:8px;height:8px;border-radius:2px;background:${colors[i]};display:inline-block;flex-shrink:0"></span>${l}
+      </div>
+      <div style="font-size:11px;color:var(--tx3);padding-left:13px">${pct}%</div>
+    </div>`;
+  }).join('');
 }
 
 function renderInvDonut(pos){
