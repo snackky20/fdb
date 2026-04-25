@@ -1409,8 +1409,8 @@ function renderAll(){
   const invUsed2  = calcDanaUsed();
   const invSisa2  = invDana2-invUsed2;
   setTxt('kpi-invest-rate', invVal2>0?(invRet2>=0?'+':'')+invRet2.toFixed(1)+'%':'—');
-  setTxt('kpi-invest-sub',  invVal2>0?'Rp '+fmtS(invVal2):'—');
-  setTxt('kpi-invest-sisa', invDana2>0?'Rp '+fmtS(Math.max(0,invSisa2)):'—');
+  setTxt('kpi-invest-sub',  invVal2>0?fmtS(invVal2):'—');
+  setTxt('kpi-invest-sisa', invDana2>0?fmtS(Math.max(0,invSisa2)):'—');
   if(el('kpi-invest-rate')) el('kpi-invest-rate').style.color=invRet2>=0?'var(--grn)':'var(--red)';
   if(el('kpi-invest-sisa')) el('kpi-invest-sisa').style.color=invSisa2>=0?'var(--acc2)':'var(--red)';
 
@@ -1690,8 +1690,9 @@ function calcPositions(){
     const t=tx.ticker.toUpperCase();
     if(!pos[t])return;
     const lot=Number(tx.lot)||0, price=Number(tx.price)||0;
-    const isBuy=(tx.txtype||tx.action)==='buy';
-    const isSell=(tx.txtype||tx.action)==='sell';
+    const txtype=String(tx.txtype||tx.action||'').toLowerCase();
+    const isBuy=txtype==='buy';
+    const isSell=txtype==='sell';
     if(isBuy){
       pos[t].cost += lot*100*price;
       pos[t].lot  += lot;
